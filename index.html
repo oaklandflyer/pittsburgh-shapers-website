@@ -63,13 +63,23 @@
   .wordmark:hover { color: var(--ink); }
   .wordmark .mark { transition: transform 0.25s var(--ease); }
   .wordmark:hover .mark { transform: rotate(-8deg); }
-  .wordmark .mark { height: 34px; width: auto; display: block; flex-shrink: 0; }
+  .wordmark .mark { height: 50px; width: auto; display: block; flex-shrink: 0; }
   .wordmark .lockup {
     font-family: var(--font-display); font-size: 1.45rem; letter-spacing: 0.09em;
     line-height: 1; display: flex; align-items: baseline; gap: 8px;
   }
   .wordmark .dot { width: 8px; height: 8px; background: var(--gold); display: inline-block; }
   .nav-links { display: flex; align-items: center; gap: 4px; }
+  /* Hamburger toggle — hidden on desktop, shown on mobile */
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; margin: -8px; }
+  .nav-toggle span {
+    display: block; width: 24px; height: 2px; background: var(--ink);
+    transition: transform 0.25s var(--ease), opacity 0.2s var(--ease);
+  }
+  .nav-toggle span + span { margin-top: 5px; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .nav-links a {
     font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--slate); padding: 10px 16px;
@@ -251,12 +261,24 @@
   .person .note { font-size: 0.8rem; color: var(--mute); margin-top: 6px; font-style: italic; }
   .badge-in { display: inline-block; font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--blue); color: #fff; padding: 3px 8px; margin-bottom: 10px; }
   .roster-split { grid-column: 1 / -1; background: var(--paper); padding: 10px 30px; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
+  /* Member card with a profile-photo slot to the left of the name */
+  .person.has-photo { display: flex; align-items: center; gap: 16px; }
+  .person.has-photo .person-text { min-width: 0; }
+  .avatar {
+    flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%;
+    background: var(--blue-tint); border: 1px solid var(--line-2);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--blue); font-weight: 700;
+  }
+  /* To add a photo: replace the initials with <img src="assets/team/name.jpg" alt=""> */
+  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   /* ---------- FOOTER ---------- */
   footer { border-top: 1px solid var(--line); padding: 48px 0; }
   .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
   .foot-inner .wordmark .lockup { font-size: 1.2rem; }
-  .foot-inner .wordmark .mark { height: 30px; }
+  .foot-inner .wordmark .mark { height: 40px; }
   .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
 
   /* ---------- RESPONSIVE ---------- */
@@ -266,15 +288,27 @@
     .cards-2, .roster { grid-template-columns: 1fr; }
     .roster { grid-template-columns: 1fr 1fr; }
     .gallery { grid-template-columns: repeat(2, 1fr); }
-    .nav-links { display: none; }
+    /* Mobile nav: collapse links into a hamburger dropdown */
+    .nav-toggle { display: block; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: rgba(250,250,246,0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); padding: 8px 0;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 15px 40px; border-radius: 0; }
+    .nav-cta {
+      margin: 12px 40px 6px; text-align: center; clip-path: none;
+    }
   }
   @media (max-width: 560px) {
     .wrap, .nav-inner, .hero-grid, .foot-inner { padding-left: 22px; padding-right: 22px; }
     .roster { grid-template-columns: 1fr; }
     .events-block, .project .body, .card { padding: 32px 26px; }
-    /* On phones, show only the ring mark in the nav to keep the bar tidy next to Apply Now */
-    .nav-inner .wordmark .lockup { display: none; }
-    .nav-inner .wordmark .mark { height: 32px; }
+    .nav-inner .wordmark .mark { height: 38px; }
+    .nav-links a, .nav-cta { padding-left: 22px; padding-right: 22px; }
+    .nav-cta { margin-left: 22px; margin-right: 22px; }
     .foot-inner { flex-direction: column; align-items: flex-start; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -288,10 +322,12 @@
   <nav id="top">
     <div class="nav-inner">
       <a href="#top" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
-        <img class="mark" src="assets/gs-pittsburgh-mark.png" alt="Global Shapers Pittsburgh logo">
-        <span class="lockup">GLOBAL SHAPERS <span class="dot"></span> PITTSBURGH</span>
+        <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
       </a>
-      <div class="nav-links">
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
         <a href="#overview">Overview</a>
         <a href="#events">Events</a>
         <a href="#projects">Projects</a>
@@ -431,16 +467,25 @@
         <h2 class="sec-title">THE TEAM</h2>
       </div>
       <div class="roster">
-        <div class="person"><div class="role">Curator</div><div class="name">Steven Guo</div></div>
-        <div class="person"><div class="role">Vice Curator</div><div class="name">Andrew Coutinho</div></div>
-        <div class="person"><div class="role">Impact Officer</div><div class="name">Heena Baharte</div></div>
-        <div class="roster-split">Incoming Leadership</div>
-        <div class="person"><span class="badge-in">Incoming</span><div class="role">Curator</div><div class="name">Andrew Coutinho</div></div>
-        <div class="person"><span class="badge-in">Incoming</span><div class="role">Vice Curator</div><div class="name">Ian Chang</div></div>
-        <div class="person"><span class="badge-in">Incoming</span><div class="role">Impact Officer</div><div class="name">Seong Kim</div></div>
+        <div class="roster-split">Leadership · July 2026 – June 2027</div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">AC</div><div class="person-text"><div class="role">Curator</div><div class="name">Andrew Coutinho</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">IC</div><div class="person-text"><div class="role">Vice Curator</div><div class="name">Ian Chang</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">SK</div><div class="person-text"><div class="role">Impact Officer</div><div class="name">Seong Kim</div></div></div>
         <div class="roster-split">Hub Members</div>
-        <div class="person"><div class="role">Hub Member</div><div class="name">Sarah Yeager</div><div class="note">Founding Curator</div></div>
-        <div class="person"><div class="role">Hub Member</div><div class="name">Michael Coutinho</div><div class="note">Former Curator</div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">AC</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Andrew Coutinho</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">IC</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Ian Chang</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">SK</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Seong Kim</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">SY</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Sarah Yeager</div><div class="note">Founding Curator</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">MC</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Michael Coutinho</div><div class="note">Former Curator</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">TL</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Tehya Lim</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">AY</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Angie Yang</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">JK</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Julia Kline</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">PG</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Patrick Gormley</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">RS</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Ramiya Shelton</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">GD</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Gisele DeWitt</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">RS</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Raya Sweigart</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">MA</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Mustafa Abdalla</div></div></div>
+        <div class="person has-photo"><div class="avatar" aria-hidden="true">EB</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Egshiglen Batjargal</div></div></div>
       </div>
     </div>
   </section>
@@ -449,12 +494,31 @@
   <footer>
     <div class="foot-inner">
       <div class="wordmark">
-        <img class="mark" src="assets/gs-pittsburgh-mark.png" alt="Global Shapers Pittsburgh logo">
-        <span class="lockup">GLOBAL SHAPERS <span class="dot"></span> PITTSBURGH</span>
+        <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
       </div>
       <div class="foot-note">An initiative of the World Economic Forum</div>
     </div>
   </footer>
+
+  <script>
+    // Mobile navigation toggle
+    (function () {
+      var toggle = document.querySelector('.nav-toggle');
+      var links = document.getElementById('nav-links');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function () {
+        var open = links.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      // Close the menu after tapping a link
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          links.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
