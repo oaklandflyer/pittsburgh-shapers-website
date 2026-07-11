@@ -1,0 +1,10 @@
+Drop your photos into THIS folder, then run  optimize-photos.py.
+
+  • Any format works: JPG, PNG, iPhone HEIC, WEBP, TIFF.
+  • They'll be shrunk, compressed, and published to the website's
+    "THE HUB IN ACTION" gallery automatically.
+  • To control order, prefix names with numbers:  01_river.jpg, 02_team.jpg
+  • The caption on the site comes from the file name, so name them nicely:
+    "shred-the-debt-launch.jpg"  ->  "Shred The Debt Launch"
+
+You can delete this text file — it's just a reminder.

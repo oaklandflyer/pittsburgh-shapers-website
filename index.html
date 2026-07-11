@@ -3,829 +3,458 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pittsburgh Global Shapers Hub</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+<title>Global Shapers Pittsburgh Hub</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/gs-pittsburgh-mark.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #0a0a0a;
-    --yellow: #FFD600;
-    --blue: #1A4FFF;
-    --white: #F5F5F0;
-    --gray: #1c1c1c;
-    --mid: #2e2e2e;
+    /* Light canvas — WEF-clean, Pittsburgh-warm */
+    --paper:  #FAFAF6;   /* page background */
+    --surface:#FFFFFF;   /* cards */
+    --raise:  #F3F2EC;   /* tinted panel */
+    --ink:    #16181D;   /* headlines / primary text */
+    --slate:  #5B6170;   /* secondary text */
+    --mute:   #8A8F9C;   /* tertiary / meta */
+    --line:   #E7E6DF;   /* hairlines */
+    --line-2: #DEDDD3;
+
+    --blue:   #1A4FFF;   /* Global Shapers electric blue — primary action */
+    --navy:   #0B1F5B;   /* deep WEF navy */
+    --blue-tint:#EEF2FF; /* pale blue wash */
+    --gold:   #FFCB05;   /* Pittsburgh gold — highlight */
+    --gold-deep:#B8860B; /* gold text-on-light */
+
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'Space Mono', monospace;
+
+    --shadow-sm: 0 1px 2px rgba(11,31,91,0.04), 0 1px 3px rgba(11,31,91,0.06);
+    --shadow-md: 0 12px 32px rgba(11,31,91,0.10);
+    --ease: cubic-bezier(0.4,0,0.2,1);
+    --container: 1180px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-
   body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
   }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--navy); }
 
-  /* NAV */
+  .wrap { max-width: var(--container); margin: 0 auto; padding: 0 40px; }
+
+  /* ---------- NAV ---------- */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 18px 48px;
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,214,0,0.12);
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,250,246,0.85);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
   }
-
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.12em;
-    color: var(--yellow);
+  .nav-inner {
+    max-width: var(--container); margin: 0 auto; padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
   }
-
-  .nav-logo span { color: var(--white); }
-
-  .nav-links {
-    display: flex;
-    gap: 8px;
+  .wordmark { display: flex; align-items: center; gap: 13px; color: var(--ink); text-decoration: none; }
+  .wordmark:hover { color: var(--ink); }
+  .wordmark .mark { transition: transform 0.25s var(--ease); }
+  .wordmark:hover .mark { transform: rotate(-8deg); }
+  .wordmark .mark { height: 34px; width: auto; display: block; flex-shrink: 0; }
+  .wordmark .lockup {
+    font-family: var(--font-display); font-size: 1.45rem; letter-spacing: 0.09em;
+    line-height: 1; display: flex; align-items: baseline; gap: 8px;
   }
-
-  .nav-btn {
-    font-family: 'Space Mono', monospace;
-    font-size: 1rem;
-    letter-spacing: 0.1rem;
-    text-transform: uppercase;
-    padding: .75rem 3rem;
-    margin: .25rem 1.5rem;
-    border: 1px solid rgba(255,255,255,0.3);
-    background: rgba(0,0,0,0.2);
-    color: var(--white);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-block;
+  .wordmark .dot { width: 8px; height: 8px; background: var(--gold); display: inline-block; }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--slate); padding: 10px 16px;
+    border-radius: 2px; transition: color 0.2s var(--ease), background 0.2s var(--ease);
   }
-
-  .nav-btn:hover {
-    border-color: var(--yellow);
-    color: var(--yellow);
-    background: rgba(255,214,0,0.06);
+  .nav-links a:hover { color: var(--ink); background: var(--raise); }
+  .nav-cta {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase; font-weight: 700; color: #fff !important;
+    background: var(--blue); padding: 11px 22px; margin-left: 12px; white-space: nowrap;
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
   }
+  .nav-cta:hover { color: #fff !important; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,79,255,0.28); }
 
-  /* HERO */
-  #hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 80px 48px 80px;
-    position: relative;
-    overflow: hidden;
+  /* ---------- HERO ---------- */
+  header.hero { position: relative; overflow: hidden; }
+  .hero-grid {
+    max-width: var(--container); margin: 0 auto; padding: 96px 40px 80px;
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center;
   }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(26,79,255,0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,214,0,0.10) 0%, transparent 60%);
-    pointer-events: none;
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 24px;
   }
-
-  .hero-tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.2s forwards;
+  .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--gold); }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(3.5rem, 6.5vw, 6rem); line-height: 0.92; letter-spacing: 0.02em;
+    color: var(--ink); margin-bottom: 24px;
   }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(4rem, 6rem, 8rem);
-    line-height: 0.92;
-    letter-spacing: 0.04em;
-    margin-top: 1.75rem;
-    margin-bottom: 1.75rem;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.35s forwards;
+  .hero h1 .blue { color: var(--blue); }
+  .hero p.lead {
+    font-size: 1.2rem; line-height: 1.65; color: var(--slate);
+    max-width: 34ch; margin-bottom: 36px; font-weight: 400;
   }
-
-  .hero-title .accent { color: var(--yellow); }
-  .hero-title .blue-accent { color: var(--blue); }
-
-  .hero-sub {
-    max-width: 90%;
-    font-size: 1.4rem;
-    line-height: 1.7;
-    color: rgba(245,245,240,0.65);
-    margin-bottom: 2rem;
-    font-weight: 300;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.5s forwards;
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 700; padding: 15px 30px;
+    cursor: pointer; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+    display: inline-block; border: none;
   }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.65s forwards;
-  }
-
   .btn-primary {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 16px 32px;
-    background: var(--blue);
-    color: var(--white);
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.2s;
+    background: var(--blue); color: #fff;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   }
+  .btn-primary:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(26,79,255,0.28); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line-2); }
+  .btn-ghost:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
 
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255,214,0,0.25);
-  }
-
-  .btn-outline {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 15px 32px;
-    background: transparent;
-    color: var(--white);
-    border: 1.5px solid rgba(255,255,255,0.3);
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.2s;
-  }
-
-  .btn-outline:hover {
-    border-color: var(--blue);
-    color: #6b9fff;
-    transform: translateY(-2px);
-  }
-
-  .hero-line {
-    position: absolute;
-    bottom: 0; left: 48px;
-    width: 1px;
-    height: 80px;
-    background: linear-gradient(to bottom, transparent, var(--yellow));
-    animation: fadeUp 1s 1s forwards;
-    opacity: 0;
-  }
-
-  /* SECTIONS */
-  section {
-    padding: 100px 48px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-wrapper {
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--yellow);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .section-label::before {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 1px;
-    background: var(--yellow);
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    line-height: 1;
-    letter-spacing: 0.04em;
-    margin-bottom: 48px;
-  }
-
-  /* OVERVIEW */
-  .overview-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-  }
-
-  .overview-card {
-    background: var(--gray);
-    padding: 40px;
-    position: relative;
+  /* Hero visual — bridge card */
+  .hero-visual {
+    position: relative; background: var(--navy);
+    aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center;
     overflow: hidden;
-    transition: background 0.3s;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
   }
-
-  .overview-card:hover { background: var(--mid); }
-
-  .overview-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 100%;
-    background: var(--yellow);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.3s;
+  .hero-visual::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(26,79,255,0.45) 0%, transparent 70%);
   }
-
-  .overview-card:hover::before { transform: scaleY(1); }
-
-  .card-icon {
-    font-size: 1.8rem;
-    margin-bottom: 16px;
+  .hero-visual img { position: relative; width: 82%; opacity: 0.96; }
+  .hero-visual .tagline {
+    position: absolute; left: 28px; bottom: 26px;
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255,255,255,0.7);
   }
+  .hero-visual .tagline b { color: var(--gold); font-weight: 700; }
 
-  .card-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 0.06em;
-    color: var(--white);
-    margin-bottom: 12px;
+  /* ---------- SECTION SHELL ---------- */
+  section { padding: 92px 0; border-top: 1px solid var(--line); }
+  .sec-head { margin-bottom: 52px; max-width: 720px; }
+  .sec-label {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-deep); display: flex; align-items: center; gap: 12px;
+    margin-bottom: 18px;
   }
-
-  .card-body {
-    font-size: 0.9rem;
-    color: rgba(245,245,240,0.55);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    font-weight: 300;
+  .sec-label::before { content: ''; width: 24px; height: 2px; background: var(--gold); }
+  .sec-title {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(2.4rem, 4.5vw, 3.6rem); line-height: 1; letter-spacing: 0.02em; color: var(--ink);
   }
+  .sec-intro { font-size: 1.05rem; line-height: 1.65; color: var(--slate); margin-top: 16px; }
 
-  .card-link {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--yellow);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: gap 0.2s;
+  /* ---------- OVERVIEW CARDS ---------- */
+  .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); padding: 40px;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+    display: flex; flex-direction: column;
   }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+  .card .kicker {
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 16px;
+  }
+  .card h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.9rem; letter-spacing: 0.03em; margin-bottom: 12px; }
+  .card p { color: var(--slate); line-height: 1.7; font-size: 0.98rem; margin-bottom: 24px; }
+  .card .arrow {
+    margin-top: auto; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue); font-weight: 700; display: inline-flex; gap: 8px; align-items: center;
+    transition: gap 0.2s var(--ease);
+  }
+  .card .arrow:hover { gap: 14px; }
 
-  .card-link:hover { gap: 14px; }
-  .card-link::after { content: '→'; }
-
-  /* EVENTS */
+  /* ---------- EVENTS (color moment) ---------- */
   .events-block {
-    background: linear-gradient(135deg, var(--blue) 0%, #0a2bc2 100%);
-    padding: 56px;
-    position: relative;
-    overflow: hidden;
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    position: relative; overflow: hidden; background: var(--navy); color: #fff;
+    padding: 60px; margin-top: 8px;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
   }
-
-  .events-block::before {
-    content: 'EVENTS';
-    position: absolute;
-    right: -20px; top: 50%;
-    transform: translateY(-50%) rotate(90deg);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 8rem;
-    color: rgba(255,255,255,0.05);
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-    pointer-events: none;
+  .events-block::after {
+    content: 'EVENTS'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%) rotate(90deg);
+    font-family: var(--font-display); font-size: 7rem; color: rgba(255,255,255,0.06); letter-spacing: 0.1em; pointer-events: none;
   }
+  .events-block .sec-label { color: var(--gold); }
+  .event-row { display: flex; gap: 24px; align-items: flex-start; position: relative; z-index: 2; }
+  .event-row .dot { width: 12px; height: 12px; background: var(--gold); flex-shrink: 0; margin-top: 8px; }
+  .event-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 8px; }
+  .event-row p { color: rgba(255,255,255,0.72); line-height: 1.6; margin-bottom: 22px; max-width: 60ch; }
+  .btn-gold { background: var(--gold); color: var(--navy); }
+  .btn-gold:hover { background: #fff; color: var(--navy); transform: translateY(-2px); }
 
-  .events-block .section-label { color: rgba(255,255,255,0.6); }
-  .events-block .section-label::before { background: rgba(255,255,255,0.6); }
-
-  .event-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 32px;
-    margin-bottom: 32px;
+  /* ---------- PROJECTS ---------- */
+  .projects { display: grid; gap: 18px; }
+  .project {
+    display: grid; grid-template-columns: 6px 1fr; background: var(--surface);
+    border: 1px solid var(--line); transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
   }
-
-  .event-dot {
-    width: 12px;
-    height: 12px;
-    background: var(--yellow);
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: 6px;
+  .project:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  .project .spine { background: linear-gradient(to bottom, var(--gold), var(--blue)); }
+  .project .body { padding: 40px 44px; }
+  .tag {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold-deep); background: #FBF3D6; padding: 5px 11px; margin-bottom: 18px;
   }
+  .project h3 { font-family: var(--font-display); font-weight: 400; font-size: 2.4rem; letter-spacing: 0.03em; margin-bottom: 6px; }
+  .project .plink { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; display: inline-block; margin-bottom: 16px; }
+  .project p { color: var(--slate); line-height: 1.8; font-size: 0.97rem; max-width: 68ch; }
+  .metrics { display: flex; gap: 40px; margin-top: 24px; flex-wrap: wrap; }
+  .metric .num { font-family: var(--font-display); font-size: 2rem; color: var(--blue); line-height: 1; }
+  .metric .lbl { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 4px; }
 
-  .event-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
+  /* ---------- GALLERY ---------- */
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .gallery figure {
+    position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 3;
+    background: var(--raise); border: 1px solid var(--line);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
   }
-
-  .event-desc {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 16px;
-    font-weight: 300;
+  .gallery figure img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.5s var(--ease);
   }
-
-  .btn-white {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 12px 24px;
-    background: var(--white);
-    color: var(--blue);
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.2s;
+  .gallery figure:hover img { transform: scale(1.05); }
+  .gallery figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #fff; padding: 26px 16px 12px;
+    background: linear-gradient(to top, rgba(11,31,91,0.78), transparent);
+    opacity: 0; transform: translateY(6px); transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
   }
-
-  .btn-white:hover {
-    background: var(--yellow);
-    color: var(--black);
-    transform: translateY(-2px);
+  .gallery figure:hover figcaption { opacity: 1; transform: translateY(0); }
+  .gallery-empty {
+    grid-column: 1 / -1; border: 1px dashed var(--line-2); background: var(--surface);
+    padding: 56px 40px; text-align: center; color: var(--mute);
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em;
   }
+  .gallery-empty b { color: var(--slate); }
 
-  /* PROJECTS */
-  .projects-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
+  /* ---------- ROSTER ---------- */
+  .roster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .person { background: var(--surface); padding: 28px 30px; transition: background 0.2s var(--ease); }
+  .person:hover { background: var(--raise); }
+  .person .role { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 8px; }
+  .person .name { font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; letter-spacing: 0.03em; color: var(--ink); }
+  .person .note { font-size: 0.8rem; color: var(--mute); margin-top: 6px; font-style: italic; }
+  .badge-in { display: inline-block; font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--blue); color: #fff; padding: 3px 8px; margin-bottom: 10px; }
+  .roster-split { grid-column: 1 / -1; background: var(--paper); padding: 10px 30px; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
+
+  /* ---------- FOOTER ---------- */
+  footer { border-top: 1px solid var(--line); padding: 48px 0; }
+  .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .foot-inner .wordmark .lockup { font-size: 1.2rem; }
+  .foot-inner .wordmark .mark { height: 30px; }
+  .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { aspect-ratio: 16/10; max-height: 340px; }
+    .cards-2, .roster { grid-template-columns: 1fr; }
+    .roster { grid-template-columns: 1fr 1fr; }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
   }
-
-  .project-card {
-    display: flex;
-    gap: 0;
-    background: var(--gray);
-    overflow: hidden;
+  @media (max-width: 560px) {
+    .wrap, .nav-inner, .hero-grid, .foot-inner { padding-left: 22px; padding-right: 22px; }
+    .roster { grid-template-columns: 1fr; }
+    .events-block, .project .body, .card { padding: 32px 26px; }
+    /* On phones, show only the ring mark in the nav to keep the bar tidy next to Apply Now */
+    .nav-inner .wordmark .lockup { display: none; }
+    .nav-inner .wordmark .mark { height: 32px; }
+    .foot-inner { flex-direction: column; align-items: flex-start; }
   }
-
-  .project-accent {
-    width: 6px;
-    background: linear-gradient(to bottom, var(--yellow), var(--blue));
-    flex-shrink: 0;
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   }
-
-  .project-content {
-    padding: 48px;
-    flex: 1;
-  }
-
-  .project-tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--yellow);
-    background: rgba(255,214,0,0.1);
-    padding: 4px 10px;
-    display: inline-block;
-    margin-bottom: 20px;
-  }
-
-  .project-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3rem;
-    letter-spacing: 0.06em;
-    margin-bottom: 4px;
-  }
-
-  .project-link {
-    display: inline-block;
-    font-size: 1rem;
-    margin-bottom: 16px;
-    color: var(--white);
-    text-decoration: none;
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-    letter-spacing: 0.08em;
-  }
-
-  .project-link:hover {
-    text-decoration: underline;
-  }
-
-  .project-desc {
-    font-size: 0.95rem;
-    color: rgba(245,245,240,0.6);
-    line-height: 1.8;
-    font-weight: 300;
-    /* max-width: 600px; */
-  }
-
-  /* ROSTER */
-  .roster-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-
-  .roster-card {
-    background: var(--gray);
-    padding: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .roster-role {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--yellow);
-    margin-bottom: 10px;
-  }
-
-  .roster-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.05em;
-  }
-
-  .roster-note {
-    font-size: 0.75rem;
-    color: rgba(245,245,240,0.4);
-    margin-top: 6px;
-    font-style: italic;
-  }
-
-  .roster-divider {
-    grid-column: 1 / -1;
-    height: 1px;
-    background: linear-gradient(to right, var(--yellow), var(--blue), transparent);
-    margin: 8px 0;
-  }
-
-  .incoming-badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.12em;
-    background: var(--blue);
-    color: var(--white);
-    padding: 3px 8px;
-    text-transform: uppercase;
-    display: inline-block;
-    margin-bottom: 10px;
-  }
-
-  /* PHOTOS */
-  .photos-placeholder {
-    background: var(--gray);
-    border: 2px dashed rgba(255,214,0,0.2);
-    padding: 80px 48px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .photos-icon {
-    font-size: 3rem;
-    opacity: 0.3;
-  }
-
-  .photos-text {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(255,214,0,0.4);
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding: 40px 48px;
-    display: flex;
-    justify-content: right;
-    align-items: center;
-  }
-
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.3);
-  }
-
-  .footer-logo span { color: var(--yellow); opacity: 1; }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s, transform 0.7s;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    nav {
-      width: 100%;
-      padding: 8px 6px;
-    }
-    .nav-links {
-      width: 100%;
-      display: flex;
-      gap: 4px;
-    }
-    .nav-btn {
-      flex: 1;
-      margin: .25rem .8rem;
-      padding: 10px 4px;
-      text-align: center;
-      font-size: clamp(0.6rem, 2.6vw, 0.8rem);
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-    }
-    section { padding: 72px 24px; }
-    #hero { padding: 100px 24px 60px; }
-    .hero-sub { font-size: 1.1rem; }
-    .overview-grid, .roster-grid { grid-template-columns: 1fr; }
-    .events-block { padding: 36px 28px; }
-    .project-content { padding: 32px 24px; }
-    footer { flex-direction: column; gap: 12px; text-align: center; padding: 32px 24px; }
-  }
-
-  @media (max-width: 480px) {
-    nav {
-      width: 100%;
-      padding: 8px 6px;
-    }
-    .nav-links {
-      width: 100%;
-      display: flex;
-      gap: 4px;
-    }
-    .nav-btn {
-      flex: 1;
-      margin: .25rem .8rem;
-      padding: 10px 4px;
-      text-align: center;
-      font-size: clamp(0.6rem, 2.6vw, 0.8rem);
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-    }
-    .hero-title {
-      font-size: clamp(2.5rem, 13vw, 4rem);
-    }
-}
-
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-links">
-    <a href="#overview" class="nav-btn">Overview</a>
-    <a href="#events" class="nav-btn">Events</a>
-    <a href="#projects" class="nav-btn">Projects</a>
-    <a href="#roster" class="nav-btn">Roster</a>
-    <a href="#photos" class="nav-btn">Photos</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<div id="hero">
-  <div class="hero-bg"></div>
-  <!-- <div class="hero-tag">A World Economic Forum Initiative</div> -->
-  <h1 class="hero-title">
-    GLOBAL SHAPERS<br>
-    <span class="accent">PITTSBURGH HUB</span>
-  </h1>
-  <p class="hero-sub">An initiative to inspire young leaders to shape the future through community, innovation, and impact. This hub is proud to represent the City of Bridges.</p>
-  <div class="hero-actions">
-    <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" target="_blank" class="btn-primary">Apply Now</a>
-    <a href="#overview" class="btn-outline">Learn More</a>
-  </div>
-  <div class="hero-line"></div>
-</div>
-
-<!-- OVERVIEW -->
-<div class="section-wrapper" id="overview">
-  <section>
-    <div class="section-label reveal">Overview</div>
-    <h2 class="section-title reveal">WHO WE ARE</h2>
-    <div class="overview-grid">
-      <div class="overview-card reveal">
-        <div class="card-icon"></div>
-        <div class="card-title">Global Shapers </div>
-        <div class="card-body">Created by the World Economic Forum, the Global Shapers are a network of city-based hubs led by young people driven to make a difference in their communities.
-, each led by young people who are driven to make a contribution to their communities. </div>
-        <a href="https://www.globalshapers.org" target="_blank" class="card-link">Explore the Network</a>
-      </div>
-      <div class="overview-card reveal">
-        <div class="card-icon"></div>
-        <div class="card-title">Join Our Hub</div>
-        <div class="card-body">We're looking for passionate individuals ages 18-27 who are based in Pittsburgh and want to drive meaningful change here and beyond. Ready to apply?</div>
-        <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" target="_blank" class="card-link">Apply Now</a>
+  <!-- NAV -->
+  <nav id="top">
+    <div class="nav-inner">
+      <a href="#top" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
+        <img class="mark" src="assets/gs-pittsburgh-mark.png" alt="Global Shapers Pittsburgh logo">
+        <span class="lockup">GLOBAL SHAPERS <span class="dot"></span> PITTSBURGH</span>
+      </a>
+      <div class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#events">Events</a>
+        <a href="#projects">Projects</a>
+        <a href="#gallery">Photos</a>
+        <a href="#roster">Team</a>
+        <a href="#" class="nav-cta">Apply Now</a>
       </div>
     </div>
-  </section>
-</div>
+  </nav>
 
-<!-- EVENTS -->
-<div class="section-wrapper" id="events">
-  <section>
-    <div class="section-label reveal">Events</div>
-    <h2 class="section-title reveal">WHAT'S HAPPENING</h2>
-    <div class="events-block reveal">
-      <div class="section-label">Featured</div>
-      <div class="event-item">
-        <div class="event-dot"></div>
-        <div>
-          <div class="event-name">2026 Northeast Hubs Retreat</div>
-          <div class="event-desc">Pittsburgh is proud to be hosting the 2026 Northeast Hubs retreat from May 15-17th. Visit the retreat site to learn more!</div>
-          <a href="https://retreat2026.pittsburghshapers.org" target="_blank" class="btn-white">Visit Retreat Site</a>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">A World Economic Forum Initiative</span>
+        <h1>SHAPING<br>PITTSBURGH'S<br><span class="blue">FUTURE</span></h1>
+        <p class="lead">Young leaders building community, driving innovation, and making real impact — proudly representing the City of Bridges.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-primary">Apply Now</a>
+          <a href="#overview" class="btn btn-ghost">Learn More</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/bridge.png" alt="Pittsburgh bridge mark">
+        <div class="tagline">City of Bridges · <b>Bridges of Belonging</b></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Overview</div>
+        <h2 class="sec-title">WHO WE ARE</h2>
+      </div>
+      <div class="cards-2">
+        <div class="card">
+          <div class="kicker">The Network</div>
+          <h3>Global Shapers</h3>
+          <p>Created by the World Economic Forum, the Global Shapers are a network of city-based hubs led by young people driven to make a difference in their communities.</p>
+          <a href="#" class="arrow">Explore the Network →</a>
+        </div>
+        <div class="card">
+          <div class="kicker">Get Involved</div>
+          <h3>Join Our Hub</h3>
+          <p>We're looking for passionate individuals ages 18–27 based in Pittsburgh who want to drive meaningful change here and beyond. Ready to apply?</p>
+          <a href="#" class="arrow">Apply Now →</a>
         </div>
       </div>
     </div>
   </section>
-</div>
 
-<!-- PROJECTS -->
-<div class="section-wrapper" id="projects">
-  <section>
-    <div class="section-label reveal">Projects</div>
-    <h2 class="section-title reveal">OUR WORK</h2>
-    
-    <div class="projects-container">
-      <!-- InvolveMint -->
-      <div class="project-card reveal">
-        <div class="project-accent"></div>
-        <div class="project-content">
-          <div class="project-tag">Active Project</div>
-          <div class="project-name">Circular Food Economy: Table to Farm</div>
-          <a href="https://involvemint.io/" class="project-link">InvolveMint's Website →</a>
-          <div class="project-desc">
-            This initiative addresses the lack of funding for environmental programs in underserved communities by creating an alternative, community-based marketplace. In partnership with involveMINT, the project builds a circular economy where residents earn “Impact Credits” by participating in social and environmental activities (like food recycling), which they can then use to access goods and services without cash.
-            <br><br>
-            The primary focus is on engaging youth in Pittsburgh, empowering them to become leaders and changemakers while supporting a broader network of residents and local businesses.
-            Key activities include food recycling and composting efforts (such as work at the Hazelwood site) and hosting community events like “Night of the Living Compost” to increase participation.
-            <br><br>
-            In the short term, the project aims to reduce food waste, generate local credits, and grow community engagement. Long term, it seeks to establish a resilient, self-sustaining circular economy and expand climate education among youth.
-            So far, the program has diverted significant food waste (73,000 lbs), facilitated credit exchanges, and hosted successful community events with strong participation. It collaborates with involveMINT and several local schools, businesses, and organizations.</div>
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Events</div>
+        <h2 class="sec-title">WHAT'S HAPPENING</h2>
+      </div>
+      <div class="events-block">
+        <div class="sec-label">Featured</div>
+        <div class="event-row">
+          <div class="dot"></div>
+          <div>
+            <h3>2026 Northeast Hubs Retreat</h3>
+            <p>Pittsburgh is proud to host the 2026 Northeast Hubs retreat, May 15–17 — three days of connection across hubs, ideas, and differences.</p>
+            <a href="#" class="btn btn-gold">Visit Retreat Site</a>
+          </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- STD-->
-      <div class="project-card reveal">
-        <div class="project-accent"></div>
-        <div class="project-content">
-          <div class="project-tag">Active Project</div>
-          <div class="project-name">Shred the Debt</div>
-          <a href="https://unduemedicaldebt.org/campaign/globalshaperspittsburgh-69824/" class="project-link">Hub Campaign Link →</a>
-          <div class="project-desc">Pittsburgh is in the U.S. Nationwide Shred the Debt campaign alongside 25+ hubs! This cross-hub project is in collaboration with Undue Medical Debt, which allows each dollar donated to eliminate $100 worth of medical debt. This means the collective goal of fundraising $100,000 by September 23rd would elimimate $10M+ in medical debt. 
-            <br>
-            Our hub's goal is $10,000, which would eliminate $100,000 worth of medical debt. Make sure to donate using the link above!</div>
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Projects</div>
+        <h2 class="sec-title">OUR WORK</h2>
+        <p class="sec-intro">Community-driven initiatives with measurable local impact.</p>
+      </div>
+      <div class="projects">
+        <div class="project">
+          <div class="spine"></div>
+          <div class="body">
+            <span class="tag">Active Project</span>
+            <h3>Table to Farm</h3>
+            <a href="#" class="plink">InvolveMint's Website →</a>
+            <p>In partnership with involveMINT, we're building a community-based circular economy where residents earn "Impact Credits" through social and environmental activities — engaging Pittsburgh youth as climate changemakers.</p>
+            <div class="metrics">
+              <div class="metric"><div class="num">73,000</div><div class="lbl">lbs food waste diverted</div></div>
+              <div class="metric"><div class="num">10+</div><div class="lbl">partner organizations</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="project">
+          <div class="spine"></div>
+          <div class="body">
+            <span class="tag">Active Project</span>
+            <h3>Shred the Debt</h3>
+            <a href="#" class="plink">Hub Campaign Link →</a>
+            <p>Pittsburgh joins 25+ hubs in the U.S. Shred the Debt campaign with Undue Medical Debt — every dollar donated erases $100 of medical debt.</p>
+            <div class="metrics">
+              <div class="metric"><div class="num">$10K</div><div class="lbl">hub fundraising goal</div></div>
+              <div class="metric"><div class="num">$100K</div><div class="lbl">debt to be erased</div></div>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </section>
-</div>
 
-<!-- ROSTER -->
-<div class="section-wrapper" id="roster">
-  <section>
-    <div class="section-label reveal">Hub Member Roster</div>
-    <h2 class="section-title reveal">THE TEAM</h2>
-    <div class="roster-grid">
-      <div class="roster-card reveal">
-        <div class="roster-role">Curator</div>
-        <div class="roster-name">Steven Guo</div>
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Gallery</div>
+        <h2 class="sec-title">THE HUB IN ACTION</h2>
+        <p class="sec-intro">Moments from our projects, gatherings, and the city we call home.</p>
       </div>
-      <div class="roster-card reveal">
-        <div class="roster-role">Vice Curator</div>
-        <div class="roster-name">Andrew Coutinho</div>
-      </div>
-      <div class="roster-card reveal">
-        <div class="roster-role">Impact Officer</div>
-        <div class="roster-name">Heena Baharte</div>
-      </div>
-
-      <div class="roster-divider"></div>
-
-      <div class="roster-card reveal">
-        <div class="incoming-badge">Incoming</div>
-        <div class="roster-role">Curator</div>
-        <div class="roster-name">Andrew Coutinho</div>
-      </div>
-      <div class="roster-card reveal">
-        <div class="incoming-badge">Incoming</div>
-        <div class="roster-role">Vice Curator</div>
-        <div class="roster-name">Ian Chang</div>
-      </div>
-      <div class="roster-card reveal">
-        <div class="incoming-badge">Incoming</div>
-        <div class="roster-role">Impact Officer</div>
-        <div class="roster-name">Seong Kim</div>
-      </div>
-
-      <div class="roster-divider"></div>
-
-      <div class="roster-card reveal">
-        <div class="roster-role">Hub Member</div>
-        <div class="roster-name">Sarah Yeager</div>
-        <div class="roster-note">Founding Curator and Hub Member</div>
-      </div>
-      <div class="roster-card reveal">
-        <div class="roster-role">Hub Member</div>
-        <div class="roster-name">Michael Coutinho</div>
-        <div class="roster-note">Former Curator</div>
+      <div class="gallery">
+        <!-- PHOTOS:START -->
+        <div class="gallery-empty">
+          No photos yet — drop images into <b>photos-incoming/</b> and run <b>optimize-photos.py</b> to publish them here.
+        </div>
+        <!-- PHOTOS:END -->
       </div>
     </div>
   </section>
-</div>
 
-<!-- PHOTOS -->
-<div class="section-wrapper" id="photos">
-  <section>
-    <div class="section-label reveal">Photos</div>
-    <h2 class="section-title reveal">GALLERY</h2>
-    <div class="photos-placeholder reveal">
-      <div class="photos-icon">📸</div>
-      <div class="photos-text">Photos Coming Soon</div>
+  <!-- ROSTER -->
+  <section id="roster">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Hub Member Roster</div>
+        <h2 class="sec-title">THE TEAM</h2>
+      </div>
+      <div class="roster">
+        <div class="person"><div class="role">Curator</div><div class="name">Steven Guo</div></div>
+        <div class="person"><div class="role">Vice Curator</div><div class="name">Andrew Coutinho</div></div>
+        <div class="person"><div class="role">Impact Officer</div><div class="name">Heena Baharte</div></div>
+        <div class="roster-split">Incoming Leadership</div>
+        <div class="person"><span class="badge-in">Incoming</span><div class="role">Curator</div><div class="name">Andrew Coutinho</div></div>
+        <div class="person"><span class="badge-in">Incoming</span><div class="role">Vice Curator</div><div class="name">Ian Chang</div></div>
+        <div class="person"><span class="badge-in">Incoming</span><div class="role">Impact Officer</div><div class="name">Seong Kim</div></div>
+        <div class="roster-split">Hub Members</div>
+        <div class="person"><div class="role">Hub Member</div><div class="name">Sarah Yeager</div><div class="note">Founding Curator</div></div>
+        <div class="person"><div class="role">Hub Member</div><div class="name">Michael Coutinho</div><div class="note">Former Curator</div></div>
+      </div>
     </div>
   </section>
-</div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">GLOBAL SHAPERS <span>PITTSBURGH</span></div>
-</footer>
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-inner">
+      <div class="wordmark">
+        <img class="mark" src="assets/gs-pittsburgh-mark.png" alt="Global Shapers Pittsburgh logo">
+        <span class="lockup">GLOBAL SHAPERS <span class="dot"></span> PITTSBURGH</span>
+      </div>
+      <div class="foot-note">An initiative of the World Economic Forum</div>
+    </div>
+  </footer>
 
-<script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Nav active state
-  const sections = document.querySelectorAll('[id]');
-  const navBtns = document.querySelectorAll('.nav-btn');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 80) current = s.id;
-    });
-    navBtns.forEach(btn => {
-      btn.style.borderColor = btn.getAttribute('href') === '#' + current
-        ? 'rgba(255,214,0,0.6)' : 'rgba(255,255,255,0.15)';
-      btn.style.color = btn.getAttribute('href') === '#' + current
-        ? '#FFD600' : '';
-    });
-  });
-</script>
 </body>
 </html>
