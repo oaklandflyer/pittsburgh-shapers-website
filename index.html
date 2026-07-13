@@ -132,7 +132,7 @@
   .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line-2); }
   .btn-ghost:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
 
-  /* Hero visual — bridge card */
+  /* Hero visual — global network stats card */
   .hero-visual {
     position: relative; background: var(--navy);
     aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center;
@@ -144,6 +144,17 @@
     background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(26,79,255,0.45) 0%, transparent 70%);
   }
   .hero-visual img { position: relative; width: 82%; opacity: 0.96; }
+  .hero-stats {
+    position: relative; z-index: 2; width: 100%; padding: 44px 40px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .hero-stats-label {
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+  }
+  .hero-stat { display: flex; flex-direction: column; gap: 4px; }
+  .hero-stat .hs-num { font-family: var(--font-display); font-weight: 400; font-size: 3rem; line-height: 0.9; letter-spacing: 0.02em; color: #fff; }
+  .hero-stat .hs-lbl { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.62); }
   .hero-visual .tagline {
     position: absolute; left: 28px; bottom: 26px;
     font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em;
@@ -186,6 +197,18 @@
     transition: gap 0.2s var(--ease);
   }
   .card .arrow:hover { gap: 14px; }
+
+  /* ---------- IMPACT STRIP ---------- */
+  .impact-strip { margin-top: 20px; border: 1px solid var(--line); background: var(--surface); padding: 34px 40px; }
+  .impact-strip-label {
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-deep); display: flex; align-items: center; gap: 12px; margin-bottom: 26px;
+  }
+  .impact-strip-label::before { content: ''; width: 24px; height: 2px; background: var(--gold); }
+  .impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .impact-stat .is-num { font-family: var(--font-display); font-weight: 400; font-size: 2.6rem; line-height: 1; letter-spacing: 0.02em; color: var(--blue); }
+  .impact-stat .is-lbl { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 6px; }
+  @media (max-width: 700px) { .impact-grid { grid-template-columns: 1fr 1fr; gap: 28px 24px; } }
 
   /* ---------- EVENTS (color moment) ---------- */
   .events-block {
@@ -351,8 +374,13 @@
         </div>
       </div>
       <div class="hero-visual">
-        <img src="assets/bridge.png" alt="Pittsburgh bridge mark">
-        <div class="tagline">City of Bridges · <b>Bridges of Belonging</b></div>
+        <div class="hero-stats">
+          <div class="hero-stats-label">The Global Network</div>
+          <div class="hero-stat"><span class="hs-num">10,000+</span><span class="hs-lbl">Shapers worldwide</span></div>
+          <div class="hero-stat"><span class="hs-num">500+</span><span class="hs-lbl">City hubs</span></div>
+          <div class="hero-stat"><span class="hs-num">150+</span><span class="hs-lbl">Countries &amp; territories</span></div>
+        </div>
+        <div class="tagline">One of <b>500+ hubs</b> shaping change</div>
       </div>
     </div>
   </header>
@@ -368,14 +396,23 @@
         <div class="card">
           <div class="kicker">The Network</div>
           <h3>Global Shapers</h3>
-          <p>Created by the World Economic Forum, the Global Shapers are a network of city-based hubs led by young people driven to make a difference in their communities.</p>
-          <a href="#" class="arrow">Explore the Network →</a>
+          <p>Born out of the World Economic Forum, the Global Shapers Community is a network of young people under 30 who believe in a world where youth are at the heart of solution-building, policy-making, and lasting change. In 2024–25, Shapers delivered 800+ projects reaching 2.2 million people.</p>
+          <a href="https://www.globalshapers.org/" class="arrow" target="_blank" rel="noopener">Explore the Network →</a>
         </div>
         <div class="card">
           <div class="kicker">Get Involved</div>
           <h3>Join Our Hub</h3>
           <p>We're looking for passionate individuals ages 18–27 based in Pittsburgh who want to drive meaningful change here and beyond. Ready to apply?</p>
           <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="arrow" target="_blank" rel="noopener">Apply Now →</a>
+        </div>
+      </div>
+      <div class="impact-strip">
+        <div class="impact-strip-label">Global Community Impact · 2024–25</div>
+        <div class="impact-grid">
+          <div class="impact-stat"><div class="is-num">800+</div><div class="is-lbl">Projects delivered</div></div>
+          <div class="impact-stat"><div class="is-num">2.2M</div><div class="is-lbl">People reached</div></div>
+          <div class="impact-stat"><div class="is-num">10,000+</div><div class="is-lbl">Shapers worldwide</div></div>
+          <div class="impact-stat"><div class="is-num">150+</div><div class="is-lbl">Countries &amp; territories</div></div>
         </div>
       </div>
     </div>
