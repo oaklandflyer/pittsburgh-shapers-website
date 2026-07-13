@@ -1,5 +1,12 @@
 # Pittsburgh Shapers — Website Update Notes
 
+> **Easiest way to add photos:** open **`/admin/photos.html`** in your browser, drop
+> photos into a section (Events · Projects · Team · Pittsburgh), and click **Publish** —
+> they go straight to the live site, no code or command line. Connect once with a GitHub
+> access token (the page walks you through it). The Python tool below still works but is
+> optional.
+
+
 Two things changed in this bundle:
 
 1. **The official Global Shapers Pittsburgh logo is now on the site** (nav bar + footer, plus the browser tab icon).
