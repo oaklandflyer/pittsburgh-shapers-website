@@ -274,6 +274,13 @@
     font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em;
   }
   .gallery-empty b { color: var(--slate); }
+  .gallery-cat + .gallery-cat { margin-top: 44px; }
+  .gallery-cat-label {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold-deep); display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  }
+  .gallery-cat-label::before { content: ''; width: 22px; height: 2px; background: var(--gold); }
+  .gallery-cat-label .count { color: var(--mute); }
 
   /* ---------- ROSTER ---------- */
   .roster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
@@ -486,12 +493,13 @@
         <h2 class="sec-title">THE HUB IN ACTION</h2>
         <p class="sec-intro">Moments from our projects, gatherings, and the city we call home.</p>
       </div>
-      <div class="gallery">
-        <!-- PHOTOS:START -->
-        <div class="gallery-empty">
-          No photos yet — drop images into <b>photos-incoming/</b> and run <b>optimize-photos.py</b> to publish them here.
+      <!-- Rendered from assets/photos/manifest.json — manage photos at /admin/photos.html -->
+      <div id="gallery-root">
+        <div class="gallery">
+          <div class="gallery-empty">
+            No photos yet — add them in the <b><a href="admin/photos.html">Photo Manager</a></b>.
+          </div>
         </div>
-        <!-- PHOTOS:END -->
       </div>
     </div>
   </section>
@@ -554,6 +562,53 @@
           toggle.setAttribute('aria-expanded', 'false');
         });
       });
+    })();
+
+    // Gallery — rendered from assets/photos/manifest.json, grouped by category.
+    // Manage photos with the Photo Manager at /admin/photos.html.
+    (function () {
+      var root = document.getElementById('gallery-root');
+      if (!root) return;
+      var CATS = [
+        { key: 'events',     label: 'Events' },
+        { key: 'projects',   label: 'Projects' },
+        { key: 'team',       label: 'Team' },
+        { key: 'pittsburgh', label: 'Pittsburgh' }
+      ];
+      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      function figure(p) {
+        var cap = esc(p.caption || '');
+        return '<figure>' +
+          '<picture>' +
+          '<source type="image/webp" srcset="assets/photos/' + esc(p.file) + '.webp">' +
+          '<img src="assets/photos/' + esc(p.file) + '.jpg" alt="' + cap + '" loading="lazy" decoding="async">' +
+          '</picture>' +
+          (cap ? '<figcaption>' + cap + '</figcaption>' : '') +
+          '</figure>';
+      }
+      function emptyState() {
+        root.innerHTML = '<div class="gallery"><div class="gallery-empty">' +
+          'No photos yet — add them in the <b><a href="admin/photos.html">Photo Manager</a></b>.' +
+          '</div></div>';
+      }
+      fetch('assets/photos/manifest.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .then(function (list) {
+          if (!Array.isArray(list) || !list.length) { emptyState(); return; }
+          var html = '', any = false;
+          CATS.forEach(function (c) {
+            var items = list.filter(function (p) { return (p.category || 'events') === c.key; });
+            if (!items.length) return;
+            any = true;
+            html += '<div class="gallery-cat">' +
+              '<div class="gallery-cat-label">' + esc(c.label) + ' <span class="count">· ' + items.length + '</span></div>' +
+              '<div class="gallery">' + items.map(figure).join('') + '</div>' +
+              '</div>';
+          });
+          if (!any) { emptyState(); return; }
+          root.innerHTML = html;
+        })
+        .catch(emptyState);
     })();
   </script>
 

@@ -14,46 +14,48 @@
     --blue:#1A4FFF; --navy:#0B1F5B; --blue-tint:#EEF2FF; --gold:#FFCB05; --gold-deep:#B8860B;
     --green:#0E9F6E; --red:#D64545;
     --font-display:'Bebas Neue',sans-serif; --font-body:'DM Sans',system-ui,sans-serif; --font-mono:'Space Mono',monospace;
-    --shadow-md:0 12px 32px rgba(11,31,91,0.10); --ease:cubic-bezier(0.4,0,0.2,1); --container:980px;
+    --shadow-md:0 12px 32px rgba(11,31,91,0.10); --ease:cubic-bezier(0.4,0,0.2,1); --container:1000px;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--paper); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; padding-bottom:80px; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; padding-bottom:100px; }
   a { color:var(--blue); text-decoration:none; }
   .wrap { max-width:var(--container); margin:0 auto; padding:0 32px; }
 
-  /* header */
   header.bar { border-bottom:1px solid var(--line); background:var(--surface); position:sticky; top:0; z-index:50; }
-  .bar-inner { max-width:var(--container); margin:0 auto; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .bar-inner { max-width:var(--container); margin:0 auto; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
   .bar-inner .id { display:flex; align-items:center; gap:12px; }
-  .bar-inner img { height:38px; }
+  .bar-inner img { height:36px; }
   .bar-inner .id b { font-family:var(--font-display); font-size:1.3rem; letter-spacing:0.08em; font-weight:400; }
-  .bar-inner .id .sub { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); display:block; }
-  .bar-inner a.back { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+  .bar-inner .id .sub { font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); display:block; }
+  .bar-right { display:flex; align-items:center; gap:16px; }
+  .conn { display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); }
+  .conn .dot { width:9px; height:9px; border-radius:50%; background:var(--mute); }
+  .conn.ok .dot { background:var(--green); } .conn.ok { color:var(--green); }
+  .conn.err .dot { background:var(--red); } .conn.err { color:var(--red); }
+  .bar-right a.back { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
 
-  h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.4rem,6vw,3.4rem); letter-spacing:0.02em; line-height:0.95; margin:40px 0 10px; }
-  .lead { color:var(--slate); font-size:1.05rem; line-height:1.6; max-width:62ch; margin-bottom:8px; }
-  .sec-label { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:10px; margin:44px 0 16px; }
+  h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.2rem,5.5vw,3.2rem); letter-spacing:0.02em; line-height:0.95; margin:38px 0 10px; }
+  .lead { color:var(--slate); font-size:1.02rem; line-height:1.6; max-width:64ch; }
+  .sec-label { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:10px; margin:40px 0 16px; }
   .sec-label::before { content:''; width:22px; height:2px; background:var(--gold); }
-  .step-n { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:var(--blue); color:#fff; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; border-radius:50%; }
+  .step-n { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:var(--blue); color:#fff; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; border-radius:50%; flex-shrink:0; }
 
-  /* dropzone */
-  .drop {
-    border:2px dashed var(--line-2); background:var(--surface); padding:48px 32px; text-align:center;
-    transition:border-color .2s var(--ease), background .2s var(--ease); cursor:pointer;
-    clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
-  }
-  .drop.drag { border-color:var(--blue); background:var(--blue-tint); }
-  .drop .big { font-family:var(--font-display); font-size:1.8rem; letter-spacing:0.03em; margin-bottom:6px; }
-  .drop .hint { color:var(--mute); font-size:0.9rem; }
-  .drop input { display:none; }
-
-  /* controls row */
-  .controls { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end; margin:22px 0 4px; padding:20px 24px; background:var(--raise); border:1px solid var(--line); }
+  /* connect panel */
+  .panel { background:var(--surface); border:1px solid var(--line); padding:22px 24px; }
+  .panel.warn { border-color:var(--gold); background:#FFFDF3; }
+  .connect-row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
   .field { display:flex; flex-direction:column; gap:6px; }
-  .field label { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
-  .field input[type=number] { width:110px; padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-mono); font-size:0.85rem; color:var(--ink); }
-  .field .val { font-family:var(--font-mono); font-size:0.85rem; color:var(--ink); }
-  input[type=range] { accent-color:var(--blue); }
+  .field label { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+  .field input, .field select { padding:10px 12px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-mono); font-size:0.82rem; color:var(--ink); }
+  .field input:focus, .field select:focus { outline:none; border-color:var(--blue); }
+  .field.grow { flex:1; min-width:240px; }
+  details.help { margin-top:14px; }
+  details.help summary { cursor:pointer; font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); }
+  details.help ol { margin:14px 0 4px 20px; color:var(--slate); font-size:0.92rem; line-height:1.7; }
+  details.help code { font-family:var(--font-mono); font-size:0.82rem; background:var(--raise); padding:2px 6px; color:var(--navy); }
+  .adv { margin-top:12px; display:none; gap:12px; flex-wrap:wrap; }
+  .adv.show { display:flex; }
+  .adv-toggle { background:none; border:none; cursor:pointer; font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); margin-top:12px; padding:0; }
 
   /* buttons */
   .btn { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:12px 22px; cursor:pointer; border:none; transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease); display:inline-flex; align-items:center; gap:8px; }
@@ -64,46 +66,56 @@
   .btn-gold:not(:disabled):hover { background:var(--navy); color:#fff; transform:translateY(-2px); }
   .btn-ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line-2); }
   .btn-ghost:not(:disabled):hover { border-color:var(--blue); color:var(--blue); }
-  .btn-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:18px; }
 
-  /* photo list */
-  .list { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
-  .item { display:grid; grid-template-columns:96px 1fr auto; gap:18px; align-items:center; background:var(--surface); border:1px solid var(--line); padding:14px; transition:box-shadow .2s var(--ease); }
-  .item.dragging { opacity:0.5; }
-  .item.over { box-shadow:0 0 0 2px var(--blue) inset; }
-  .item .thumb { width:96px; height:72px; object-fit:cover; background:var(--raise); border:1px solid var(--line); display:block; }
+  /* dropzones grid */
+  .zones { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .zone { border:2px dashed var(--line-2); background:var(--surface); padding:26px 20px; text-align:center; cursor:pointer; transition:border-color .2s var(--ease), background .2s var(--ease); clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px)); }
+  .zone.drag { border-color:var(--blue); background:var(--blue-tint); }
+  .zone .zt { font-family:var(--font-display); font-size:1.5rem; letter-spacing:0.04em; }
+  .zone .zh { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); margin-top:4px; }
+  .zone input { display:none; }
+
+  /* manager */
+  .cat-block { margin-top:26px; }
+  .cat-head { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .cat-head::before { content:''; width:18px; height:2px; background:var(--gold); }
+  .cat-head .c { color:var(--mute); }
+  .list { display:flex; flex-direction:column; gap:10px; }
+  .item { display:grid; grid-template-columns:84px 1fr auto; gap:16px; align-items:center; background:var(--surface); border:1px solid var(--line); padding:12px; }
+  .item.dragging { opacity:0.5; } .item.over { box-shadow:0 0 0 2px var(--blue) inset; }
+  .item .thumb { width:84px; height:64px; object-fit:cover; background:var(--raise); border:1px solid var(--line); display:block; }
   .item .meta { min-width:0; }
-  .item .fname { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.04em; color:var(--mute); margin-bottom:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .item .cap-in { width:100%; padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.95rem; color:var(--ink); }
+  .item .fname { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.04em; color:var(--mute); margin-bottom:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .item .cap-in { width:100%; padding:8px 10px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.92rem; color:var(--ink); }
   .item .cap-in:focus { outline:none; border-color:var(--blue); }
-  .item .stat { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.06em; color:var(--slate); margin-top:6px; }
+  .item .sub { display:flex; gap:10px; align-items:center; margin-top:6px; flex-wrap:wrap; }
+  .item .stat { font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.05em; color:var(--slate); }
   .item .stat .save { color:var(--green); font-weight:700; }
+  .badge { font-family:var(--font-mono); font-size:0.54rem; letter-spacing:0.1em; text-transform:uppercase; padding:3px 7px; }
+  .badge.new { background:var(--blue); color:#fff; } .badge.live { background:var(--raise); color:var(--slate); }
+  .item .cat-sel { font-family:var(--font-mono); font-size:0.62rem; padding:5px 6px; border:1px solid var(--line-2); background:var(--surface); color:var(--slate); }
   .item .actions { display:flex; align-items:center; gap:4px; }
-  .icon-btn { background:none; border:1px solid var(--line-2); width:32px; height:32px; cursor:pointer; font-size:0.9rem; color:var(--slate); display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s; }
+  .icon-btn { background:none; border:1px solid var(--line-2); width:30px; height:30px; cursor:pointer; font-size:0.85rem; color:var(--slate); display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s; }
   .icon-btn:hover { border-color:var(--blue); color:var(--blue); }
   .icon-btn.del:hover { border-color:var(--red); color:var(--red); }
   .icon-btn:disabled { opacity:0.3; cursor:not-allowed; }
-  .drag-handle { cursor:grab; color:var(--mute); font-size:1.1rem; padding:0 4px; user-select:none; }
+  .drag-handle { cursor:grab; color:var(--mute); font-size:1rem; padding:0 4px; user-select:none; }
+  .cat-empty { border:1px dashed var(--line-2); background:var(--surface); padding:18px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.7rem; }
 
-  .empty { border:1px dashed var(--line-2); background:var(--surface); padding:40px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.8rem; }
+  /* publish bar */
+  .publish { position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(11,31,91,0.06); z-index:40; }
+  .publish-inner { max-width:var(--container); margin:0 auto; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .publish .summary { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.06em; color:var(--slate); }
+  .publish .summary b { color:var(--ink); }
 
-  /* output */
-  .out { margin-top:14px; }
-  textarea.code { width:100%; min-height:220px; border:1px solid var(--line-2); background:#0d0f14; color:#cfe3ff; font-family:var(--font-mono); font-size:0.76rem; line-height:1.6; padding:18px; resize:vertical; white-space:pre; overflow:auto; }
-  .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.06em; padding:13px 22px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:200; clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); }
+  .log { margin-top:16px; border:1px solid var(--line-2); background:#0d0f14; color:#cfe3ff; font-family:var(--font-mono); font-size:0.72rem; line-height:1.7; padding:16px 18px; max-height:220px; overflow:auto; display:none; white-space:pre-wrap; }
+  .log.show { display:block; }
+  .log .ok { color:#7fe0b0; } .log .err { color:#ff9d9d; } .log .dim { color:#7d90b8; }
+
+  .toast { position:fixed; left:50%; bottom:88px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.06em; padding:13px 22px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:200; clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); }
   .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-  .steps { display:grid; gap:8px; margin-top:14px; }
-  .steps li { list-style:none; display:flex; gap:12px; align-items:flex-start; color:var(--slate); font-size:0.95rem; line-height:1.5; }
-  .steps li b { color:var(--ink); }
-  code.inline { font-family:var(--font-mono); font-size:0.82rem; background:var(--raise); padding:2px 7px; color:var(--navy); }
-
-  .note { font-size:0.86rem; color:var(--mute); margin-top:10px; line-height:1.55; }
-  @media (max-width:640px) {
-    .item { grid-template-columns:64px 1fr; }
-    .item .thumb { width:64px; height:52px; }
-    .item .actions { grid-column:1 / -1; justify-content:flex-end; }
-  }
+  .note { font-size:0.85rem; color:var(--mute); margin-top:10px; line-height:1.55; }
+  @media (max-width:640px) { .zones { grid-template-columns:1fr; } .item { grid-template-columns:64px 1fr; } .item .thumb { width:64px; height:52px; } .item .actions { grid-column:1 / -1; justify-content:flex-end; } }
 </style>
 </head>
 <body>
@@ -114,59 +126,65 @@
         <img src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh">
         <div><b>Photo Admin</b><span class="sub">Gallery Manager</span></div>
       </div>
-      <a class="back" href="../index.html">← View site</a>
+      <div class="bar-right">
+        <div class="conn" id="conn"><span class="dot"></span><span id="conn-text">Not connected</span></div>
+        <a class="back" href="../index.html">View site →</a>
+      </div>
     </div>
   </header>
 
   <div class="wrap">
-    <h1>THE HUB IN ACTION<br>PHOTO MANAGER</h1>
-    <p class="lead">Add photos to the website gallery — right here in your browser, no Python and no code. Drop images in, they're resized and compressed for the web, then you copy the gallery code and download the optimized files.</p>
+    <h1>PHOTO MANAGER</h1>
+    <p class="lead">Drop photos into a section below and hit <b>Publish</b> — they're optimized and added straight to the live website. No code, no copy-paste.</p>
 
-    <!-- STEP 1 -->
-    <div class="sec-label"><span class="step-n">1</span> Add your photos</div>
-    <label class="drop" id="drop">
-      <div class="big">Drop photos here</div>
-      <div class="hint">or click to choose — JPG, PNG, WEBP (iPhone HEIC may need converting first)</div>
-      <input type="file" id="file" accept="image/*" multiple>
-    </label>
-
-    <div class="controls" id="controls" hidden>
-      <div class="field">
-        <label for="maxedge">Longest edge (px)</label>
-        <input type="number" id="maxedge" value="1600" min="400" max="4000" step="100">
+    <!-- STEP 1: CONNECT -->
+    <div class="sec-label"><span class="step-n">1</span> Connect to the website</div>
+    <div class="panel" id="connect-panel">
+      <div class="connect-row">
+        <div class="field grow">
+          <label for="token">GitHub access token</label>
+          <input type="password" id="token" placeholder="github_pat_… (stored only in this browser)" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btn btn-primary" id="connect">Connect</button>
+        <button class="btn btn-ghost" id="forget" hidden>Forget token</button>
       </div>
-      <div class="field">
-        <label for="qual">JPEG quality · <span class="val" id="qualv">82</span></label>
-        <input type="range" id="qual" min="50" max="95" value="82">
+      <button class="adv-toggle" id="adv-toggle">▸ Repository settings</button>
+      <div class="adv" id="adv">
+        <div class="field"><label for="owner">Owner</label><input type="text" id="owner" value="oaklandflyer"></div>
+        <div class="field"><label for="repo">Repository</label><input type="text" id="repo" value="pittsburgh-shapers-website"></div>
+        <div class="field"><label for="branch">Branch</label><input type="text" id="branch" value="main"></div>
       </div>
-      <button class="btn btn-primary" id="reoptimize">Re-optimize all</button>
+      <details class="help">
+        <summary>How do I get a token? (one time, ~2 minutes)</summary>
+        <ol>
+          <li>Go to <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> (Fine-grained tokens).</li>
+          <li><b>Token name:</b> anything, e.g. "Photo Manager". <b>Expiration:</b> your choice.</li>
+          <li><b>Resource owner:</b> <code>oaklandflyer</code>.</li>
+          <li><b>Repository access:</b> choose <b>Only select repositories</b> → pick <code>pittsburgh-shapers-website</code>.</li>
+          <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → set to <b>Read and write</b>.</li>
+          <li>Click <b>Generate token</b>, copy it (starts with <code>github_pat_</code>), and paste it above. It's saved only in this browser.</li>
+        </ol>
+      </details>
     </div>
 
-    <!-- STEP 2 -->
-    <div class="sec-label"><span class="step-n">2</span> Caption &amp; order</div>
-    <div class="list" id="list">
-      <div class="empty" id="empty">No photos yet — add some above. Drag rows to reorder; the caption is filled in from the file name and you can edit it.</div>
-    </div>
+    <!-- STEP 2: ADD -->
+    <div class="sec-label"><span class="step-n">2</span> Drop photos into a section</div>
+    <div class="zones" id="zones"><!-- dropzones injected --></div>
+    <p class="note">JPG, PNG or WEBP. Photos are resized to 1600px, rotated correctly, and stripped of location data automatically. The caption comes from the file name and you can edit it below.</p>
 
-    <!-- STEP 3 -->
-    <div class="sec-label"><span class="step-n">3</span> Publish to the site</div>
-    <p class="lead" style="font-size:0.98rem;">Two things go to the site: the optimized image files, and the gallery code that references them.</p>
-    <div class="btn-row">
-      <button class="btn btn-gold" id="dlimages" disabled>⬇ Download optimized images</button>
-      <button class="btn btn-primary" id="copyhtml" disabled>⧉ Copy gallery HTML</button>
-      <button class="btn btn-ghost" id="dlhtml" disabled>⬇ Download gallery.html</button>
+    <!-- STEP 3: REVIEW -->
+    <div class="sec-label"><span class="step-n">3</span> Review &amp; caption</div>
+    <div id="manager">
+      <div class="cat-empty">No photos loaded yet. Connect to load what's already on the site, or drop new photos above.</div>
     </div>
+    <div class="log" id="log"></div>
+  </div>
 
-    <div class="out">
-      <textarea class="code" id="code" spellcheck="false" readonly placeholder="The gallery HTML will appear here once you add photos…"></textarea>
+  <div class="publish">
+    <div class="publish-inner">
+      <div class="summary" id="summary">Nothing to publish yet.</div>
+      <button class="btn btn-gold" id="publish" disabled>▲ Publish to website</button>
     </div>
-
-    <ol class="steps">
-      <li><span class="step-n">A</span><div>Click <b>Download optimized images</b> and move every downloaded <code class="inline">.jpg</code> and <code class="inline">.webp</code> into the site's <code class="inline">assets/photos/</code> folder.</div></li>
-      <li><span class="step-n">B</span><div>Open <code class="inline">index.html</code>, find the block between <code class="inline">&lt;!-- PHOTOS:START --&gt;</code> and <code class="inline">&lt;!-- PHOTOS:END --&gt;</code>, and replace everything between those two markers with the copied gallery HTML.</div></li>
-      <li><span class="step-n">C</span><div>Commit / upload the changed <code class="inline">index.html</code> and the new files in <code class="inline">assets/photos/</code>. Done — the photos are live.</div></li>
-    </ol>
-    <p class="note">This tool mirrors <code class="inline">optimize-photos.py</code> (longest edge 1600px, EXIF rotation fixed, location data stripped, JPEG + WEBP output) so results match the command-line workflow. Everything runs locally in your browser — nothing is uploaded anywhere.</p>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -175,295 +193,380 @@
 (function () {
   "use strict";
 
-  var photos = []; // { id, name, caption, blobJpg, blobWebp, thumbUrl, base, origSize, outSize }
-  var uid = 0;
+  var CATS = [
+    { key: 'events',     label: 'Events',     hint: 'gatherings, socials, retreats' },
+    { key: 'projects',   label: 'Projects',   hint: 'Table to Farm, Shred the Debt…' },
+    { key: 'team',       label: 'Team',       hint: 'the hub, members, leadership' },
+    { key: 'pittsburgh', label: 'Pittsburgh', hint: 'the city we call home' }
+  ];
+  var CAT_KEYS = CATS.map(function (c) { return c.key; });
+  var catLabel = {}; CATS.forEach(function (c) { catLabel[c.key] = c.label; });
 
-  var els = {
-    drop: document.getElementById('drop'),
-    file: document.getElementById('file'),
-    controls: document.getElementById('controls'),
-    maxedge: document.getElementById('maxedge'),
-    qual: document.getElementById('qual'),
-    qualv: document.getElementById('qualv'),
-    reoptimize: document.getElementById('reoptimize'),
-    list: document.getElementById('list'),
-    empty: document.getElementById('empty'),
-    code: document.getElementById('code'),
-    dlimages: document.getElementById('dlimages'),
-    copyhtml: document.getElementById('copyhtml'),
-    dlhtml: document.getElementById('dlhtml'),
-    toast: document.getElementById('toast')
+  var MAX_EDGE = 1600, JPG_Q = 0.82, WEBP_Q = 0.80;
+  var LS_TOKEN = 'gs_photo_token', LS_REPO = 'gs_photo_repo';
+
+  // photos: unified model. { id, base, caption, category, order,
+  //   fromRepo:bool, blobJpg, blobWebp, thumbUrl, origSize, outSize, busy, error }
+  var photos = [];
+  var removed = []; // bases of repo photos the user deleted (to remove files on publish)
+  var uid = 0;
+  var manifestSha = null; // sha of manifest.json when loaded (for update)
+  var connected = false;
+
+  var el = function (id) { return document.getElementById(id); };
+  var E = {
+    zones: el('zones'), manager: el('manager'), token: el('token'),
+    connect: el('connect'), forget: el('forget'), owner: el('owner'), repo: el('repo'), branch: el('branch'),
+    adv: el('adv'), advToggle: el('adv-toggle'), conn: el('conn'), connText: el('conn-text'),
+    publish: el('publish'), summary: el('summary'), log: el('log'), toast: el('toast')
   };
 
-  // ---- helpers mirroring optimize-photos.py ----
-  function slugify(name) {
-    name = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    return name || 'photo';
-  }
-  function stripExt(fname) { return fname.replace(/\.[^.]+$/, ''); }
+  // ---------- helpers (mirror optimize-photos.py) ----------
+  function slugify(s) { s = s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); return s || 'photo'; }
+  function stripExt(f) { return f.replace(/\.[^.]+$/, ''); }
   function captionFrom(stem) {
     var c = stem.replace(/^\s*\d+\s*[-_. ]\s*/, '').replace(/[-_]+/g, ' ').trim();
     if (!c) return 'Global Shapers Pittsburgh';
     return c.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.slice(1); });
   }
-  function humanSize(n) {
-    if (n < 1024) return n + ' B';
-    if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
-    return (n / 1048576).toFixed(2) + ' MB';
-  }
-  function uniqueBase(slug) {
-    var used = {};
-    photos.forEach(function (p) { if (p.base) used[p.base] = true; });
-    if (!used[slug]) return slug;
-    var i = 2, b;
-    do { b = slug + '-' + i; i++; } while (used[b]);
-    return b;
-  }
-  function toast(msg) {
-    els.toast.textContent = msg;
-    els.toast.classList.add('show');
-    clearTimeout(toast._t);
-    toast._t = setTimeout(function () { els.toast.classList.remove('show'); }, 2200);
-  }
+  function humanSize(n) { if (n < 1024) return n + ' B'; if (n < 1048576) return (n / 1024).toFixed(1) + ' KB'; return (n / 1048576).toFixed(2) + ' MB'; }
+  function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+  function allBases() { var m = {}; photos.forEach(function (p) { if (p.base) m[p.base] = true; }); return m; }
+  function uniqueBase(slug) { var used = allBases(); if (!used[slug]) return slug; var i = 2, b; do { b = slug + '-' + i; i++; } while (used[b]); return b; }
+  function toast(msg) { E.toast.textContent = msg; E.toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { E.toast.classList.remove('show'); }, 2400); }
 
-  // ---- core: load + optimize one file ----
+  // ---------- image optimize ----------
   function optimizeFile(file) {
-    var maxEdge = Math.max(400, parseInt(els.maxedge.value, 10) || 1600);
-    var jpgQ = Math.min(0.95, Math.max(0.5, (parseInt(els.qual.value, 10) || 82) / 100));
-    var webpQ = Math.max(0.5, jpgQ - 0.02);
-
-    // createImageBitmap respects EXIF orientation and drops metadata on re-encode
     var bmpP = ('createImageBitmap' in window)
       ? createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return loadViaImg(file); })
       : loadViaImg(file);
-
     return bmpP.then(function (bmp) {
-      var w = bmp.width, h = bmp.height;
-      var scale = Math.min(1, maxEdge / Math.max(w, h));
+      var w = bmp.width, h = bmp.height, scale = Math.min(1, MAX_EDGE / Math.max(w, h));
       var ow = Math.round(w * scale), oh = Math.round(h * scale);
-      var canvas = document.createElement('canvas');
-      canvas.width = ow; canvas.height = oh;
-      var ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, ow, oh); // flatten transparency onto white, like the py tool
-      ctx.drawImage(bmp, 0, 0, ow, oh);
+      var c = document.createElement('canvas'); c.width = ow; c.height = oh;
+      var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, ow, oh); x.drawImage(bmp, 0, 0, ow, oh);
       if (bmp.close) bmp.close();
-      return Promise.all([
-        toBlob(canvas, 'image/jpeg', jpgQ),
-        toBlob(canvas, 'image/webp', webpQ)
-      ]).then(function (blobs) {
-        return { jpg: blobs[0], webp: blobs[1], w: ow, h: oh };
-      });
+      return Promise.all([toBlob(c, 'image/jpeg', JPG_Q), toBlob(c, 'image/webp', WEBP_Q)])
+        .then(function (b) { return { jpg: b[0], webp: b[1] }; });
     });
   }
   function loadViaImg(file) {
-    return new Promise(function (resolve, reject) {
-      var url = URL.createObjectURL(file);
-      var img = new Image();
-      img.onload = function () { URL.revokeObjectURL(url); resolve(img); };
-      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('decode failed')); };
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () { URL.revokeObjectURL(url); res(img); };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('decode failed')); };
       img.src = url;
     });
   }
   function toBlob(canvas, type, q) {
-    return new Promise(function (resolve) {
+    return new Promise(function (res) {
       canvas.toBlob(function (b) {
-        // some browsers can't encode webp -> fall back to jpeg blob
-        if (!b && type === 'image/webp') { canvas.toBlob(function (b2) { resolve(b2); }, 'image/jpeg', q); }
-        else resolve(b);
+        if (!b && type === 'image/webp') canvas.toBlob(function (b2) { res(b2); }, 'image/jpeg', q);
+        else res(b);
       }, type, q);
     });
   }
 
-  // ---- add files ----
-  function addFiles(fileList) {
+  // ---------- add files ----------
+  function addFiles(fileList, category) {
     var files = Array.prototype.slice.call(fileList).filter(function (f) { return f.type.indexOf('image/') === 0; });
     if (!files.length) { toast('No images found'); return; }
-    els.controls.hidden = false;
     files.sort(function (a, b) { return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1; });
-
     var chain = Promise.resolve();
     files.forEach(function (file) {
       chain = chain.then(function () {
         var stem = stripExt(file.name);
-        var base = uniqueBase(slugify(stem));
         var rec = {
-          id: ++uid, name: file.name, caption: captionFrom(stem), base: base,
-          blobJpg: null, blobWebp: null, thumbUrl: '', origSize: file.size, outSize: 0, busy: true
+          id: ++uid, base: uniqueBase(slugify(stem)), caption: captionFrom(stem), category: category,
+          fromRepo: false, blobJpg: null, blobWebp: null, thumbUrl: '', origSize: file.size, outSize: 0, busy: true, error: false
         };
-        photos.push(rec);
-        render();
+        photos.push(rec); render();
         return optimizeFile(file).then(function (r) {
-          rec.blobJpg = r.jpg; rec.blobWebp = r.webp;
-          rec.outSize = r.jpg ? r.jpg.size : 0;
-          rec.thumbUrl = URL.createObjectURL(r.jpg);
-          rec.busy = false;
-          render();
-        }).catch(function (e) {
-          rec.busy = false; rec.error = true;
-          toast('Could not process ' + file.name);
-          render();
+          rec.blobJpg = r.jpg; rec.blobWebp = r.webp; rec.outSize = r.jpg ? r.jpg.size : 0;
+          rec.thumbUrl = URL.createObjectURL(r.jpg); rec.busy = false; render();
+        }).catch(function () { rec.busy = false; rec.error = true; toast('Could not process ' + file.name); render(); });
+      });
+    });
+  }
+
+  // ---------- render dropzones ----------
+  function buildZones() {
+    E.zones.innerHTML = '';
+    CATS.forEach(function (c) {
+      var label = document.createElement('label');
+      label.className = 'zone'; label.dataset.cat = c.key;
+      label.innerHTML = '<div class="zt">' + escapeHtml(c.label) + '</div><div class="zh">' + escapeHtml(c.hint) + '</div>' +
+        '<input type="file" accept="image/*" multiple>';
+      var input = label.querySelector('input');
+      input.addEventListener('change', function (e) { addFiles(e.target.files, c.key); input.value = ''; });
+      ['dragenter', 'dragover'].forEach(function (ev) { label.addEventListener(ev, function (e) { e.preventDefault(); label.classList.add('drag'); }); });
+      ['dragleave', 'dragend'].forEach(function (ev) { label.addEventListener(ev, function (e) { e.preventDefault(); label.classList.remove('drag'); }); });
+      label.addEventListener('drop', function (e) { e.preventDefault(); label.classList.remove('drag'); if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files, c.key); });
+      E.zones.appendChild(label);
+    });
+  }
+
+  // ---------- render manager ----------
+  function render() {
+    var totalNew = photos.filter(function (p) { return !p.fromRepo; }).length;
+    if (!photos.length && !removed.length) {
+      E.manager.innerHTML = '<div class="cat-empty">' +
+        (connected ? 'No photos yet — drop some above.' : 'No photos loaded yet. Connect to load what’s already on the site, or drop new photos above.') +
+        '</div>';
+    } else {
+      var html = '';
+      CATS.forEach(function (c) {
+        var items = photos.filter(function (p) { return p.category === c.key; });
+        html += '<div class="cat-block">' +
+          '<div class="cat-head">' + escapeHtml(c.label) + ' <span class="c">· ' + items.length + '</span></div>' +
+          '<div class="list" data-cat="' + c.key + '">' +
+          (items.length ? '' : '<div class="cat-empty">Drop ' + escapeHtml(c.label) + ' photos into the box above.</div>') +
+          '</div></div>';
+      });
+      E.manager.innerHTML = html;
+      photos.forEach(function (p) {
+        var list = E.manager.querySelector('.list[data-cat="' + p.category + '"]');
+        if (list) list.appendChild(rowFor(p));
+      });
+    }
+    updatePublish(totalNew);
+  }
+
+  function rowFor(p) {
+    var row = document.createElement('div');
+    row.className = 'item'; row.dataset.id = p.id; row.setAttribute('draggable', 'true');
+    var saved = p.origSize && p.outSize ? Math.round((1 - p.outSize / p.origSize) * 100) : 0;
+    var stat = p.busy ? 'optimizing…'
+      : p.error ? '<span style="color:var(--red)">failed</span>'
+      : p.fromRepo ? 'on the site'
+      : humanSize(p.origSize) + ' → ' + humanSize(p.outSize) + (saved > 0 ? ' <span class="save">−' + saved + '%</span>' : '');
+    var badge = p.fromRepo ? '<span class="badge live">Live</span>' : '<span class="badge new">New</span>';
+    var opts = CATS.map(function (c) { return '<option value="' + c.key + '"' + (c.key === p.category ? ' selected' : '') + '>' + escapeHtml(c.label) + '</option>'; }).join('');
+    row.innerHTML =
+      '<img class="thumb" alt="" src="' + (p.thumbUrl || ('../assets/photos/' + p.base + '.jpg')) + '">' +
+      '<div class="meta">' +
+        '<div class="fname">' + escapeHtml(p.base) + '.jpg</div>' +
+        '<input class="cap-in" type="text" value="' + escapeAttr(p.caption) + '" placeholder="Caption">' +
+        '<div class="sub">' + badge + '<span class="stat">' + stat + '</span>' +
+          '<select class="cat-sel" title="Section">' + opts + '</select>' +
+        '</div>' +
+      '</div>' +
+      '<div class="actions">' +
+        '<button class="icon-btn up" title="Move up">↑</button>' +
+        '<button class="icon-btn down" title="Move down">↓</button>' +
+        '<button class="icon-btn del" title="Remove">✕</button>' +
+        '<span class="drag-handle" title="Drag to reorder">⠿</span>' +
+      '</div>';
+    row.querySelector('.cap-in').addEventListener('input', function (e) { p.caption = e.target.value; updatePublish(); });
+    row.querySelector('.cat-sel').addEventListener('change', function (e) { p.category = e.target.value; render(); });
+    row.querySelector('.up').addEventListener('click', function () { nudge(p, -1); });
+    row.querySelector('.down').addEventListener('click', function () { nudge(p, 1); });
+    row.querySelector('.del').addEventListener('click', function () { removePhoto(p); });
+    row.addEventListener('dragstart', function (e) { row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(p.id)); });
+    row.addEventListener('dragend', function () { row.classList.remove('dragging'); });
+    row.addEventListener('dragover', function (e) { e.preventDefault(); row.classList.add('over'); });
+    row.addEventListener('dragleave', function () { row.classList.remove('over'); });
+    row.addEventListener('drop', function (e) {
+      e.preventDefault(); row.classList.remove('over');
+      var dragId = parseInt(e.dataTransfer.getData('text/plain'), 10);
+      var drag = photos.find(function (x) { return x.id === dragId; });
+      if (!drag || drag.id === p.id) return;
+      drag.category = p.category; // dropping onto a row adopts that row's category
+      var fromIdx = photos.indexOf(drag); photos.splice(fromIdx, 1);
+      var toIdx = photos.indexOf(p); photos.splice(toIdx, 0, drag);
+      render();
+    });
+    return row;
+  }
+
+  function nudge(p, dir) {
+    var same = photos.filter(function (x) { return x.category === p.category; });
+    var pos = same.indexOf(p), swap = same[pos + dir];
+    if (!swap) return;
+    var i = photos.indexOf(p), j = photos.indexOf(swap);
+    photos[i] = swap; photos[j] = p; render();
+  }
+  function removePhoto(p) {
+    if (p.fromRepo && removed.indexOf(p.base) === -1) removed.push(p.base);
+    if (p.thumbUrl) URL.revokeObjectURL(p.thumbUrl);
+    photos = photos.filter(function (x) { return x.id !== p.id; });
+    render();
+  }
+
+  function updatePublish(totalNew) {
+    if (totalNew === undefined) totalNew = photos.filter(function (p) { return !p.fromRepo; }).length;
+    var busy = photos.some(function (p) { return p.busy; });
+    var changes = totalNew + removed.length;
+    var canPublish = connected && changes > 0 && !busy && !publishing;
+    E.publish.disabled = !canPublish;
+    var parts = [];
+    if (totalNew) parts.push('<b>' + totalNew + '</b> new');
+    if (removed.length) parts.push('<b>' + removed.length + '</b> to remove');
+    if (!connected) E.summary.innerHTML = 'Connect a token to publish.';
+    else if (!changes) E.summary.innerHTML = 'Everything is up to date.';
+    else if (busy) E.summary.innerHTML = 'Optimizing photos…';
+    else E.summary.innerHTML = parts.join(' · ') + ' — ready to publish.';
+  }
+
+  // ================= GitHub API =================
+  function cfg() { return { owner: E.owner.value.trim(), repo: E.repo.value.trim(), branch: E.branch.value.trim() || 'main', token: E.token.value.trim() }; }
+  function apiUrl(path) { var c = cfg(); return 'https://api.github.com/repos/' + c.owner + '/' + c.repo + '/contents/' + path; }
+  function headers() { return { 'Authorization': 'Bearer ' + cfg().token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; }
+  function utf8ToB64(s) { return btoa(unescape(encodeURIComponent(s))); }
+  function b64ToUtf8(b) { return decodeURIComponent(escape(atob(b.replace(/\n/g, '')))); }
+  function blobToB64(blob) { return new Promise(function (res, rej) { var fr = new FileReader(); fr.onload = function () { res(String(fr.result).split(',')[1]); }; fr.onerror = rej; fr.readAsDataURL(blob); }); }
+
+  function ghGet(path) {
+    return fetch(apiUrl(path) + '?ref=' + cfg().branch, { headers: headers(), cache: 'no-store' })
+      .then(function (r) { if (r.status === 404) return null; if (!r.ok) return r.text().then(function (t) { throw new Error('GET ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); });
+  }
+  function ghPut(path, contentB64, message, sha) {
+    var body = { message: message, content: contentB64, branch: cfg().branch };
+    if (sha) body.sha = sha;
+    return fetch(apiUrl(path), { method: 'PUT', headers: headers(), body: JSON.stringify(body) })
+      .then(function (r) { if (!r.ok) return r.text().then(function (t) { throw new Error('PUT ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); });
+  }
+  function ghDelete(path, message, sha) {
+    return fetch(apiUrl(path), { method: 'DELETE', headers: headers(), body: JSON.stringify({ message: message, branch: cfg().branch, sha: sha }) })
+      .then(function (r) { if (!r.ok && r.status !== 404) return r.text().then(function (t) { throw new Error('DELETE ' + path + ' → ' + r.status + ' ' + t); }); return true; });
+  }
+
+  // ---------- connect ----------
+  function setConn(state, text) { E.conn.className = 'conn' + (state ? ' ' + state : ''); E.connText.textContent = text; }
+
+  function connect() {
+    var c = cfg();
+    if (!c.token) { toast('Paste your token first'); return; }
+    if (!c.owner || !c.repo) { toast('Set owner and repository'); return; }
+    setConn('', 'Connecting…'); E.connect.disabled = true;
+    // validate token + load manifest
+    fetch('https://api.github.com/repos/' + c.owner + '/' + c.repo, { headers: headers() })
+      .then(function (r) {
+        if (r.status === 401) throw new Error('Bad token (401). Check it was copied fully and has Contents access.');
+        if (r.status === 404) throw new Error('Repo not found or token lacks access to it (404).');
+        if (!r.ok) throw new Error('GitHub error ' + r.status);
+        return r.json();
+      })
+      .then(function () { return loadManifest(); })
+      .then(function () {
+        connected = true;
+        setConn('ok', 'Connected'); E.forget.hidden = false;
+        localStorage.setItem(LS_TOKEN, c.token);
+        localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch }));
+        toast('Connected — loaded ' + photos.filter(function (p) { return p.fromRepo; }).length + ' photo(s) from the site');
+        render();
+      })
+      .catch(function (e) { connected = false; setConn('err', 'Failed'); toast(e.message || 'Connection failed'); })
+      .then(function () { E.connect.disabled = false; });
+  }
+
+  function loadManifest() {
+    return ghGet('assets/photos/manifest.json').then(function (res) {
+      // drop any previously-loaded repo photos (keep user's new ones)
+      photos = photos.filter(function (p) { return !p.fromRepo; });
+      removed = [];
+      manifestSha = res ? res.sha : null;
+      var list = [];
+      if (res && res.content) { try { list = JSON.parse(b64ToUtf8(res.content)) || []; } catch (e) { list = []; } }
+      list.forEach(function (m) {
+        photos.unshift({
+          id: ++uid, base: m.file, caption: m.caption || '', category: CAT_KEYS.indexOf(m.category) > -1 ? m.category : 'events',
+          fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '', origSize: 0, outSize: 0, busy: false, error: false
+        });
+      });
+      // keep repo order first, grouped rendering handles the rest
+      photos.sort(function (a, b) { return (a.fromRepo === b.fromRepo) ? 0 : (a.fromRepo ? -1 : 1); });
+    });
+  }
+
+  // ---------- publish ----------
+  var publishing = false;
+  function log(msg, cls) { E.log.classList.add('show'); E.log.innerHTML += '<div' + (cls ? ' class="' + cls + '"' : '') + '>' + msg + '</div>'; E.log.scrollTop = E.log.scrollHeight; }
+
+  function publish() {
+    if (publishing) return;
+    var news = photos.filter(function (p) { return !p.fromRepo && !p.busy && p.blobJpg; });
+    if (!news.length && !removed.length) { toast('Nothing to publish'); return; }
+    publishing = true; updatePublish(); E.publish.disabled = true; E.log.innerHTML = ''; E.log.classList.add('show');
+    log('Publishing ' + news.length + ' new photo(s)' + (removed.length ? ' and removing ' + removed.length : '') + '…', 'dim');
+
+    var chain = Promise.resolve();
+    // 1) upload new images
+    news.forEach(function (p) {
+      chain = chain.then(function () {
+        log('↑ ' + p.base + '.jpg …');
+        return Promise.all([blobToB64(p.blobJpg), p.blobWebp ? blobToB64(p.blobWebp) : null]).then(function (b) {
+          return ghPut('assets/photos/' + p.base + '.jpg', b[0], 'photo: add ' + p.base + '.jpg')
+            .then(function () { if (b[1]) return ghPut('assets/photos/' + p.base + '.webp', b[1], 'photo: add ' + p.base + '.webp'); })
+            .then(function () { log('  ✓ uploaded ' + p.base, 'ok'); });
         });
       });
     });
-    chain.then(update);
-  }
-
-  // ---- re-optimize everything (settings changed) ----
-  // We can't re-read original files, so this only re-runs on the currently
-  // held blobs is not possible; instead we ask the user to re-add. Disable when nothing loaded.
-  els.reoptimize.addEventListener('click', function () {
-    toast('Tip: adjust settings BEFORE dropping photos. To re-run, remove and re-add them.');
-  });
-
-  // ---- HTML generation (mirrors build_gallery_html) ----
-  function buildGalleryHtml() {
-    if (!photos.length) return '';
-    var out = '\n';
-    photos.forEach(function (p) {
-      var cap = p.caption.replace(/"/g, '&quot;');
-      out +=
-        '        <figure>\n' +
-        '          <picture>\n' +
-        '            <source type="image/webp" srcset="assets/photos/' + p.base + '.webp">\n' +
-        '            <img src="assets/photos/' + p.base + '.jpg" alt="' + cap + '" loading="lazy" decoding="async">\n' +
-        '          </picture>\n' +
-        '          <figcaption>' + cap + '</figcaption>\n' +
-        '        </figure>\n';
-    });
-    out += '        ';
-    return out;
-  }
-
-  function update() {
-    var has = photos.length > 0 && photos.some(function (p) { return !p.busy; });
-    els.code.value = photos.length ? buildGalleryHtml() : '';
-    els.dlimages.disabled = !has;
-    els.copyhtml.disabled = !photos.length;
-    els.dlhtml.disabled = !photos.length;
-  }
-
-  // ---- render list ----
-  function render() {
-    els.empty.style.display = photos.length ? 'none' : 'block';
-    // remove existing item nodes (keep empty placeholder)
-    Array.prototype.slice.call(els.list.querySelectorAll('.item')).forEach(function (n) { n.remove(); });
-
-    photos.forEach(function (p, idx) {
-      var row = document.createElement('div');
-      row.className = 'item';
-      row.setAttribute('draggable', 'true');
-      row.dataset.id = p.id;
-
-      var saved = p.origSize && p.outSize ? Math.round((1 - p.outSize / p.origSize) * 100) : 0;
-      var statHtml = p.busy ? 'optimizing…'
-        : p.error ? '<span style="color:var(--red)">failed</span>'
-        : humanSize(p.origSize) + ' → ' + humanSize(p.outSize) +
-          (saved > 0 ? ' <span class="save">−' + saved + '%</span>' : '');
-
-      row.innerHTML =
-        '<img class="thumb" alt="" src="' + (p.thumbUrl || '') + '">' +
-        '<div class="meta">' +
-          '<div class="fname">' + escapeHtml(p.name) + '  →  ' + p.base + '.jpg / .webp</div>' +
-          '<input class="cap-in" type="text" value="' + escapeAttr(p.caption) + '" placeholder="Caption">' +
-          '<div class="stat">' + statHtml + '</div>' +
-        '</div>' +
-        '<div class="actions">' +
-          '<button class="icon-btn up" title="Move up"' + (idx === 0 ? ' disabled' : '') + '>↑</button>' +
-          '<button class="icon-btn down" title="Move down"' + (idx === photos.length - 1 ? ' disabled' : '') + '>↓</button>' +
-          '<button class="icon-btn del" title="Remove">✕</button>' +
-          '<span class="drag-handle" title="Drag to reorder">⠿</span>' +
-        '</div>';
-
-      row.querySelector('.cap-in').addEventListener('input', function (e) { p.caption = e.target.value; update(); });
-      row.querySelector('.up').addEventListener('click', function () { move(idx, idx - 1); });
-      row.querySelector('.down').addEventListener('click', function () { move(idx, idx + 1); });
-      row.querySelector('.del').addEventListener('click', function () { removeAt(idx); });
-
-      // drag reorder
-      row.addEventListener('dragstart', function (e) { row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(p.id)); });
-      row.addEventListener('dragend', function () { row.classList.remove('dragging'); Array.prototype.forEach.call(els.list.children, function (c) { c.classList && c.classList.remove('over'); }); });
-      row.addEventListener('dragover', function (e) { e.preventDefault(); row.classList.add('over'); });
-      row.addEventListener('dragleave', function () { row.classList.remove('over'); });
-      row.addEventListener('drop', function (e) {
-        e.preventDefault(); row.classList.remove('over');
-        var dragId = parseInt(e.dataTransfer.getData('text/plain'), 10);
-        var from = photos.findIndex(function (x) { return x.id === dragId; });
-        var to = photos.findIndex(function (x) { return x.id === p.id; });
-        if (from > -1 && to > -1) move(from, to);
+    // 2) delete removed images
+    removed.forEach(function (base) {
+      chain = chain.then(function () {
+        log('✕ removing ' + base + ' …');
+        return Promise.all([
+          ghGet('assets/photos/' + base + '.jpg').then(function (r) { return r ? ghDelete('assets/photos/' + base + '.jpg', 'photo: remove ' + base + '.jpg', r.sha) : null; }),
+          ghGet('assets/photos/' + base + '.webp').then(function (r) { return r ? ghDelete('assets/photos/' + base + '.webp', 'photo: remove ' + base + '.webp', r.sha) : null; })
+        ]).then(function () { log('  ✓ removed ' + base, 'ok'); });
       });
-
-      els.list.appendChild(row);
     });
-    update();
+    // 3) rewrite manifest from final state (grouped by category, current order)
+    chain = chain.then(function () {
+      log('↻ updating gallery manifest …');
+      var manifest = [];
+      CAT_KEYS.forEach(function (k) {
+        photos.filter(function (p) { return p.category === k; }).forEach(function (p) {
+          manifest.push({ file: p.base, caption: p.caption, category: p.category });
+        });
+      });
+      var json = JSON.stringify(manifest, null, 2) + '\n';
+      // refresh sha in case it changed
+      return ghGet('assets/photos/manifest.json').then(function (r) {
+        return ghPut('assets/photos/manifest.json', utf8ToB64(json), 'photo: update gallery manifest (' + manifest.length + ' photos)', r ? r.sha : null);
+      });
+    });
+
+    chain.then(function () {
+      // mark new photos as now-live
+      photos.forEach(function (p) { p.fromRepo = true; });
+      removed = [];
+      log('✓ Done. Live on the site in ~1 minute (GitHub Pages redeploy).', 'ok');
+      toast('Published! Live in ~1 min.');
+      publishing = false; render();
+    }).catch(function (e) {
+      log('✗ ' + (e.message || 'publish failed'), 'err');
+      toast('Publish failed — see the log');
+      publishing = false; updatePublish();
+    });
   }
 
-  function move(from, to) {
-    if (to < 0 || to >= photos.length) return;
-    var it = photos.splice(from, 1)[0];
-    photos.splice(to, 0, it);
-    render();
-  }
-  function removeAt(idx) {
-    var p = photos[idx];
-    if (p && p.thumbUrl) URL.revokeObjectURL(p.thumbUrl);
-    photos.splice(idx, 1);
-    render();
-  }
-  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
-
-  // ---- downloads ----
-  function downloadBlob(blob, filename) {
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url; a.download = filename;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
-  }
-  els.dlimages.addEventListener('click', function () {
-    var ready = photos.filter(function (p) { return p.blobJpg && !p.busy; });
-    if (!ready.length) return;
-    var i = 0;
-    (function next() {
-      if (i >= ready.length) { toast('Downloaded ' + (ready.length * 2) + ' files → move into assets/photos/'); return; }
-      var p = ready[i++];
-      downloadBlob(p.blobJpg, p.base + '.jpg');
-      if (p.blobWebp) setTimeout(function () { downloadBlob(p.blobWebp, p.base + '.webp'); }, 250);
-      setTimeout(next, 500); // stagger so browsers don't block the batch
-    })();
+  // ---------- wiring ----------
+  buildZones();
+  render();
+  E.advToggle.addEventListener('click', function () { E.adv.classList.toggle('show'); E.advToggle.textContent = (E.adv.classList.contains('show') ? '▾' : '▸') + ' Repository settings'; });
+  E.connect.addEventListener('click', connect);
+  E.publish.addEventListener('click', publish);
+  E.forget.addEventListener('click', function () {
+    localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; manifestSha = null;
+    photos = photos.filter(function (p) { return !p.fromRepo; }); removed = [];
+    setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render();
   });
-  els.copyhtml.addEventListener('click', function () {
-    var text = els.code.value;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { toast('Gallery HTML copied'); }, fallbackCopy);
-    } else fallbackCopy();
-    function fallbackCopy() { els.code.removeAttribute('readonly'); els.code.select(); try { document.execCommand('copy'); toast('Gallery HTML copied'); } catch (e) { toast('Select the code and copy manually'); } els.code.setAttribute('readonly', ''); }
-  });
-  els.dlhtml.addEventListener('click', function () {
-    downloadBlob(new Blob([els.code.value], { type: 'text/html' }), 'gallery.html');
-    toast('gallery.html downloaded');
-  });
-
-  // ---- input wiring ----
-  els.qual.addEventListener('input', function () { els.qualv.textContent = els.qual.value; });
-  els.file.addEventListener('change', function (e) { addFiles(e.target.files); els.file.value = ''; });
-
-  ['dragenter', 'dragover'].forEach(function (ev) {
-    els.drop.addEventListener(ev, function (e) { e.preventDefault(); els.drop.classList.add('drag'); });
-  });
-  ['dragleave', 'dragend'].forEach(function (ev) {
-    els.drop.addEventListener(ev, function (e) { e.preventDefault(); els.drop.classList.remove('drag'); });
-  });
-  els.drop.addEventListener('drop', function (e) {
-    e.preventDefault(); els.drop.classList.remove('drag');
-    if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
-  });
-  // prevent the browser from opening a dropped image if it misses the zone
+  E.token.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
   window.addEventListener('dragover', function (e) { e.preventDefault(); });
   window.addEventListener('drop', function (e) { e.preventDefault(); });
 
-  render();
+  // restore saved token/repo and auto-connect
+  (function restore() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(LS_REPO) || 'null');
+      if (saved) { E.owner.value = saved.owner || E.owner.value; E.repo.value = saved.repo || E.repo.value; E.branch.value = saved.branch || E.branch.value; }
+      var t = localStorage.getItem(LS_TOKEN);
+      if (t) { E.token.value = t; E.forget.hidden = false; connect(); }
+    } catch (e) {}
+  })();
 })();
 </script>
 </body>
