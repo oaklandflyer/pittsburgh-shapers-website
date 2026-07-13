@@ -311,6 +311,48 @@
   .foot-inner .wordmark .mark { height: 40px; }
   .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
 
+  /* ---------- HERO ROTATING BACKGROUND ---------- */
+  .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: var(--navy); }
+  .hero-bg .slide {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    opacity: 0; transition: opacity 1.6s var(--ease); will-change: opacity;
+  }
+  .hero-bg .slide.on { opacity: 1; }
+  .hero-scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      linear-gradient(to right, rgba(8,16,44,0.86) 0%, rgba(8,16,44,0.6) 45%, rgba(8,16,44,0.42) 100%),
+      linear-gradient(to top, rgba(8,16,44,0.7) 0%, transparent 55%);
+  }
+  .hero.has-photos .hero-grid { position: relative; z-index: 2; }
+  .hero.has-photos h1 { color: #fff; }
+  .hero.has-photos h1 .blue { color: var(--gold); }
+  .hero.has-photos .eyebrow { color: var(--gold); }
+  .hero.has-photos .eyebrow::before { background: var(--gold); }
+  .hero.has-photos p.lead { color: rgba(255,255,255,0.86); }
+  .hero.has-photos .btn-ghost { color: #fff; border-color: rgba(255,255,255,0.45); }
+  .hero.has-photos .btn-ghost:hover { border-color: #fff; color: var(--navy); background: #fff; }
+  .hero.has-photos .hero-visual { background: rgba(9,19,54,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.12); }
+  .hero.has-photos .hero-visual::before { opacity: 0.5; }
+
+  /* ---------- COLLAPSIBLE GALLERY ---------- */
+  button.gallery-cat-label {
+    width: 100%; background: none; border: none; cursor: pointer; text-align: left;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold-deep); display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    padding: 6px 0; transition: color 0.2s var(--ease);
+  }
+  button.gallery-cat-label::before { content: ''; width: 22px; height: 2px; background: var(--gold); flex-shrink: 0; }
+  button.gallery-cat-label:hover { color: var(--ink); }
+  button.gallery-cat-label .count { color: var(--mute); }
+  button.gallery-cat-label .chev {
+    margin-left: auto; font-family: var(--font-body); font-size: 1.1rem; color: var(--mute);
+    transition: transform 0.28s var(--ease); line-height: 1;
+  }
+  button.gallery-cat-label[aria-expanded="false"] .chev { transform: rotate(-90deg); }
+  .gallery-body { overflow: hidden; transition: height 0.35s var(--ease); }
+  .gallery-cat.collapsed .gallery-body { height: 0 !important; }
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px) {
     .hero-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -370,6 +412,8 @@
 
   <!-- HERO -->
   <header class="hero">
+    <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+    <div class="hero-scrim" id="hero-scrim" aria-hidden="true" hidden></div>
     <div class="hero-grid">
       <div>
         <span class="eyebrow">A World Economic Forum Initiative</span>
@@ -564,49 +608,122 @@
       });
     })();
 
-    // Gallery — rendered from assets/photos/manifest.json, grouped by category.
+    // Gallery + hero background — both driven by assets/photos/manifest.json.
     // Manage photos with the Photo Manager at /admin/photos.html.
     (function () {
       var root = document.getElementById('gallery-root');
-      if (!root) return;
       var CATS = [
         { key: 'events',     label: 'Events' },
         { key: 'projects',   label: 'Projects' },
         { key: 'team',       label: 'Team' },
         { key: 'pittsburgh', label: 'Pittsburgh' }
       ];
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      function url(file) { return 'assets/photos/' + file + '.jpg'; }
       function figure(p) {
         var cap = esc(p.caption || '');
         return '<figure>' +
           '<picture>' +
           '<source type="image/webp" srcset="assets/photos/' + esc(p.file) + '.webp">' +
-          '<img src="assets/photos/' + esc(p.file) + '.jpg" alt="' + cap + '" loading="lazy" decoding="async">' +
+          '<img src="' + esc(url(p.file)) + '" alt="' + cap + '" loading="lazy" decoding="async">' +
           '</picture>' +
           (cap ? '<figcaption>' + cap + '</figcaption>' : '') +
           '</figure>';
       }
       function emptyState() {
+        if (!root) return;
         root.innerHTML = '<div class="gallery"><div class="gallery-empty">' +
           'No photos yet — add them in the <b><a href="admin/photos.html">Photo Manager</a></b>.' +
           '</div></div>';
       }
+
+      // ---- collapsible gallery ----
+      function renderGallery(list) {
+        if (!root) return;
+        var html = '', any = false;
+        CATS.forEach(function (c) {
+          var items = list.filter(function (p) { return (p.category || 'events') === c.key; });
+          if (!items.length) return;
+          any = true;
+          html += '<div class="gallery-cat">' +
+            '<button class="gallery-cat-label" type="button" aria-expanded="true">' +
+              esc(c.label) + ' <span class="count">· ' + items.length + '</span>' +
+              '<span class="chev" aria-hidden="true">›</span>' +
+            '</button>' +
+            '<div class="gallery-body"><div class="gallery">' + items.map(figure).join('') + '</div></div>' +
+            '</div>';
+        });
+        if (!any) { emptyState(); return; }
+        root.innerHTML = html;
+
+        Array.prototype.forEach.call(root.querySelectorAll('.gallery-cat'), function (cat) {
+          var btn = cat.querySelector('.gallery-cat-label');
+          var body = cat.querySelector('.gallery-body');
+          body.style.height = 'auto';
+          btn.addEventListener('click', function () {
+            var collapsed = cat.classList.contains('collapsed');
+            // set an explicit start height so the transition has something to animate from
+            body.style.height = body.scrollHeight + 'px';
+            requestAnimationFrame(function () {
+              if (collapsed) { // opening
+                cat.classList.remove('collapsed'); btn.setAttribute('aria-expanded', 'true');
+                requestAnimationFrame(function () { body.style.height = body.scrollHeight + 'px'; });
+                body.addEventListener('transitionend', function te() { body.style.height = 'auto'; body.removeEventListener('transitionend', te); });
+              } else { // closing
+                requestAnimationFrame(function () { cat.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false'); body.style.height = '0px'; });
+              }
+            });
+          });
+        });
+      }
+
+      // ---- rotating hero background ----
+      function startHeroBg(list) {
+        var stage = document.getElementById('hero-bg');
+        var scrim = document.getElementById('hero-scrim');
+        var hero = document.querySelector('header.hero');
+        if (!stage || !hero || !list.length) return;
+        // Prefer wide, evocative shots: events + pittsburgh first, then the rest; cap the set.
+        var order = { pittsburgh: 0, events: 1, projects: 2, team: 3 };
+        var pics = list.slice().sort(function (a, b) { return (order[a.category] || 9) - (order[b.category] || 9); }).slice(0, 12);
+        // light shuffle within the capped set so it varies per visit
+        for (var i = pics.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pics[i]; pics[i] = pics[j]; pics[j] = t; }
+
+        hero.classList.add('has-photos');
+        if (scrim) scrim.hidden = false;
+
+        var a = document.createElement('div'); a.className = 'slide';
+        var b = document.createElement('div'); b.className = 'slide';
+        stage.appendChild(a); stage.appendChild(b);
+        var layers = [a, b], cur = 0, idx = 0;
+
+        function show(el, file, cb) {
+          var img = new Image();
+          img.onload = img.onerror = function () { el.style.backgroundImage = "url('" + url(file) + "')"; if (cb) cb(); };
+          img.src = url(file);
+        }
+        show(layers[0], pics[0].file, function () { layers[0].classList.add('on'); });
+        if (reduceMotion || pics.length < 2) return;
+
+        setInterval(function () {
+          idx = (idx + 1) % pics.length;
+          var next = layers[1 - cur];
+          show(next, pics[idx].file, function () {
+            next.classList.add('on');
+            layers[cur].classList.remove('on');
+            cur = 1 - cur;
+          });
+        }, 6000);
+      }
+
       fetch('assets/photos/manifest.json', { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : []; })
         .then(function (list) {
-          if (!Array.isArray(list) || !list.length) { emptyState(); return; }
-          var html = '', any = false;
-          CATS.forEach(function (c) {
-            var items = list.filter(function (p) { return (p.category || 'events') === c.key; });
-            if (!items.length) return;
-            any = true;
-            html += '<div class="gallery-cat">' +
-              '<div class="gallery-cat-label">' + esc(c.label) + ' <span class="count">· ' + items.length + '</span></div>' +
-              '<div class="gallery">' + items.map(figure).join('') + '</div>' +
-              '</div>';
-          });
-          if (!any) { emptyState(); return; }
-          root.innerHTML = html;
+          if (!Array.isArray(list)) list = [];
+          if (!list.length) { emptyState(); return; }
+          renderGallery(list);
+          startHeroBg(list);
         })
         .catch(emptyState);
     })();
