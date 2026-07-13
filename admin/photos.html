@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Photo Admin · Global Shapers Pittsburgh</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FAFAF6; --surface:#FFFFFF; --raise:#F3F2EC; --ink:#16181D;
+    --slate:#5B6170; --mute:#8A8F9C; --line:#E7E6DF; --line-2:#DEDDD3;
+    --blue:#1A4FFF; --navy:#0B1F5B; --blue-tint:#EEF2FF; --gold:#FFCB05; --gold-deep:#B8860B;
+    --green:#0E9F6E; --red:#D64545;
+    --font-display:'Bebas Neue',sans-serif; --font-body:'DM Sans',system-ui,sans-serif; --font-mono:'Space Mono',monospace;
+    --shadow-md:0 12px 32px rgba(11,31,91,0.10); --ease:cubic-bezier(0.4,0,0.2,1); --container:980px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; padding-bottom:80px; }
+  a { color:var(--blue); text-decoration:none; }
+  .wrap { max-width:var(--container); margin:0 auto; padding:0 32px; }
+
+  /* header */
+  header.bar { border-bottom:1px solid var(--line); background:var(--surface); position:sticky; top:0; z-index:50; }
+  .bar-inner { max-width:var(--container); margin:0 auto; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .bar-inner .id { display:flex; align-items:center; gap:12px; }
+  .bar-inner img { height:38px; }
+  .bar-inner .id b { font-family:var(--font-display); font-size:1.3rem; letter-spacing:0.08em; font-weight:400; }
+  .bar-inner .id .sub { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); display:block; }
+  .bar-inner a.back { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+
+  h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.4rem,6vw,3.4rem); letter-spacing:0.02em; line-height:0.95; margin:40px 0 10px; }
+  .lead { color:var(--slate); font-size:1.05rem; line-height:1.6; max-width:62ch; margin-bottom:8px; }
+  .sec-label { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:10px; margin:44px 0 16px; }
+  .sec-label::before { content:''; width:22px; height:2px; background:var(--gold); }
+  .step-n { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:var(--blue); color:#fff; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; border-radius:50%; }
+
+  /* dropzone */
+  .drop {
+    border:2px dashed var(--line-2); background:var(--surface); padding:48px 32px; text-align:center;
+    transition:border-color .2s var(--ease), background .2s var(--ease); cursor:pointer;
+    clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  }
+  .drop.drag { border-color:var(--blue); background:var(--blue-tint); }
+  .drop .big { font-family:var(--font-display); font-size:1.8rem; letter-spacing:0.03em; margin-bottom:6px; }
+  .drop .hint { color:var(--mute); font-size:0.9rem; }
+  .drop input { display:none; }
+
+  /* controls row */
+  .controls { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end; margin:22px 0 4px; padding:20px 24px; background:var(--raise); border:1px solid var(--line); }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field label { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+  .field input[type=number] { width:110px; padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-mono); font-size:0.85rem; color:var(--ink); }
+  .field .val { font-family:var(--font-mono); font-size:0.85rem; color:var(--ink); }
+  input[type=range] { accent-color:var(--blue); }
+
+  /* buttons */
+  .btn { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:12px 22px; cursor:pointer; border:none; transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease); display:inline-flex; align-items:center; gap:8px; }
+  .btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .btn-primary { background:var(--blue); color:#fff; clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px)); }
+  .btn-primary:not(:disabled):hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(26,79,255,0.28); }
+  .btn-gold { background:var(--gold); color:var(--navy); }
+  .btn-gold:not(:disabled):hover { background:var(--navy); color:#fff; transform:translateY(-2px); }
+  .btn-ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line-2); }
+  .btn-ghost:not(:disabled):hover { border-color:var(--blue); color:var(--blue); }
+  .btn-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:18px; }
+
+  /* photo list */
+  .list { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+  .item { display:grid; grid-template-columns:96px 1fr auto; gap:18px; align-items:center; background:var(--surface); border:1px solid var(--line); padding:14px; transition:box-shadow .2s var(--ease); }
+  .item.dragging { opacity:0.5; }
+  .item.over { box-shadow:0 0 0 2px var(--blue) inset; }
+  .item .thumb { width:96px; height:72px; object-fit:cover; background:var(--raise); border:1px solid var(--line); display:block; }
+  .item .meta { min-width:0; }
+  .item .fname { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.04em; color:var(--mute); margin-bottom:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .item .cap-in { width:100%; padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.95rem; color:var(--ink); }
+  .item .cap-in:focus { outline:none; border-color:var(--blue); }
+  .item .stat { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.06em; color:var(--slate); margin-top:6px; }
+  .item .stat .save { color:var(--green); font-weight:700; }
+  .item .actions { display:flex; align-items:center; gap:4px; }
+  .icon-btn { background:none; border:1px solid var(--line-2); width:32px; height:32px; cursor:pointer; font-size:0.9rem; color:var(--slate); display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s; }
+  .icon-btn:hover { border-color:var(--blue); color:var(--blue); }
+  .icon-btn.del:hover { border-color:var(--red); color:var(--red); }
+  .icon-btn:disabled { opacity:0.3; cursor:not-allowed; }
+  .drag-handle { cursor:grab; color:var(--mute); font-size:1.1rem; padding:0 4px; user-select:none; }
+
+  .empty { border:1px dashed var(--line-2); background:var(--surface); padding:40px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.8rem; }
+
+  /* output */
+  .out { margin-top:14px; }
+  textarea.code { width:100%; min-height:220px; border:1px solid var(--line-2); background:#0d0f14; color:#cfe3ff; font-family:var(--font-mono); font-size:0.76rem; line-height:1.6; padding:18px; resize:vertical; white-space:pre; overflow:auto; }
+  .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.06em; padding:13px 22px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:200; clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .steps { display:grid; gap:8px; margin-top:14px; }
+  .steps li { list-style:none; display:flex; gap:12px; align-items:flex-start; color:var(--slate); font-size:0.95rem; line-height:1.5; }
+  .steps li b { color:var(--ink); }
+  code.inline { font-family:var(--font-mono); font-size:0.82rem; background:var(--raise); padding:2px 7px; color:var(--navy); }
+
+  .note { font-size:0.86rem; color:var(--mute); margin-top:10px; line-height:1.55; }
+  @media (max-width:640px) {
+    .item { grid-template-columns:64px 1fr; }
+    .item .thumb { width:64px; height:52px; }
+    .item .actions { grid-column:1 / -1; justify-content:flex-end; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="bar">
+    <div class="bar-inner">
+      <div class="id">
+        <img src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh">
+        <div><b>Photo Admin</b><span class="sub">Gallery Manager</span></div>
+      </div>
+      <a class="back" href="../index.html">← View site</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1>THE HUB IN ACTION<br>PHOTO MANAGER</h1>
+    <p class="lead">Add photos to the website gallery — right here in your browser, no Python and no code. Drop images in, they're resized and compressed for the web, then you copy the gallery code and download the optimized files.</p>
+
+    <!-- STEP 1 -->
+    <div class="sec-label"><span class="step-n">1</span> Add your photos</div>
+    <label class="drop" id="drop">
+      <div class="big">Drop photos here</div>
+      <div class="hint">or click to choose — JPG, PNG, WEBP (iPhone HEIC may need converting first)</div>
+      <input type="file" id="file" accept="image/*" multiple>
+    </label>
+
+    <div class="controls" id="controls" hidden>
+      <div class="field">
+        <label for="maxedge">Longest edge (px)</label>
+        <input type="number" id="maxedge" value="1600" min="400" max="4000" step="100">
+      </div>
+      <div class="field">
+        <label for="qual">JPEG quality · <span class="val" id="qualv">82</span></label>
+        <input type="range" id="qual" min="50" max="95" value="82">
+      </div>
+      <button class="btn btn-primary" id="reoptimize">Re-optimize all</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="sec-label"><span class="step-n">2</span> Caption &amp; order</div>
+    <div class="list" id="list">
+      <div class="empty" id="empty">No photos yet — add some above. Drag rows to reorder; the caption is filled in from the file name and you can edit it.</div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="sec-label"><span class="step-n">3</span> Publish to the site</div>
+    <p class="lead" style="font-size:0.98rem;">Two things go to the site: the optimized image files, and the gallery code that references them.</p>
+    <div class="btn-row">
+      <button class="btn btn-gold" id="dlimages" disabled>⬇ Download optimized images</button>
+      <button class="btn btn-primary" id="copyhtml" disabled>⧉ Copy gallery HTML</button>
+      <button class="btn btn-ghost" id="dlhtml" disabled>⬇ Download gallery.html</button>
+    </div>
+
+    <div class="out">
+      <textarea class="code" id="code" spellcheck="false" readonly placeholder="The gallery HTML will appear here once you add photos…"></textarea>
+    </div>
+
+    <ol class="steps">
+      <li><span class="step-n">A</span><div>Click <b>Download optimized images</b> and move every downloaded <code class="inline">.jpg</code> and <code class="inline">.webp</code> into the site's <code class="inline">assets/photos/</code> folder.</div></li>
+      <li><span class="step-n">B</span><div>Open <code class="inline">index.html</code>, find the block between <code class="inline">&lt;!-- PHOTOS:START --&gt;</code> and <code class="inline">&lt;!-- PHOTOS:END --&gt;</code>, and replace everything between those two markers with the copied gallery HTML.</div></li>
+      <li><span class="step-n">C</span><div>Commit / upload the changed <code class="inline">index.html</code> and the new files in <code class="inline">assets/photos/</code>. Done — the photos are live.</div></li>
+    </ol>
+    <p class="note">This tool mirrors <code class="inline">optimize-photos.py</code> (longest edge 1600px, EXIF rotation fixed, location data stripped, JPEG + WEBP output) so results match the command-line workflow. Everything runs locally in your browser — nothing is uploaded anywhere.</p>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var photos = []; // { id, name, caption, blobJpg, blobWebp, thumbUrl, base, origSize, outSize }
+  var uid = 0;
+
+  var els = {
+    drop: document.getElementById('drop'),
+    file: document.getElementById('file'),
+    controls: document.getElementById('controls'),
+    maxedge: document.getElementById('maxedge'),
+    qual: document.getElementById('qual'),
+    qualv: document.getElementById('qualv'),
+    reoptimize: document.getElementById('reoptimize'),
+    list: document.getElementById('list'),
+    empty: document.getElementById('empty'),
+    code: document.getElementById('code'),
+    dlimages: document.getElementById('dlimages'),
+    copyhtml: document.getElementById('copyhtml'),
+    dlhtml: document.getElementById('dlhtml'),
+    toast: document.getElementById('toast')
+  };
+
+  // ---- helpers mirroring optimize-photos.py ----
+  function slugify(name) {
+    name = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return name || 'photo';
+  }
+  function stripExt(fname) { return fname.replace(/\.[^.]+$/, ''); }
+  function captionFrom(stem) {
+    var c = stem.replace(/^\s*\d+\s*[-_. ]\s*/, '').replace(/[-_]+/g, ' ').trim();
+    if (!c) return 'Global Shapers Pittsburgh';
+    return c.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.slice(1); });
+  }
+  function humanSize(n) {
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+    return (n / 1048576).toFixed(2) + ' MB';
+  }
+  function uniqueBase(slug) {
+    var used = {};
+    photos.forEach(function (p) { if (p.base) used[p.base] = true; });
+    if (!used[slug]) return slug;
+    var i = 2, b;
+    do { b = slug + '-' + i; i++; } while (used[b]);
+    return b;
+  }
+  function toast(msg) {
+    els.toast.textContent = msg;
+    els.toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { els.toast.classList.remove('show'); }, 2200);
+  }
+
+  // ---- core: load + optimize one file ----
+  function optimizeFile(file) {
+    var maxEdge = Math.max(400, parseInt(els.maxedge.value, 10) || 1600);
+    var jpgQ = Math.min(0.95, Math.max(0.5, (parseInt(els.qual.value, 10) || 82) / 100));
+    var webpQ = Math.max(0.5, jpgQ - 0.02);
+
+    // createImageBitmap respects EXIF orientation and drops metadata on re-encode
+    var bmpP = ('createImageBitmap' in window)
+      ? createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return loadViaImg(file); })
+      : loadViaImg(file);
+
+    return bmpP.then(function (bmp) {
+      var w = bmp.width, h = bmp.height;
+      var scale = Math.min(1, maxEdge / Math.max(w, h));
+      var ow = Math.round(w * scale), oh = Math.round(h * scale);
+      var canvas = document.createElement('canvas');
+      canvas.width = ow; canvas.height = oh;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, ow, oh); // flatten transparency onto white, like the py tool
+      ctx.drawImage(bmp, 0, 0, ow, oh);
+      if (bmp.close) bmp.close();
+      return Promise.all([
+        toBlob(canvas, 'image/jpeg', jpgQ),
+        toBlob(canvas, 'image/webp', webpQ)
+      ]).then(function (blobs) {
+        return { jpg: blobs[0], webp: blobs[1], w: ow, h: oh };
+      });
+    });
+  }
+  function loadViaImg(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('decode failed')); };
+      img.src = url;
+    });
+  }
+  function toBlob(canvas, type, q) {
+    return new Promise(function (resolve) {
+      canvas.toBlob(function (b) {
+        // some browsers can't encode webp -> fall back to jpeg blob
+        if (!b && type === 'image/webp') { canvas.toBlob(function (b2) { resolve(b2); }, 'image/jpeg', q); }
+        else resolve(b);
+      }, type, q);
+    });
+  }
+
+  // ---- add files ----
+  function addFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList).filter(function (f) { return f.type.indexOf('image/') === 0; });
+    if (!files.length) { toast('No images found'); return; }
+    els.controls.hidden = false;
+    files.sort(function (a, b) { return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1; });
+
+    var chain = Promise.resolve();
+    files.forEach(function (file) {
+      chain = chain.then(function () {
+        var stem = stripExt(file.name);
+        var base = uniqueBase(slugify(stem));
+        var rec = {
+          id: ++uid, name: file.name, caption: captionFrom(stem), base: base,
+          blobJpg: null, blobWebp: null, thumbUrl: '', origSize: file.size, outSize: 0, busy: true
+        };
+        photos.push(rec);
+        render();
+        return optimizeFile(file).then(function (r) {
+          rec.blobJpg = r.jpg; rec.blobWebp = r.webp;
+          rec.outSize = r.jpg ? r.jpg.size : 0;
+          rec.thumbUrl = URL.createObjectURL(r.jpg);
+          rec.busy = false;
+          render();
+        }).catch(function (e) {
+          rec.busy = false; rec.error = true;
+          toast('Could not process ' + file.name);
+          render();
+        });
+      });
+    });
+    chain.then(update);
+  }
+
+  // ---- re-optimize everything (settings changed) ----
+  // We can't re-read original files, so this only re-runs on the currently
+  // held blobs is not possible; instead we ask the user to re-add. Disable when nothing loaded.
+  els.reoptimize.addEventListener('click', function () {
+    toast('Tip: adjust settings BEFORE dropping photos. To re-run, remove and re-add them.');
+  });
+
+  // ---- HTML generation (mirrors build_gallery_html) ----
+  function buildGalleryHtml() {
+    if (!photos.length) return '';
+    var out = '\n';
+    photos.forEach(function (p) {
+      var cap = p.caption.replace(/"/g, '&quot;');
+      out +=
+        '        <figure>\n' +
+        '          <picture>\n' +
+        '            <source type="image/webp" srcset="assets/photos/' + p.base + '.webp">\n' +
+        '            <img src="assets/photos/' + p.base + '.jpg" alt="' + cap + '" loading="lazy" decoding="async">\n' +
+        '          </picture>\n' +
+        '          <figcaption>' + cap + '</figcaption>\n' +
+        '        </figure>\n';
+    });
+    out += '        ';
+    return out;
+  }
+
+  function update() {
+    var has = photos.length > 0 && photos.some(function (p) { return !p.busy; });
+    els.code.value = photos.length ? buildGalleryHtml() : '';
+    els.dlimages.disabled = !has;
+    els.copyhtml.disabled = !photos.length;
+    els.dlhtml.disabled = !photos.length;
+  }
+
+  // ---- render list ----
+  function render() {
+    els.empty.style.display = photos.length ? 'none' : 'block';
+    // remove existing item nodes (keep empty placeholder)
+    Array.prototype.slice.call(els.list.querySelectorAll('.item')).forEach(function (n) { n.remove(); });
+
+    photos.forEach(function (p, idx) {
+      var row = document.createElement('div');
+      row.className = 'item';
+      row.setAttribute('draggable', 'true');
+      row.dataset.id = p.id;
+
+      var saved = p.origSize && p.outSize ? Math.round((1 - p.outSize / p.origSize) * 100) : 0;
+      var statHtml = p.busy ? 'optimizing…'
+        : p.error ? '<span style="color:var(--red)">failed</span>'
+        : humanSize(p.origSize) + ' → ' + humanSize(p.outSize) +
+          (saved > 0 ? ' <span class="save">−' + saved + '%</span>' : '');
+
+      row.innerHTML =
+        '<img class="thumb" alt="" src="' + (p.thumbUrl || '') + '">' +
+        '<div class="meta">' +
+          '<div class="fname">' + escapeHtml(p.name) + '  →  ' + p.base + '.jpg / .webp</div>' +
+          '<input class="cap-in" type="text" value="' + escapeAttr(p.caption) + '" placeholder="Caption">' +
+          '<div class="stat">' + statHtml + '</div>' +
+        '</div>' +
+        '<div class="actions">' +
+          '<button class="icon-btn up" title="Move up"' + (idx === 0 ? ' disabled' : '') + '>↑</button>' +
+          '<button class="icon-btn down" title="Move down"' + (idx === photos.length - 1 ? ' disabled' : '') + '>↓</button>' +
+          '<button class="icon-btn del" title="Remove">✕</button>' +
+          '<span class="drag-handle" title="Drag to reorder">⠿</span>' +
+        '</div>';
+
+      row.querySelector('.cap-in').addEventListener('input', function (e) { p.caption = e.target.value; update(); });
+      row.querySelector('.up').addEventListener('click', function () { move(idx, idx - 1); });
+      row.querySelector('.down').addEventListener('click', function () { move(idx, idx + 1); });
+      row.querySelector('.del').addEventListener('click', function () { removeAt(idx); });
+
+      // drag reorder
+      row.addEventListener('dragstart', function (e) { row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(p.id)); });
+      row.addEventListener('dragend', function () { row.classList.remove('dragging'); Array.prototype.forEach.call(els.list.children, function (c) { c.classList && c.classList.remove('over'); }); });
+      row.addEventListener('dragover', function (e) { e.preventDefault(); row.classList.add('over'); });
+      row.addEventListener('dragleave', function () { row.classList.remove('over'); });
+      row.addEventListener('drop', function (e) {
+        e.preventDefault(); row.classList.remove('over');
+        var dragId = parseInt(e.dataTransfer.getData('text/plain'), 10);
+        var from = photos.findIndex(function (x) { return x.id === dragId; });
+        var to = photos.findIndex(function (x) { return x.id === p.id; });
+        if (from > -1 && to > -1) move(from, to);
+      });
+
+      els.list.appendChild(row);
+    });
+    update();
+  }
+
+  function move(from, to) {
+    if (to < 0 || to >= photos.length) return;
+    var it = photos.splice(from, 1)[0];
+    photos.splice(to, 0, it);
+    render();
+  }
+  function removeAt(idx) {
+    var p = photos[idx];
+    if (p && p.thumbUrl) URL.revokeObjectURL(p.thumbUrl);
+    photos.splice(idx, 1);
+    render();
+  }
+  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+
+  // ---- downloads ----
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  els.dlimages.addEventListener('click', function () {
+    var ready = photos.filter(function (p) { return p.blobJpg && !p.busy; });
+    if (!ready.length) return;
+    var i = 0;
+    (function next() {
+      if (i >= ready.length) { toast('Downloaded ' + (ready.length * 2) + ' files → move into assets/photos/'); return; }
+      var p = ready[i++];
+      downloadBlob(p.blobJpg, p.base + '.jpg');
+      if (p.blobWebp) setTimeout(function () { downloadBlob(p.blobWebp, p.base + '.webp'); }, 250);
+      setTimeout(next, 500); // stagger so browsers don't block the batch
+    })();
+  });
+  els.copyhtml.addEventListener('click', function () {
+    var text = els.code.value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('Gallery HTML copied'); }, fallbackCopy);
+    } else fallbackCopy();
+    function fallbackCopy() { els.code.removeAttribute('readonly'); els.code.select(); try { document.execCommand('copy'); toast('Gallery HTML copied'); } catch (e) { toast('Select the code and copy manually'); } els.code.setAttribute('readonly', ''); }
+  });
+  els.dlhtml.addEventListener('click', function () {
+    downloadBlob(new Blob([els.code.value], { type: 'text/html' }), 'gallery.html');
+    toast('gallery.html downloaded');
+  });
+
+  // ---- input wiring ----
+  els.qual.addEventListener('input', function () { els.qualv.textContent = els.qual.value; });
+  els.file.addEventListener('change', function (e) { addFiles(e.target.files); els.file.value = ''; });
+
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    els.drop.addEventListener(ev, function (e) { e.preventDefault(); els.drop.classList.add('drag'); });
+  });
+  ['dragleave', 'dragend'].forEach(function (ev) {
+    els.drop.addEventListener(ev, function (e) { e.preventDefault(); els.drop.classList.remove('drag'); });
+  });
+  els.drop.addEventListener('drop', function (e) {
+    e.preventDefault(); els.drop.classList.remove('drag');
+    if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+  // prevent the browser from opening a dropped image if it misses the zone
+  window.addEventListener('dragover', function (e) { e.preventDefault(); });
+  window.addEventListener('drop', function (e) { e.preventDefault(); });
+
+  render();
+})();
+</script>
+</body>
+</html>
