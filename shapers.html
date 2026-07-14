@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- This page is for Global Shapers only. Keep it out of search indexes. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Shaper Resources · Global Shapers Pittsburgh</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/gs-pittsburgh-mark.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FAFAF6; --surface:#FFFFFF; --raise:#F3F2EC; --ink:#16181D;
+    --slate:#5B6170; --mute:#8A8F9C; --line:#E7E6DF; --line-2:#DEDDD3;
+    --blue:#1A4FFF; --navy:#0B1F5B; --blue-tint:#EEF2FF; --gold:#FFCB05; --gold-deep:#B8860B;
+    --green:#0E9F6E; --red:#D64545;
+    --font-display:'Bebas Neue',sans-serif; --font-body:'DM Sans',system-ui,sans-serif; --font-mono:'Space Mono',monospace;
+    --shadow-sm:0 1px 2px rgba(11,31,91,0.04),0 1px 3px rgba(11,31,91,0.06);
+    --shadow-md:0 12px 32px rgba(11,31,91,0.10);
+    --ease:cubic-bezier(0.4,0,0.2,1); --container:1180px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; }
+  a { color:var(--blue); text-decoration:none; }
+  .wrap { max-width:var(--container); margin:0 auto; padding:0 40px; }
+
+  /* ---------- NAV (mirrors index.html) ---------- */
+  nav { position:sticky; top:0; z-index:100; background:rgba(250,250,246,0.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
+  .nav-inner { max-width:var(--container); margin:0 auto; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; }
+  .wordmark { display:flex; align-items:center; gap:13px; color:var(--ink); text-decoration:none; }
+  .wordmark .mark { height:50px; width:auto; display:block; flex-shrink:0; transition:transform 0.25s var(--ease); }
+  .wordmark:hover .mark { transform:rotate(-8deg); }
+  .nav-links { display:flex; align-items:center; gap:4px; }
+  .nav-toggle { display:none; background:none; border:none; cursor:pointer; padding:8px; margin:-8px; }
+  .nav-toggle span { display:block; width:24px; height:2px; background:var(--ink); transition:transform 0.25s var(--ease), opacity 0.2s var(--ease); }
+  .nav-toggle span + span { margin-top:5px; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .nav-links a { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate); padding:10px 16px; border-radius:2px; transition:color 0.2s var(--ease), background 0.2s var(--ease); }
+  .nav-links a:hover, .nav-links a.active { color:var(--ink); background:var(--raise); }
+  .nav-cta { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:700; color:#fff !important; background:var(--blue); padding:11px 22px; margin-left:12px; white-space:nowrap; transition:transform 0.2s var(--ease), box-shadow 0.2s var(--ease); clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); }
+  .nav-cta:hover { color:#fff !important; transform:translateY(-2px); box-shadow:0 8px 20px rgba(26,79,255,0.28); }
+
+  /* ---------- SHARED BITS ---------- */
+  .btn { font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:15px 30px; cursor:pointer; transition:transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease); display:inline-block; border:none; }
+  .btn-primary { background:var(--blue); color:#fff; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); }
+  .btn-primary:hover { color:#fff; transform:translateY(-2px); box-shadow:0 10px 26px rgba(26,79,255,0.28); }
+  .btn-ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line-2); }
+  .btn-ghost:hover { border-color:var(--blue); color:var(--blue); }
+  .eyebrow { display:inline-flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--blue); margin-bottom:24px; }
+  .eyebrow::before { content:''; width:28px; height:2px; background:var(--gold); }
+  .sec-label { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .sec-label::before { content:''; width:24px; height:2px; background:var(--gold); }
+  .sec-title { font-family:var(--font-display); font-weight:400; font-size:clamp(2.4rem,4.5vw,3.6rem); line-height:1; letter-spacing:0.02em; color:var(--ink); }
+  .sec-intro { font-size:1.05rem; line-height:1.65; color:var(--slate); margin-top:16px; max-width:70ch; }
+  section { padding:72px 0; border-top:1px solid var(--line); }
+  .sec-head { margin-bottom:44px; max-width:760px; }
+
+  /* ---------- GATE ---------- */
+  .gate { position:fixed; inset:0; z-index:200; background:var(--navy); display:flex; align-items:center; justify-content:center; padding:32px; }
+  .gate-card { width:100%; max-width:440px; background:var(--surface); padding:44px 40px; clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px)); box-shadow:var(--shadow-md); }
+  .gate-card img.mark { height:56px; display:block; margin-bottom:22px; }
+  .gate-card h1 { font-family:var(--font-display); font-weight:400; font-size:2.4rem; letter-spacing:0.03em; line-height:1; margin-bottom:10px; }
+  .gate-card p { color:var(--slate); font-size:0.96rem; line-height:1.6; margin-bottom:22px; }
+  .gate-card label { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--slate); display:block; margin-bottom:8px; }
+  .gate-card input { width:100%; padding:13px 14px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-mono); font-size:0.95rem; letter-spacing:0.1em; color:var(--ink); }
+  .gate-card input:focus { outline:none; border-color:var(--blue); }
+  .gate-row { display:flex; gap:10px; margin-top:16px; }
+  .gate-row .btn { flex:1; text-align:center; }
+  .gate-err { color:var(--red); font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.04em; margin-top:14px; min-height:1em; }
+  .gate-note { font-size:0.78rem; color:var(--mute); margin-top:22px; line-height:1.5; }
+
+  /* ---------- HERO / INTRO ---------- */
+  .page-hero { padding:64px 0 8px; }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(3rem,6vw,5rem); line-height:0.92; letter-spacing:0.02em; margin-bottom:20px; }
+  .page-hero p.lead { font-size:1.15rem; line-height:1.6; color:var(--slate); max-width:56ch; }
+  .members-note { font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; color:var(--gold-deep); background:#FBF3D6; display:inline-block; padding:8px 14px; margin-top:22px; }
+
+  /* ---------- RESOURCES ---------- */
+  .res-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .res-card { background:var(--surface); border:1px solid var(--line); padding:26px 28px; display:flex; flex-direction:column; transition:transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s var(--ease); }
+  .res-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--line-2); }
+  .res-card .r-cat { font-family:var(--font-display); font-size:1.5rem; letter-spacing:0.03em; margin-bottom:8px; }
+  .res-card .r-desc { color:var(--slate); font-size:0.92rem; line-height:1.55; margin-bottom:16px; flex:1; }
+  .res-card .r-link { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .res-card .r-add { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); border:1px dashed var(--line-2); padding:6px 10px; align-self:flex-start; }
+
+  /* ---------- GLOBE ---------- */
+  .globe-wrap { position:relative; }
+  #globe { position:relative; width:100%; height:clamp(380px,58vh,620px); background:radial-gradient(ellipse at 50% 40%, #0f2350 0%, #081026 70%, #060b1c 100%); overflow:hidden; clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px)); cursor:grab; }
+  #globe:active { cursor:grabbing; }
+  #globe canvas { display:block; }
+  .globe-legend { position:absolute; left:18px; top:18px; z-index:5; background:rgba(6,11,28,0.66); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); padding:12px 14px; font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; color:rgba(255,255,255,0.82); line-height:1.9; pointer-events:none; }
+  .globe-legend .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:8px; vertical-align:middle; }
+  .globe-legend .dot.home { background:var(--gold); box-shadow:0 0 8px var(--gold); }
+  .globe-legend .dot.hub { background:#5b8bff; }
+  .globe-hint { position:absolute; right:18px; bottom:16px; z-index:5; font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.08em; color:rgba(255,255,255,0.5); pointer-events:none; }
+  .globe-fail { position:absolute; inset:0; display:none; align-items:center; justify-content:center; text-align:center; padding:30px; color:rgba(255,255,255,0.8); font-family:var(--font-mono); font-size:0.82rem; line-height:1.7; }
+
+  /* hub detail panel */
+  .hub-panel { position:absolute; left:18px; bottom:18px; z-index:6; width:min(340px,calc(100% - 36px)); background:var(--surface); box-shadow:var(--shadow-md); padding:20px 22px; display:none; clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); }
+  .hub-panel.show { display:block; }
+  .hub-panel .hp-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:1.1rem; color:var(--mute); cursor:pointer; line-height:1; }
+  .hub-panel .hp-kicker { font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--blue); margin-bottom:6px; }
+  .hub-panel .hp-kicker.home { color:var(--gold-deep); }
+  .hub-panel .hp-name { font-family:var(--font-display); font-size:1.7rem; letter-spacing:0.02em; line-height:1; margin-bottom:14px; padding-right:16px; }
+  .hub-panel .hp-btn { display:inline-block; width:100%; text-align:center; background:var(--blue); color:#fff; font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; font-weight:700; padding:12px 16px; clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); }
+  .hub-panel .hp-btn:hover { color:#fff; background:var(--navy); }
+  .hub-panel .hp-contact { font-size:0.9rem; color:var(--slate); line-height:1.5; background:var(--raise); padding:12px 14px; }
+  .hub-panel .hp-guide { display:inline-block; margin-top:12px; font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; }
+
+  /* ---------- HUB TEXT LIST ---------- */
+  .list-tools { display:flex; align-items:center; gap:14px; margin:26px 0 16px; flex-wrap:wrap; }
+  .list-tools input { flex:1; min-width:220px; padding:12px 14px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.95rem; color:var(--ink); }
+  .list-tools input:focus { outline:none; border-color:var(--blue); }
+  .list-tools .count { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); }
+  .hub-list { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .hub-item { background:var(--surface); padding:14px 18px; display:flex; align-items:baseline; justify-content:space-between; gap:14px; }
+  .hub-item.home { background:#FFFDF3; }
+  .hub-item .hi-name { font-family:var(--font-body); font-weight:600; font-size:0.95rem; color:var(--ink); }
+  .hub-item .hi-name .star { color:var(--gold-deep); font-size:0.7rem; margin-left:6px; font-family:var(--font-mono); letter-spacing:0.06em; }
+  .hub-item .hi-join { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.06em; text-transform:uppercase; white-space:nowrap; }
+  .hub-item .hi-contact { font-family:var(--font-mono); font-size:0.62rem; color:var(--mute); text-align:right; max-width:52%; }
+  .hub-empty { grid-column:1 / -1; background:var(--surface); padding:26px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.78rem; }
+
+  /* ---------- LINK LISTS (communities / interest groups) ---------- */
+  .link-cols { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .link-list { list-style:none; }
+  .link-list li { border-bottom:1px solid var(--line); padding:12px 0; }
+  .link-list li a { font-family:var(--font-body); font-size:0.98rem; color:var(--ink); display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
+  .link-list li a:hover { color:var(--blue); }
+  .link-list li a .go { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); }
+  .col-title { font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .col-title::before { content:''; width:18px; height:2px; background:var(--gold); }
+
+  /* ---------- FOOTER ---------- */
+  footer { border-top:1px solid var(--line); padding:48px 0; }
+  .foot-inner { max-width:var(--container); margin:0 auto; padding:0 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .foot-inner .wordmark .mark { height:40px; }
+  .foot-note { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px) {
+    .nav-toggle { display:block; }
+    .nav-links { display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:stretch; gap:0; background:rgba(250,250,246,0.98); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line); box-shadow:var(--shadow-md); padding:8px 0; }
+    .nav-links.open { display:flex; }
+    .nav-links a { padding:15px 40px; border-radius:0; }
+    .nav-cta { margin:12px 40px 6px; text-align:center; clip-path:none; }
+    .res-grid, .hub-list, .link-cols { grid-template-columns:1fr; }
+    .link-cols { gap:32px; }
+  }
+  @media (max-width:560px) {
+    .wrap, .nav-inner, .foot-inner { padding-left:22px; padding-right:22px; }
+    .nav-inner .wordmark .mark { height:38px; }
+    .hub-item { flex-direction:column; align-items:flex-start; gap:4px; }
+    .hub-item .hi-contact { text-align:left; max-width:100%; }
+    .foot-inner { flex-direction:column; align-items:flex-start; }
+  }
+  @media (prefers-reduced-motion:reduce) { * { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+  <!-- ============ PASSCODE GATE ============ -->
+  <!--
+    ACCESS-CONTROL NOTE — read me.
+    GitHub Pages is static hosting with NO backend, so there is no real
+    authentication here. This passcode gate is a client-side "keep it among
+    Shapers" speed bump: anyone who inspects the source can eventually get in.
+    We store only a SHA-256 HASH of the passcode (never the plaintext) and
+    compare hashes in the browser. The page is also marked noindex.
+
+    UPGRADE PATH for real access control (not implemented, a few lines to set up):
+      • Cloudflare Access — put pittsburghshapers.org behind Cloudflare, add an
+        Access application for /shapers with an allowlist policy (email domain
+        or one-time-PIN to approved addresses). Cloudflare enforces login at the
+        edge before the page is ever served. (Zero Trust dashboard → Access.)
+      • Netlify Identity — if the site were hosted on Netlify, gate the page with
+        Identity + role-based access and a login widget.
+    Either gives server-side identity checks that a static page cannot.
+  -->
+  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Shaper access">
+    <div class="gate-card">
+      <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh">
+      <h1>SHAPERS ONLY</h1>
+      <p>This area holds internal resources for Global Shapers. Enter the shared passcode to continue.</p>
+      <form id="gate-form" autocomplete="off">
+        <label for="gate-input">Passcode</label>
+        <input type="password" id="gate-input" placeholder="••••••••" autocomplete="off" spellcheck="false" autofocus>
+        <div class="gate-row">
+          <button type="submit" class="btn btn-primary">Enter</button>
+          <a href="index.html" class="btn btn-ghost">Back to site</a>
+        </div>
+        <div class="gate-err" id="gate-err" role="alert"></div>
+      </form>
+      <p class="gate-note">For Global Shapers — please don't share outside the network. This is a light gate, not real security.</p>
+    </div>
+  </div>
+
+  <!-- ============ EXCLUSIVE CONTENT (revealed after gate) ============ -->
+  <div id="exclusive" hidden>
+
+    <!-- NAV -->
+    <nav id="top">
+      <div class="nav-inner">
+        <a href="index.html" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
+          <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html#overview">Overview</a>
+          <a href="index.html#events">Events</a>
+          <a href="index.html#projects">Projects</a>
+          <a href="index.html#roster">Team</a>
+          <a href="shapers.html" class="active">Members</a>
+          <a href="index.html" class="nav-cta">Public Site</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- INTRO -->
+    <header class="wrap page-hero">
+      <span class="eyebrow">Global Shapers · Members Area</span>
+      <h1>SHAPER<br>RESOURCES</h1>
+      <p class="lead">Internal tools, working docs, and the worldwide Visiting Shapers network — everything you need to plug in, at home and on the road.</p>
+      <div class="members-note">For Global Shapers — please don't share outside the network.</div>
+    </header>
+
+    <!-- RESOURCES -->
+    <section id="resources">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-label">Toolkit</div>
+          <h2 class="sec-title">HUB RESOURCES</h2>
+          <p class="sec-intro">Links are seeded as placeholders — a curator can drop the real URLs into the <code>RESOURCES</code> list at the top of this page's script.</p>
+        </div>
+        <div class="res-grid" id="res-grid"></div>
+      </div>
+    </section>
+
+    <!-- VISITING SHAPERS GLOBE -->
+    <section id="visiting">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-label">Visiting Shapers</div>
+          <h2 class="sec-title">THE WORLDWIDE NETWORK</h2>
+          <p class="sec-intro">Traveling? Every dot is a hub with a Visiting Shapers WhatsApp group. Spin the globe and click a city to join — Pittsburgh is the <b>gold</b> dot. Prefer a list? Search all hubs below.</p>
+        </div>
+
+        <div class="globe-wrap">
+          <div id="globe">
+            <div class="globe-legend">
+              <div><span class="dot home"></span> Pittsburgh (home)</div>
+              <div><span class="dot hub"></span> Visiting Shapers hub</div>
+            </div>
+            <div class="globe-hint">Drag to spin · scroll to zoom · click a dot</div>
+            <div class="globe-fail" id="globe-fail">
+              The interactive globe couldn't load here.<br>Use the searchable hub list below to find a city.
+            </div>
+            <div class="hub-panel" id="hub-panel">
+              <button class="hp-close" id="hp-close" aria-label="Close">✕</button>
+              <div id="hp-body"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- searchable accessible fallback list -->
+        <div class="list-tools">
+          <input type="text" id="hub-search" placeholder="Search hubs by city or country…" aria-label="Search hubs">
+          <span class="count" id="hub-count"></span>
+        </div>
+        <div class="hub-list" id="hub-list"></div>
+
+        <p class="sec-intro" style="margin-top:22px;">
+          Master directory:
+          <a href="https://docs.google.com/spreadsheets/d/19w6qV7De6erNuH62D9L0dWl7NJRXbuSn9Wb6b__SKGI/edit" target="_blank" rel="noopener noreferrer">the full Visiting Shapers WhatsApp spreadsheet →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- COMMUNITIES + INTEREST GROUPS -->
+    <section id="groups">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-label">Beyond geography</div>
+          <h2 class="sec-title">COMMUNITIES &amp; INTEREST GROUPS</h2>
+        </div>
+        <div class="link-cols">
+          <div>
+            <div class="col-title">Regional communities</div>
+            <ul class="link-list" id="communities-list"></ul>
+          </div>
+          <div>
+            <div class="col-title">Global interest groups</div>
+            <ul class="link-list" id="groups-list"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="foot-inner">
+        <div class="wordmark">
+          <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
+        </div>
+        <div class="foot-note">An initiative of the World Economic Forum</div>
+      </div>
+    </footer>
+
+  </div><!-- /#exclusive -->
+
+  <!-- globe.gl (bundles three.js) is loaded at runtime from a CDN by the loader
+       below (no build step). If every CDN fails, the page degrades gracefully to
+       the searchable hub list — never a blank box. -->
+  <script>
+  (function () {
+    "use strict";
+
+    /* =========================================================
+       PASSCODE — ROTATE ME
+       We never store the plaintext. Below is the SHA-256 hash of
+       the current passcode. Current passcode: "SHAPE2026".
+       To change it: pick a new passcode, then in any browser console run
+         crypto.subtle.digest('SHA-256', new TextEncoder().encode('NEWCODE'))
+           .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+       and paste the resulting hash here.
+       ========================================================= */
+    var PASSCODE_SHA256 = '553b26ee7254ae6104c558cc1fa076ab53ea6b2fcbaeeb922c10d53448c21534';
+    var UNLOCK_KEY = 'gs_shapers_unlocked';
+
+    var $ = function (id) { return document.getElementById(id); };
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+    // ---------- gate ----------
+    var gate = $('gate'), exclusive = $('exclusive');
+    function reveal() {
+      gate.style.display = 'none';
+      exclusive.hidden = false;
+      initContent();
+    }
+    function toHex(buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join(''); }
+    function sha256Hex(text) {
+      if (!(window.crypto && window.crypto.subtle)) return Promise.reject(new Error('no-subtle'));
+      return window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(toHex);
+    }
+    function checkUnlocked() {
+      try { return sessionStorage.getItem(UNLOCK_KEY) === '1' || localStorage.getItem(UNLOCK_KEY) === '1'; }
+      catch (e) { return false; }
+    }
+    (function wireGate() {
+      if (checkUnlocked()) { reveal(); return; }
+      var form = $('gate-form'), input = $('gate-input'), err = $('gate-err');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        err.textContent = '';
+        var val = input.value;
+        if (!val) { err.textContent = 'Enter the passcode.'; return; }
+        sha256Hex(val).then(function (hex) {
+          if (hex === PASSCODE_SHA256) {
+            try { sessionStorage.setItem(UNLOCK_KEY, '1'); localStorage.setItem(UNLOCK_KEY, '1'); } catch (e2) {}
+            reveal();
+          } else {
+            err.textContent = 'That passcode didn’t match. Ask a hub member.';
+            input.select();
+          }
+        }).catch(function () {
+          err.textContent = 'This browser can’t verify the passcode (needs a secure connection).';
+        });
+      });
+    })();
+
+    // ---------- content (only wired once the gate opens) ----------
+    var contentReady = false;
+    function initContent() {
+      if (contentReady) return; contentReady = true;
+      wireNav();
+      renderResources();
+      loadData();
+    }
+
+    function wireNav() {
+      var toggle = document.querySelector('.nav-toggle');
+      var links = $('nav-links');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function () {
+        var open = links.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () { links.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); });
+      });
+    }
+
+    /* =========================================================
+       RESOURCES — edit this list to add/replace links.
+       Placeholder rows (no `link`) render an "[ADD LINK]" chip.
+       ========================================================= */
+    var RESOURCES = [
+      { cat: 'Hub governance', desc: 'Charter, bylaws, meeting notes, org chart' },
+      { cat: 'Onboarding', desc: 'New-member guide, WEF Toolkit / Shaper resources' },
+      { cat: 'Projects', desc: 'Shred the Debt, CulturePGH, Bridging Borders working docs' },
+      { cat: 'Brand & templates', desc: 'Logo files, slide/email templates, photo library' },
+      { cat: 'Finance', desc: 'Reimbursement form, budget tracker' },
+      { cat: 'Visiting Shapers', desc: 'The interactive globe below + the master WhatsApp directory of every hub.',
+        link: 'https://docs.google.com/spreadsheets/d/19w6qV7De6erNuH62D9L0dWl7NJRXbuSn9Wb6b__SKGI/edit',
+        linkLabel: 'Open the master directory →' }
+    ];
+    function renderResources() {
+      var grid = $('res-grid');
+      grid.innerHTML = RESOURCES.map(function (r) {
+        var action = r.link
+          ? '<a class="r-link" href="' + esc(r.link) + '" target="_blank" rel="noopener noreferrer">' + esc(r.linkLabel || 'Open →') + '</a>'
+          : '<span class="r-add">[ADD LINK]</span>';
+        return '<div class="res-card">' +
+          '<div class="r-cat">' + esc(r.cat) + '</div>' +
+          '<div class="r-desc">' + esc(r.desc) + '</div>' +
+          action +
+        '</div>';
+      }).join('');
+    }
+
+    // ---------- data + globe + list ----------
+    var HUBS = [], HOME = null;
+    function loadData() {
+      fetch('data/hubs.json', { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error('fetch'); return r.json(); })
+        .then(function (data) {
+          HUBS = Array.isArray(data.hubs) ? data.hubs.slice() : [];
+          HOME = HUBS.filter(function (h) { return h.home; })[0] || null;
+          renderHubList(HUBS);
+          renderLinkList('communities-list', data.communities || []);
+          renderLinkList('groups-list', data.interestGroups || []);
+          initGlobe();
+        })
+        .catch(function () {
+          // no data — show the failure note in the globe box; lists stay empty
+          showGlobeFail();
+          $('hub-count').textContent = 'hub list unavailable';
+        });
+    }
+
+    function joinAnchor(h, cls) {
+      // link/form -> anchor (new tab); contact -> plain text
+      if (h.linkType === 'contact') return null;
+      return '<a class="' + cls + '" href="' + esc(h.link) + '" target="_blank" rel="noopener noreferrer">Join group →</a>';
+    }
+
+    function renderLinkList(id, items) {
+      var ul = $(id);
+      if (!ul) return;
+      if (!items.length) { ul.innerHTML = '<li style="color:var(--mute);font-family:var(--font-mono);font-size:0.8rem;padding:12px 0;">None listed.</li>'; return; }
+      ul.innerHTML = items.map(function (it) {
+        return '<li><a href="' + esc(it.link) + '" target="_blank" rel="noopener noreferrer">' +
+          '<span>' + esc(it.name) + '</span><span class="go">Join →</span></a></li>';
+      }).join('');
+    }
+
+    // ----- accessible/searchable hub list -----
+    function renderHubList(list) {
+      var box = $('hub-list');
+      var sorted = list.slice().sort(function (a, b) { return a.name.localeCompare(b.name); });
+      if (!sorted.length) { box.innerHTML = '<div class="hub-empty">No hubs match your search.</div>'; }
+      else {
+        box.innerHTML = sorted.map(function (h) {
+          var right = h.linkType === 'contact'
+            ? '<span class="hi-contact">' + esc(h.link) + '</span>'
+            : '<a class="hi-join" href="' + esc(h.link) + '" target="_blank" rel="noopener noreferrer">Join →</a>';
+          return '<div class="hub-item' + (h.home ? ' home' : '') + '">' +
+            '<span class="hi-name">' + esc(h.name) + (h.home ? '<span class="star">★ home</span>' : '') + '</span>' +
+            right +
+          '</div>';
+        }).join('');
+      }
+      $('hub-count').textContent = sorted.length + ' of ' + HUBS.length + ' hubs';
+    }
+    (function wireSearch() {
+      var input = $('hub-search');
+      if (!input) return;
+      input.addEventListener('input', function () {
+        var q = input.value.trim().toLowerCase();
+        var filtered = !q ? HUBS : HUBS.filter(function (h) { return h.name.toLowerCase().indexOf(q) > -1; });
+        renderHubList(filtered);
+      });
+    })();
+
+    // ----- globe -----
+    function showGlobeFail() {
+      var f = $('globe-fail'); if (f) f.style.display = 'flex';
+      var legend = document.querySelector('.globe-legend'); if (legend) legend.style.display = 'none';
+      var hint = document.querySelector('.globe-hint'); if (hint) hint.style.display = 'none';
+    }
+    function webglOK() {
+      try { var c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); }
+      catch (e) { return false; }
+    }
+    // Load the globe.gl library at runtime, trying multiple CDNs before giving up.
+    var GLOBE_CDNS = [
+      'https://cdn.jsdelivr.net/npm/globe.gl/dist/globe.gl.min.js',
+      'https://unpkg.com/globe.gl/dist/globe.gl.min.js'
+    ];
+    function loadScript(src) {
+      return new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = src; s.async = true;
+        s.onload = function () { res(); };
+        s.onerror = function () { rej(new Error('load ' + src)); };
+        document.head.appendChild(s);
+      });
+    }
+    function ensureGlobeLib() {
+      if (window.Globe) return Promise.resolve();
+      return GLOBE_CDNS.reduce(function (chain, url) {
+        return chain.catch(function () { return loadScript(url).then(function () { if (!window.Globe) throw new Error('no global'); }); });
+      }, Promise.reject());
+    }
+
+    var globe = null;
+    function initGlobe() {
+      var el = $('globe');
+      if (!webglOK() || !HUBS.length) { showGlobeFail(); return; }
+      ensureGlobeLib().then(buildGlobe).catch(showGlobeFail);
+    }
+    function buildGlobe() {
+      var el = $('globe');
+      if (!window.Globe) { showGlobeFail(); return; }
+      try {
+        var HOME_COLOR = '#FFCB05', HUB_COLOR = '#5b8bff';
+        globe = window.Globe()(el)
+          .backgroundColor('rgba(0,0,0,0)')
+          .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
+          .showAtmosphere(true).atmosphereColor('#4a7bff').atmosphereAltitude(0.18)
+          .pointsData(HUBS)
+          .pointLat('lat').pointLng('lng')
+          .pointColor(function (d) { return d.home ? HOME_COLOR : HUB_COLOR; })
+          .pointAltitude(function (d) { return d.home ? 0.14 : 0.04; })
+          .pointRadius(function (d) { return d.home ? 0.75 : 0.32; })
+          .pointLabel(function (d) { return d.name; })
+          .pointsMerge(false)
+          .onPointClick(function (d) { openPanel(d); pauseRotate(); });
+
+        sizeGlobe();
+        window.addEventListener('resize', sizeGlobe);
+
+        var controls = globe.controls();
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.55;
+        controls.enableDamping = true;
+        controls.minDistance = 180;
+        el.addEventListener('pointerdown', pauseRotate);
+        el.addEventListener('wheel', pauseRotate, { passive: true });
+
+        // focus Pittsburgh on load
+        var focus = HOME || HUBS[0];
+        globe.pointOfView({ lat: focus.lat, lng: focus.lng, altitude: 2.2 }, 0);
+      } catch (e) {
+        showGlobeFail();
+      }
+    }
+    function sizeGlobe() {
+      if (!globe) return;
+      var el = $('globe');
+      globe.width(el.clientWidth).height(el.clientHeight);
+    }
+    var resumeTimer = null;
+    function pauseRotate() {
+      if (!globe) return;
+      globe.controls().autoRotate = false;
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(function () { if (globe) globe.controls().autoRotate = true; }, 5000);
+    }
+
+    // ----- hub detail panel -----
+    function openPanel(h) {
+      var body = $('hp-body');
+      var kicker = h.home ? '<div class="hp-kicker home">★ Our home hub</div>' : '<div class="hp-kicker">Visiting Shapers</div>';
+      var action;
+      if (h.linkType === 'contact') {
+        action = '<div class="hp-contact">' + esc(h.link) + '</div>';
+      } else {
+        action = '<a class="hp-btn" href="' + esc(h.link) + '" target="_blank" rel="noopener noreferrer">Join the Visiting Shapers group</a>';
+      }
+      var guide = h.guide ? '<a class="hp-guide" href="' + esc(h.guide) + '" target="_blank" rel="noopener noreferrer">City guide →</a>' : '';
+      body.innerHTML = kicker + '<div class="hp-name">' + esc(h.name) + '</div>' + action + guide;
+      $('hub-panel').classList.add('show');
+    }
+    (function wirePanelClose() {
+      var close = $('hp-close');
+      if (close) close.addEventListener('click', function () { $('hub-panel').classList.remove('show'); });
+    })();
+
+  })();
+  </script>
+</body>
+</html>
