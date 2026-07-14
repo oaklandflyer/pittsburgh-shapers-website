@@ -506,8 +506,11 @@
       try { var c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); }
       catch (e) { return false; }
     }
-    // Load the globe.gl library at runtime, trying multiple CDNs before giving up.
+    // Load the globe.gl library at runtime. Prefer the vendored copy in this repo
+    // (works even when jsDelivr/unpkg are blocked by a network or ad-blocker),
+    // then fall back to CDNs, then degrade to the searchable list.
     var GLOBE_CDNS = [
+      'assets/vendor/globe.gl.min.js',
       'https://cdn.jsdelivr.net/npm/globe.gl/dist/globe.gl.min.js',
       'https://unpkg.com/globe.gl/dist/globe.gl.min.js'
     ];
@@ -540,7 +543,7 @@
         var HOME_COLOR = '#FFCB05', HUB_COLOR = '#5b8bff';
         globe = window.Globe()(el)
           .backgroundColor('rgba(0,0,0,0)')
-          .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
+          .globeImageUrl('assets/vendor/earth-dark.jpg')
           .showAtmosphere(true).atmosphereColor('#4a7bff').atmosphereAltitude(0.18)
           .pointsData(HUBS)
           .pointLat('lat').pointLng('lng')
@@ -580,6 +583,7 @@
     function addBorders() {
       if (!globe) return;
       var SRC = [
+        'data/countries-110m.geojson',
         'https://cdn.jsdelivr.net/npm/three-globe/example/country-polygons/ne_110m_admin_0_countries.geojson',
         'https://unpkg.com/three-globe/example/country-polygons/ne_110m_admin_0_countries.geojson'
       ];
