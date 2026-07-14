@@ -380,7 +380,11 @@
     function initContent() {
       if (contentReady) return; contentReady = true;
       wireNav();
-      renderResources();
+      renderResources(); // fallback immediately
+      fetch('data/resources.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (list) { renderResources(list); })
+        .catch(function () {});
       loadData();
     }
 
@@ -411,9 +415,12 @@
         link: 'https://docs.google.com/spreadsheets/d/19w6qV7De6erNuH62D9L0dWl7NJRXbuSn9Wb6b__SKGI/edit',
         linkLabel: 'Open the master directory →' }
     ];
-    function renderResources() {
+    // Resources are managed in data/resources.json (via /admin/shapers.html).
+    // The RESOURCES array above is the built-in fallback if that file is missing.
+    function renderResources(list) {
       var grid = $('res-grid');
-      grid.innerHTML = RESOURCES.map(function (r) {
+      var items = (Array.isArray(list) && list.length) ? list : RESOURCES;
+      grid.innerHTML = items.map(function (r) {
         var action = r.link
           ? '<a class="r-link" href="' + esc(r.link) + '" target="_blank" rel="noopener noreferrer">' + esc(r.linkLabel || 'Open →') + '</a>'
           : '<span class="r-add">[ADD LINK]</span>';
@@ -551,16 +558,45 @@
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.55;
         controls.enableDamping = true;
-        controls.minDistance = 180;
+        // Allow zooming in much closer to street-level altitude (globe radius ≈ 100).
+        controls.minDistance = 108;
+        controls.maxDistance = 700;
+        controls.zoomSpeed = 1.2;
         el.addEventListener('pointerdown', pauseRotate);
         el.addEventListener('wheel', pauseRotate, { passive: true });
 
         // focus Pittsburgh on load
         var focus = HOME || HUBS[0];
         globe.pointOfView({ lat: focus.lat, lng: focus.lng, altitude: 2.2 }, 0);
+
+        // Draw country / territory border lines (loaded from CDN; optional).
+        addBorders();
       } catch (e) {
         showGlobeFail();
       }
+    }
+
+    // Country outlines: transparent fills + visible strokes so only borders show.
+    function addBorders() {
+      if (!globe) return;
+      var SRC = [
+        'https://cdn.jsdelivr.net/npm/three-globe/example/country-polygons/ne_110m_admin_0_countries.geojson',
+        'https://unpkg.com/three-globe/example/country-polygons/ne_110m_admin_0_countries.geojson'
+      ];
+      SRC.reduce(function (chain, url) {
+        return chain.catch(function () { return fetch(url).then(function (r) { if (!r.ok) throw new Error('geo'); return r.json(); }); });
+      }, Promise.reject())
+        .then(function (geo) {
+          var feats = (geo && geo.features) ? geo.features : [];
+          if (!feats.length || !globe) return;
+          globe
+            .polygonsData(feats)
+            .polygonCapColor(function () { return 'rgba(0,0,0,0)'; })
+            .polygonSideColor(function () { return 'rgba(0,0,0,0)'; })
+            .polygonStrokeColor(function () { return 'rgba(150,180,255,0.42)'; })
+            .polygonAltitude(0.006);
+        })
+        .catch(function () { /* borders are a nice-to-have; ignore if the CDN fails */ });
     }
     function sizeGlobe() {
       if (!globe) return;
