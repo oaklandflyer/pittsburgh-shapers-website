@@ -1,0 +1,19 @@
+[
+  { "name": "Andrew Coutinho", "role": "Curator", "group": "leadership", "note": "", "photo": "" },
+  { "name": "Ian Chang", "role": "Vice Curator", "group": "leadership", "note": "", "photo": "" },
+  { "name": "Seong Kim", "role": "Impact Officer", "group": "leadership", "note": "", "photo": "" },
+  { "name": "Andrew Coutinho", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Ian Chang", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Seong Kim", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Sarah Yeager", "role": "Hub Member", "group": "members", "note": "Founding Curator", "photo": "" },
+  { "name": "Michael Coutinho", "role": "Hub Member", "group": "members", "note": "Former Curator", "photo": "" },
+  { "name": "Tehya Lim", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Angie Yang", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Julia Kline", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Patrick Gormley", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Ramiya Shelton", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Gisele DeWitt", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Raya Sweigart", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Mustafa Abdalla", "role": "Hub Member", "group": "members", "note": "", "photo": "" },
+  { "name": "Egshiglen Batjargal", "role": "Hub Member", "group": "members", "note": "", "photo": "" }
+]

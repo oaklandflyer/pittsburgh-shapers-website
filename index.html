@@ -555,7 +555,8 @@
         <div class="sec-label">Hub Member Roster</div>
         <h2 class="sec-title">THE TEAM</h2>
       </div>
-      <div class="roster">
+      <!-- Rendered from assets/team/roster.json — manage members at /admin/photos.html -->
+      <div class="roster" id="roster-grid">
         <div class="roster-split">Leadership · July 2026 – June 2027</div>
         <div class="person has-photo"><div class="avatar" aria-hidden="true">AC</div><div class="person-text"><div class="role">Curator</div><div class="name">Andrew Coutinho</div></div></div>
         <div class="person has-photo"><div class="avatar" aria-hidden="true">IC</div><div class="person-text"><div class="role">Vice Curator</div><div class="name">Ian Chang</div></div></div>
@@ -606,6 +607,56 @@
           toggle.setAttribute('aria-expanded', 'false');
         });
       });
+    })();
+
+    // Roster — driven by assets/team/roster.json. Manage members at /admin/photos.html.
+    // Falls back to the static markup already in the page if the manifest is missing.
+    (function () {
+      var grid = document.getElementById('roster-grid');
+      if (!grid) return;
+      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      function initials(name) {
+        var parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return '?';
+        var a = parts[0].charAt(0);
+        var b = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+        return (a + b).toUpperCase();
+      }
+      function avatar(m) {
+        if (m.photo) {
+          return '<div class="avatar"><picture>' +
+            '<source type="image/webp" srcset="assets/team/' + esc(m.photo) + '.webp">' +
+            '<img src="assets/team/' + esc(m.photo) + '.jpg" alt="' + esc(m.name) + '" loading="lazy" decoding="async">' +
+            '</picture></div>';
+        }
+        return '<div class="avatar" aria-hidden="true">' + esc(initials(m.name)) + '</div>';
+      }
+      function person(m) {
+        return '<div class="person has-photo">' + avatar(m) +
+          '<div class="person-text">' +
+            '<div class="role">' + esc(m.role || 'Hub Member') + '</div>' +
+            '<div class="name">' + esc(m.name || '') + '</div>' +
+            (m.note ? '<div class="note">' + esc(m.note) + '</div>' : '') +
+          '</div></div>';
+      }
+      fetch('assets/team/roster.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (list) {
+          if (!Array.isArray(list) || !list.length) return; // keep static fallback
+          var lead = list.filter(function (m) { return m.group === 'leadership'; });
+          var members = list.filter(function (m) { return m.group !== 'leadership'; });
+          var html = '';
+          if (lead.length) {
+            html += '<div class="roster-split">Leadership · July 2026 – June 2027</div>';
+            html += lead.map(person).join('');
+          }
+          if (members.length) {
+            html += '<div class="roster-split">Hub Members</div>';
+            html += members.map(person).join('');
+          }
+          grid.innerHTML = html;
+        })
+        .catch(function () {});
     })();
 
     // Gallery + hero background — both driven by assets/photos/manifest.json.
