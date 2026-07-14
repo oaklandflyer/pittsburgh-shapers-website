@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Projects Admin · Global Shapers Pittsburgh</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FAFAF6; --surface:#FFFFFF; --raise:#F3F2EC; --ink:#16181D;
+    --slate:#5B6170; --mute:#8A8F9C; --line:#E7E6DF; --line-2:#DEDDD3;
+    --blue:#1A4FFF; --navy:#0B1F5B; --blue-tint:#EEF2FF; --gold:#FFCB05; --gold-deep:#B8860B;
+    --green:#0E9F6E; --red:#D64545;
+    --font-display:'Bebas Neue',sans-serif; --font-body:'DM Sans',system-ui,sans-serif; --font-mono:'Space Mono',monospace;
+    --shadow-md:0 12px 32px rgba(11,31,91,0.10); --ease:cubic-bezier(0.4,0,0.2,1); --container:1000px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; padding-bottom:100px; }
+  a { color:var(--blue); text-decoration:none; }
+  .wrap { max-width:var(--container); margin:0 auto; padding:0 32px; }
+
+  header.bar { border-bottom:1px solid var(--line); background:var(--surface); position:sticky; top:0; z-index:50; }
+  .bar-inner { max-width:var(--container); margin:0 auto; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .bar-inner .id { display:flex; align-items:center; gap:12px; }
+  .bar-inner img { height:36px; }
+  .bar-inner .id b { font-family:var(--font-display); font-size:1.3rem; letter-spacing:0.08em; font-weight:400; }
+  .bar-inner .id .sub { font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); display:block; }
+  .bar-right { display:flex; align-items:center; gap:16px; }
+  .conn { display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); }
+  .conn .dot { width:9px; height:9px; border-radius:50%; background:var(--mute); }
+  .conn.ok .dot { background:var(--green); } .conn.ok { color:var(--green); }
+  .conn.err .dot { background:var(--red); } .conn.err { color:var(--red); }
+  .bar-right a.back { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+
+  .admin-nav { display:flex; gap:6px; margin:22px 0 0; flex-wrap:wrap; }
+  .admin-nav a { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); border:1px solid var(--line-2); padding:7px 14px; }
+  .admin-nav a.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+  h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.2rem,5.5vw,3.2rem); letter-spacing:0.02em; line-height:0.95; margin:22px 0 10px; }
+  .lead { color:var(--slate); font-size:1.02rem; line-height:1.6; max-width:64ch; }
+  .sec-label { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:10px; margin:40px 0 16px; }
+  .sec-label::before { content:''; width:22px; height:2px; background:var(--gold); }
+  .step-n { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:var(--blue); color:#fff; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; border-radius:50%; flex-shrink:0; }
+
+  .panel { background:var(--surface); border:1px solid var(--line); padding:22px 24px; }
+  .connect-row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field label { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+  .field input, .field select { padding:10px 12px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-mono); font-size:0.82rem; color:var(--ink); }
+  .field input:focus, .field select:focus { outline:none; border-color:var(--blue); }
+  .field.grow { flex:1; min-width:240px; }
+  details.help { margin-top:14px; }
+  details.help summary { cursor:pointer; font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); }
+  details.help ol { margin:14px 0 4px 20px; color:var(--slate); font-size:0.92rem; line-height:1.7; }
+  details.help code { font-family:var(--font-mono); font-size:0.82rem; background:var(--raise); padding:2px 6px; color:var(--navy); }
+  .adv { margin-top:12px; display:none; gap:12px; flex-wrap:wrap; }
+  .adv.show { display:flex; }
+  .adv-toggle { background:none; border:none; cursor:pointer; font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); margin-top:12px; padding:0; }
+
+  .btn { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:12px 22px; cursor:pointer; border:none; transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease); display:inline-flex; align-items:center; gap:8px; }
+  .btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .btn-primary { background:var(--blue); color:#fff; clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px)); }
+  .btn-primary:not(:disabled):hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(26,79,255,0.28); }
+  .btn-gold { background:var(--gold); color:var(--navy); }
+  .btn-gold:not(:disabled):hover { background:var(--navy); color:#fff; transform:translateY(-2px); }
+  .btn-ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line-2); }
+  .btn-ghost:not(:disabled):hover { border-color:var(--blue); color:var(--blue); }
+
+  .card { background:var(--surface); border:1px solid var(--line); padding:18px; margin-bottom:14px; display:grid; grid-template-columns:150px 1fr auto; gap:18px; align-items:start; }
+  .photo-slot { width:150px; }
+  .photo-box { position:relative; width:150px; aspect-ratio:4/3; overflow:hidden; cursor:pointer; background:var(--blue-tint); border:1px solid var(--line-2); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); text-align:center; }
+  .photo-box img { width:100%; height:100%; object-fit:cover; display:block; }
+  .photo-box .cam { position:absolute; inset:auto 0 0 0; background:rgba(11,31,91,0.72); color:#fff; font-size:0.5rem; letter-spacing:0.08em; text-transform:uppercase; padding:3px 0; text-align:center; }
+  .photo-box input { display:none; }
+  .photo-clear { display:block; width:100%; margin-top:6px; background:none; border:1px solid var(--line-2); font-family:var(--font-mono); font-size:0.52rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--slate); padding:4px 0; cursor:pointer; }
+  .photo-clear:hover { border-color:var(--red); color:var(--red); }
+  .photo-clear:disabled { opacity:0.3; cursor:not-allowed; }
+  .fields { display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .fields .frow { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .fields input[type=text], .fields textarea, .fields select { padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.92rem; color:var(--ink); }
+  .fields input:focus, .fields textarea:focus, .fields select:focus { outline:none; border-color:var(--blue); }
+  .fields .f-title { flex:1; min-width:180px; font-weight:600; font-size:1rem; }
+  .fields .f-status { font-family:var(--font-mono); font-size:0.72rem; min-width:150px; }
+  .fields textarea { width:100%; min-height:72px; resize:vertical; line-height:1.5; }
+  .fields .half { flex:1; min-width:150px; }
+  .fields .hint { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.05em; color:var(--mute); }
+  .metrics-head { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); margin-top:4px; }
+  .metric-row { display:flex; gap:8px; align-items:center; }
+  .metric-row .m-num { width:110px; }
+  .metric-row .m-lbl { flex:1; min-width:140px; }
+  .mini-btn { background:none; border:1px solid var(--line-2); font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--slate); padding:6px 12px; cursor:pointer; align-self:flex-start; }
+  .mini-btn:hover { border-color:var(--blue); color:var(--blue); }
+  .icon-btn { background:none; border:1px solid var(--line-2); width:30px; height:30px; cursor:pointer; font-size:0.85rem; color:var(--slate); display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s; flex-shrink:0; }
+  .icon-btn.del:hover { border-color:var(--red); color:var(--red); }
+  .empty { border:1px dashed var(--line-2); background:var(--surface); padding:22px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.72rem; }
+
+  .publish { position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(11,31,91,0.06); z-index:40; }
+  .publish-inner { max-width:var(--container); margin:0 auto; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .publish .summary { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.06em; color:var(--slate); }
+  .publish .summary b { color:var(--ink); }
+  .log { margin-top:16px; border:1px solid var(--line-2); background:#0d0f14; color:#cfe3ff; font-family:var(--font-mono); font-size:0.72rem; line-height:1.7; padding:16px 18px; max-height:220px; overflow:auto; display:none; white-space:pre-wrap; }
+  .log.show { display:block; }
+  .log .ok { color:#7fe0b0; } .log .err { color:#ff9d9d; } .log .dim { color:#7d90b8; }
+  .toast { position:fixed; left:50%; bottom:88px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.06em; padding:13px 22px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:200; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .note { font-size:0.85rem; color:var(--mute); margin-top:10px; line-height:1.55; }
+  @media (max-width:640px) { .card { grid-template-columns:1fr; } .photo-slot, .photo-box { width:100%; } .card .actions { justify-self:end; } }
+</style>
+</head>
+<body>
+
+  <header class="bar">
+    <div class="bar-inner">
+      <div class="id">
+        <img src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh">
+        <div><b>Projects Admin</b><span class="sub">Projects Manager</span></div>
+      </div>
+      <div class="bar-right">
+        <div class="conn" id="conn"><span class="dot"></span><span id="conn-text">Not connected</span></div>
+        <a class="back" href="../index.html">View site →</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <nav class="admin-nav">
+      <a href="photos.html">Photos &amp; Roster</a>
+      <a href="events.html">Events</a>
+      <a href="projects.html" class="active">Projects</a>
+    </nav>
+    <h1>PROJECTS MANAGER</h1>
+    <p class="lead">Add or remove projects, mark each one <b>Ongoing</b> or <b>Prior</b>, edit the details and impact metrics, and attach a photo if you have one. Hit <b>Publish</b> to go live.</p>
+
+    <div class="sec-label"><span class="step-n">1</span> Connect to the website</div>
+    <div class="panel" id="connect-panel">
+      <div class="connect-row">
+        <div class="field grow">
+          <label for="token">GitHub access token</label>
+          <input type="password" id="token" placeholder="github_pat_… (stored only in this browser)" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btn btn-primary" id="connect">Connect</button>
+        <button class="btn btn-ghost" id="forget" hidden>Forget token</button>
+      </div>
+      <button class="adv-toggle" id="adv-toggle">▸ Repository settings</button>
+      <div class="adv" id="adv">
+        <div class="field"><label for="owner">Owner</label><input type="text" id="owner" value="oaklandflyer"></div>
+        <div class="field"><label for="repo">Repository</label><input type="text" id="repo" value="pittsburgh-shapers-website"></div>
+        <div class="field"><label for="branch">Branch</label><input type="text" id="branch" value="main"></div>
+      </div>
+      <details class="help">
+        <summary>How do I get a token? (one time, ~2 minutes)</summary>
+        <ol>
+          <li>Go to <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> (Fine-grained tokens).</li>
+          <li><b>Resource owner:</b> <code>oaklandflyer</code>. <b>Repository access:</b> Only select repositories → <code>pittsburgh-shapers-website</code>.</li>
+          <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → <b>Read and write</b>.</li>
+          <li>Generate the token (starts with <code>github_pat_</code>) and paste it above. It's saved only in this browser.</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="sec-label"><span class="step-n">2</span> Your projects</div>
+    <div id="editor"><div class="empty">Connect above to load your projects.</div></div>
+    <button class="btn btn-ghost" id="add" style="margin-top:6px;" disabled>+ Add project</button>
+    <div class="log" id="log"></div>
+  </div>
+
+  <div class="publish">
+    <div class="publish-inner">
+      <div class="summary" id="summary">Nothing to publish yet.</div>
+      <button class="btn btn-gold" id="publish" disabled>▲ Publish to website</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+  var MAX_EDGE = 1600, JPG_Q = 0.82, WEBP_Q = 0.80;
+  var LS_TOKEN = 'gs_photo_token', LS_REPO = 'gs_photo_repo';
+  var MANIFEST = 'assets/projects/projects.json', DIR = 'assets/projects/';
+
+  var items = [], removedPhotos = [], uid = 0, connected = false, publishing = false, dirty = false, loaded = false;
+
+  var el = function (id) { return document.getElementById(id); };
+  var E = {
+    editor: el('editor'), add: el('add'), token: el('token'), connect: el('connect'), forget: el('forget'),
+    owner: el('owner'), repo: el('repo'), branch: el('branch'), adv: el('adv'), advToggle: el('adv-toggle'),
+    conn: el('conn'), connText: el('conn-text'), publish: el('publish'), summary: el('summary'), log: el('log'), toast: el('toast')
+  };
+
+  function slugify(s) { s = String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); return s || 'project'; }
+  function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+  function toast(msg) { E.toast.textContent = msg; E.toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { E.toast.classList.remove('show'); }, 2400); }
+  function allPhotoBases() { var m = {}; items.forEach(function (x) { if (x.photo) m[x.photo] = true; }); return m; }
+  function uniqueBase(slug) { var used = allPhotoBases(); if (!used[slug]) return slug; var i = 2, b; do { b = slug + '-' + i; i++; } while (used[b]); return b; }
+
+  function optimizeFile(file) {
+    var bmpP = ('createImageBitmap' in window)
+      ? createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return loadViaImg(file); })
+      : loadViaImg(file);
+    return bmpP.then(function (bmp) {
+      var w = bmp.width, h = bmp.height, scale = Math.min(1, MAX_EDGE / Math.max(w, h));
+      var ow = Math.round(w * scale), oh = Math.round(h * scale);
+      var c = document.createElement('canvas'); c.width = ow; c.height = oh;
+      var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, ow, oh); x.drawImage(bmp, 0, 0, ow, oh);
+      if (bmp.close) bmp.close();
+      return Promise.all([toBlob(c, 'image/jpeg', JPG_Q), toBlob(c, 'image/webp', WEBP_Q)]).then(function (b) { return { jpg: b[0], webp: b[1] }; });
+    });
+  }
+  function loadViaImg(file) { return new Promise(function (res, rej) { var url = URL.createObjectURL(file), img = new Image(); img.onload = function () { URL.revokeObjectURL(url); res(img); }; img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('decode failed')); }; img.src = url; }); }
+  function toBlob(canvas, type, q) { return new Promise(function (res) { canvas.toBlob(function (b) { if (!b && type === 'image/webp') canvas.toBlob(function (b2) { res(b2); }, 'image/jpeg', q); else res(b); }, type, q); }); }
+
+  function newItem() { return { id: ++uid, title: '', status: 'active', link: '', linkLabel: '', description: '', metrics: [], photo: '', fromRepo: false, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false }; }
+  function addItem() { items.push(newItem()); dirty = true; render(); update(); }
+  function removeItem(it) {
+    if (it.fromRepo && it.photo && removedPhotos.indexOf(it.photo) === -1) removedPhotos.push(it.photo);
+    if (it.thumbUrl) URL.revokeObjectURL(it.thumbUrl);
+    items = items.filter(function (x) { return x.id !== it.id; });
+    dirty = true; render(); update();
+  }
+  function clearPhoto(it) {
+    if (it.fromRepo && it.photo && removedPhotos.indexOf(it.photo) === -1) removedPhotos.push(it.photo);
+    if (it.thumbUrl) { URL.revokeObjectURL(it.thumbUrl); it.thumbUrl = ''; }
+    it.photo = ''; it.blobJpg = null; it.blobWebp = null; it.photoChanged = true; dirty = true; render(); update();
+  }
+  function addPhoto(it, file) {
+    if (!file || file.type.indexOf('image/') !== 0) { toast('Choose an image file'); return; }
+    it.busy = true; it.error = false; render(); update();
+    optimizeFile(file).then(function (r) {
+      if (it.thumbUrl) URL.revokeObjectURL(it.thumbUrl);
+      it.blobJpg = r.jpg; it.blobWebp = r.webp; it.thumbUrl = URL.createObjectURL(r.jpg);
+      it.photo = it.photo || uniqueBase(slugify(it.title || 'project')); it.photoChanged = true; it.busy = false;
+      dirty = true; render(); update();
+    }).catch(function () { it.busy = false; it.error = true; toast('Could not process that photo'); render(); });
+  }
+  function addMetric(it) { it.metrics.push({ num: '', lbl: '' }); dirty = true; render(); update(); }
+  function removeMetric(it, idx) { it.metrics.splice(idx, 1); dirty = true; render(); update(); }
+
+  function render() {
+    if (!connected && !loaded) { E.editor.innerHTML = '<div class="empty">Connect above to load your projects.</div>'; return; }
+    if (!items.length) { E.editor.innerHTML = '<div class="empty">No projects yet — use “Add project”.</div>'; return; }
+    E.editor.innerHTML = '';
+    items.forEach(function (it) { E.editor.appendChild(row(it)); });
+  }
+  function row(it) {
+    var card = document.createElement('div'); card.className = 'card'; card.dataset.id = it.id;
+    var inner = it.busy ? '…' : (it.thumbUrl ? '<img alt="" src="' + it.thumbUrl + '">' : (it.photo ? '<img alt="" src="../' + DIR + escapeAttr(it.photo) + '.jpg">' : 'Add photo<br>(optional)'));
+    var metricsHtml = it.metrics.map(function (m, i) {
+      return '<div class="metric-row" data-i="' + i + '">' +
+        '<input class="m-num" type="text" placeholder="73,000" value="' + escapeAttr(m.num) + '">' +
+        '<input class="m-lbl" type="text" placeholder="lbs food waste diverted" value="' + escapeAttr(m.lbl) + '">' +
+        '<button class="icon-btn del-metric" title="Remove metric">✕</button>' +
+      '</div>';
+    }).join('');
+    card.innerHTML =
+      '<div class="photo-slot">' +
+        '<label class="photo-box" title="Upload photo">' + inner + '<span class="cam">Photo</span><input type="file" accept="image/*"></label>' +
+        '<button class="photo-clear" type="button"' + (it.photo || it.thumbUrl ? '' : ' disabled') + '>Clear</button>' +
+      '</div>' +
+      '<div class="fields">' +
+        '<div class="frow">' +
+          '<input class="f-title" type="text" placeholder="Project title" value="' + escapeAttr(it.title) + '">' +
+          '<select class="f-status">' +
+            '<option value="active"' + (it.status !== 'prior' ? ' selected' : '') + '>Ongoing project</option>' +
+            '<option value="prior"' + (it.status === 'prior' ? ' selected' : '') + '>Prior project</option>' +
+          '</select>' +
+        '</div>' +
+        '<div class="frow">' +
+          '<input class="f-link half" type="text" placeholder="Link (https://…)" value="' + escapeAttr(it.link) + '">' +
+          '<input class="f-linklabel half" type="text" placeholder="Link label (e.g. Donate to Our Campaign →)" value="' + escapeAttr(it.linkLabel) + '">' +
+        '</div>' +
+        '<textarea class="f-desc" placeholder="Description">' + escapeHtml(it.description) + '</textarea>' +
+        '<div class="metrics-head">Impact metrics</div>' +
+        metricsHtml +
+        '<button class="mini-btn add-metric" type="button">+ Add metric</button>' +
+        '<div class="hint">' + (it.busy ? 'optimizing photo…' : it.error ? 'photo failed' : it.photo ? DIR + escapeHtml(it.photo) + '.jpg' : 'no photo') + '</div>' +
+      '</div>' +
+      '<div class="actions"><button class="icon-btn del" title="Remove project">✕</button></div>';
+    card.querySelector('.photo-box input').addEventListener('change', function (e) { if (e.target.files && e.target.files[0]) addPhoto(it, e.target.files[0]); e.target.value = ''; });
+    card.querySelector('.photo-clear').addEventListener('click', function () { clearPhoto(it); });
+    card.querySelector('.f-title').addEventListener('input', function (e) { it.title = e.target.value; dirty = true; update(); });
+    card.querySelector('.f-status').addEventListener('change', function (e) { it.status = e.target.value; dirty = true; update(); });
+    card.querySelector('.f-link').addEventListener('input', function (e) { it.link = e.target.value; dirty = true; update(); });
+    card.querySelector('.f-linklabel').addEventListener('input', function (e) { it.linkLabel = e.target.value; dirty = true; update(); });
+    card.querySelector('.f-desc').addEventListener('input', function (e) { it.description = e.target.value; dirty = true; update(); });
+    card.querySelector('.add-metric').addEventListener('click', function () { addMetric(it); });
+    Array.prototype.forEach.call(card.querySelectorAll('.metric-row'), function (mr) {
+      var i = parseInt(mr.dataset.i, 10);
+      mr.querySelector('.m-num').addEventListener('input', function (e) { it.metrics[i].num = e.target.value; dirty = true; update(); });
+      mr.querySelector('.m-lbl').addEventListener('input', function (e) { it.metrics[i].lbl = e.target.value; dirty = true; update(); });
+      mr.querySelector('.del-metric').addEventListener('click', function () { removeMetric(it, i); });
+    });
+    card.querySelector('.del').addEventListener('click', function () { removeItem(it); });
+    return card;
+  }
+
+  function update() {
+    var busy = items.some(function (x) { return x.busy; });
+    E.add.disabled = !connected;
+    E.publish.disabled = !(connected && dirty && !busy && !publishing);
+    if (!connected) E.summary.innerHTML = 'Connect a token to publish.';
+    else if (!dirty) E.summary.innerHTML = 'Everything is up to date.';
+    else if (busy) E.summary.innerHTML = 'Optimizing photos…';
+    else E.summary.innerHTML = '<b>' + items.length + '</b> project' + (items.length === 1 ? '' : 's') + ' — ready to publish.';
+  }
+
+  function cfg() { return { owner: E.owner.value.trim(), repo: E.repo.value.trim(), branch: E.branch.value.trim() || 'main', token: E.token.value.trim() }; }
+  function apiUrl(path) { var c = cfg(); return 'https://api.github.com/repos/' + c.owner + '/' + c.repo + '/contents/' + path; }
+  function headers() { return { 'Authorization': 'Bearer ' + cfg().token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; }
+  function utf8ToB64(s) { return btoa(unescape(encodeURIComponent(s))); }
+  function b64ToUtf8(b) { return decodeURIComponent(escape(atob(b.replace(/\n/g, '')))); }
+  function blobToB64(blob) { return new Promise(function (res, rej) { var fr = new FileReader(); fr.onload = function () { res(String(fr.result).split(',')[1]); }; fr.onerror = rej; fr.readAsDataURL(blob); }); }
+  function ghGet(path) { return fetch(apiUrl(path) + '?ref=' + cfg().branch, { headers: headers(), cache: 'no-store' }).then(function (r) { if (r.status === 404) return null; if (!r.ok) return r.text().then(function (t) { throw new Error('GET ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); }); }
+  function ghPut(path, contentB64, message, sha) { var body = { message: message, content: contentB64, branch: cfg().branch }; if (sha) body.sha = sha; return fetch(apiUrl(path), { method: 'PUT', headers: headers(), body: JSON.stringify(body) }).then(function (r) { if (!r.ok) return r.text().then(function (t) { throw new Error('PUT ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); }); }
+  function ghDelete(path, message, sha) { return fetch(apiUrl(path), { method: 'DELETE', headers: headers(), body: JSON.stringify({ message: message, branch: cfg().branch, sha: sha }) }).then(function (r) { if (!r.ok && r.status !== 404) return r.text().then(function (t) { throw new Error('DELETE ' + path + ' → ' + r.status + ' ' + t); }); return true; }); }
+
+  function setConn(state, text) { E.conn.className = 'conn' + (state ? ' ' + state : ''); E.connText.textContent = text; }
+
+  function connect() {
+    var c = cfg();
+    if (!c.token) { toast('Paste your token first'); return; }
+    if (!c.owner || !c.repo) { toast('Set owner and repository'); return; }
+    setConn('', 'Connecting…'); E.connect.disabled = true;
+    fetch('https://api.github.com/repos/' + c.owner + '/' + c.repo, { headers: headers() })
+      .then(function (r) { if (r.status === 401) throw new Error('Bad token (401).'); if (r.status === 404) throw new Error('Repo not found or no access (404).'); if (!r.ok) throw new Error('GitHub error ' + r.status); return r.json(); })
+      .then(function () { return load(); })
+      .then(function () {
+        connected = true; setConn('ok', 'Connected'); E.forget.hidden = false;
+        localStorage.setItem(LS_TOKEN, c.token);
+        localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch }));
+        toast('Connected — loaded ' + items.length + ' project(s)'); render(); update();
+      })
+      .catch(function (e) { connected = false; setConn('err', 'Failed'); toast(e.message || 'Connection failed'); })
+      .then(function () { E.connect.disabled = false; });
+  }
+
+  function load() {
+    return ghGet(MANIFEST).then(function (res) {
+      items = []; removedPhotos = []; dirty = false;
+      var list = [];
+      if (res && res.content) { try { list = JSON.parse(b64ToUtf8(res.content)) || []; } catch (e) { list = []; } }
+      list.forEach(function (m) {
+        items.push({ id: ++uid, title: m.title || '', status: m.status === 'prior' ? 'prior' : 'active', link: m.link || '', linkLabel: m.linkLabel || '', description: m.description || '', metrics: Array.isArray(m.metrics) ? m.metrics.map(function (x) { return { num: x.num || '', lbl: x.lbl || '' }; }) : [], photo: m.photo || '', fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false });
+      });
+      loaded = true; render();
+    });
+  }
+
+  function log(msg, cls) { E.log.classList.add('show'); E.log.innerHTML += '<div' + (cls ? ' class="' + cls + '"' : '') + '>' + msg + '</div>'; E.log.scrollTop = E.log.scrollHeight; }
+
+  function publish() {
+    if (publishing || !dirty) return;
+    publishing = true; update(); E.publish.disabled = true; E.log.innerHTML = ''; E.log.classList.add('show');
+    log('Publishing projects…', 'dim');
+    var chain = Promise.resolve();
+    items.forEach(function (it) {
+      if (it.photoChanged && it.blobJpg && it.photo) {
+        chain = chain.then(function () {
+          log('↑ ' + it.photo + '.jpg …');
+          return Promise.all([blobToB64(it.blobJpg), it.blobWebp ? blobToB64(it.blobWebp) : null]).then(function (b) {
+            return ghGet(DIR + it.photo + '.jpg').then(function (r) { return ghPut(DIR + it.photo + '.jpg', b[0], 'projects: add photo ' + it.photo + '.jpg', r ? r.sha : null); })
+              .then(function () { if (!b[1]) return; return ghGet(DIR + it.photo + '.webp').then(function (r) { return ghPut(DIR + it.photo + '.webp', b[1], 'projects: add photo ' + it.photo + '.webp', r ? r.sha : null); }); })
+              .then(function () { log('  ✓ uploaded ' + it.photo, 'ok'); });
+          });
+        });
+      }
+    });
+    removedPhotos.forEach(function (base) {
+      chain = chain.then(function () {
+        if (items.some(function (x) { return x.photo === base; })) return;
+        log('✕ removing ' + base + ' …');
+        return Promise.all([
+          ghGet(DIR + base + '.jpg').then(function (r) { return r ? ghDelete(DIR + base + '.jpg', 'projects: remove photo ' + base + '.jpg', r.sha) : null; }),
+          ghGet(DIR + base + '.webp').then(function (r) { return r ? ghDelete(DIR + base + '.webp', 'projects: remove photo ' + base + '.webp', r.sha) : null; })
+        ]).then(function () { log('  ✓ removed ' + base, 'ok'); });
+      });
+    });
+    chain = chain.then(function () {
+      log('↻ updating projects.json …');
+      var out = items.map(function (it) {
+        return { title: it.title, status: it.status, link: it.link, linkLabel: it.linkLabel, description: it.description,
+          photo: it.photo || '', metrics: it.metrics.filter(function (m) { return (m.num || '').trim() || (m.lbl || '').trim(); }).map(function (m) { return { num: m.num, lbl: m.lbl }; }) };
+      });
+      var json = JSON.stringify(out, null, 2) + '\n';
+      return ghGet(MANIFEST).then(function (r) { return ghPut(MANIFEST, utf8ToB64(json), 'projects: update projects (' + out.length + ')', r ? r.sha : null); }).then(function () { log('  ✓ saved', 'ok'); });
+    });
+    chain.then(function () {
+      items.forEach(function (it) { it.fromRepo = true; it.photoChanged = false; });
+      removedPhotos = []; dirty = false;
+      log('✓ Done. Live on the site in ~1 minute (GitHub Pages redeploy).', 'ok');
+      toast('Published! Live in ~1 min.'); publishing = false; render(); update();
+    }).catch(function (e) { log('✗ ' + (e.message || 'publish failed'), 'err'); toast('Publish failed — see the log'); publishing = false; update(); });
+  }
+
+  render(); update();
+  E.advToggle.addEventListener('click', function () { E.adv.classList.toggle('show'); E.advToggle.textContent = (E.adv.classList.contains('show') ? '▾' : '▸') + ' Repository settings'; });
+  E.connect.addEventListener('click', connect);
+  E.publish.addEventListener('click', publish);
+  E.add.addEventListener('click', addItem);
+  E.forget.addEventListener('click', function () { localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; loaded = false; items = []; removedPhotos = []; dirty = false; setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render(); update(); });
+  E.token.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
+  window.addEventListener('dragover', function (e) { e.preventDefault(); });
+  window.addEventListener('drop', function (e) { e.preventDefault(); });
+  (function restore() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(LS_REPO) || 'null');
+      if (saved) { E.owner.value = saved.owner || E.owner.value; E.repo.value = saved.repo || E.repo.value; E.branch.value = saved.branch || E.branch.value; }
+      var t = localStorage.getItem(LS_TOKEN);
+      if (t) { E.token.value = t; E.forget.hidden = false; connect(); }
+    } catch (e) {}
+  })();
+})();
+</script>
+</body>
+</html>
