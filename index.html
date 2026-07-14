@@ -225,6 +225,10 @@
   .event-row .dot { width: 12px; height: 12px; background: var(--gold); flex-shrink: 0; margin-top: 8px; }
   .event-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 8px; }
   .event-row p { color: rgba(255,255,255,0.72); line-height: 1.6; margin-bottom: 22px; max-width: 60ch; }
+  .event-row .ev-date { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .event-row .ev-photo { width: 200px; flex-shrink: 0; aspect-ratio: 4 / 3; object-fit: cover; display: block; border: 1px solid rgba(255,255,255,0.14); margin-top: 4px; }
+  .event-row + .event-row { margin-top: 34px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,0.12); }
+  @media (max-width: 640px) { .event-row .ev-photo { width: 120px; } }
   .btn-gold { background: var(--gold); color: var(--navy); }
   .btn-gold:hover { background: #fff; color: var(--navy); transform: translateY(-2px); }
 
@@ -247,6 +251,10 @@
   .metrics { display: flex; gap: 40px; margin-top: 24px; flex-wrap: wrap; }
   .metric .num { font-family: var(--font-display); font-size: 2rem; color: var(--blue); line-height: 1; }
   .metric .lbl { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 4px; }
+  .tag.prior { color: var(--slate); background: var(--raise); }
+  .project.has-photo { grid-template-columns: 6px 260px 1fr; }
+  .project .pphoto { object-fit: cover; width: 100%; height: 100%; display: block; background: var(--raise); }
+  @media (max-width: 720px) { .project.has-photo { grid-template-columns: 6px 1fr; } .project.has-photo .pphoto { aspect-ratio: 16 / 9; } }
 
   /* ---------- GALLERY ---------- */
   .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -476,7 +484,8 @@
         <div class="sec-label">Events</div>
         <h2 class="sec-title">WHAT'S HAPPENING</h2>
       </div>
-      <div class="events-block">
+      <!-- Rendered from assets/events/events.json — manage at /admin/events.html -->
+      <div class="events-block" id="events-block">
         <div class="sec-label">Featured</div>
         <div class="event-row">
           <div class="dot"></div>
@@ -498,7 +507,8 @@
         <h2 class="sec-title">OUR WORK</h2>
         <p class="sec-intro">Community-driven initiatives with measurable local impact.</p>
       </div>
-      <div class="projects">
+      <!-- Rendered from assets/projects/projects.json — manage at /admin/projects.html -->
+      <div class="projects" id="projects-grid">
         <div class="project">
           <div class="spine"></div>
           <div class="body">
@@ -655,6 +665,84 @@
             html += members.map(person).join('');
           }
           grid.innerHTML = html;
+        })
+        .catch(function () {});
+    })();
+
+    // Events — driven by assets/events/events.json. Manage at /admin/events.html.
+    // Falls back to the static markup already in the page if the manifest is missing.
+    (function () {
+      var block = document.getElementById('events-block');
+      if (!block) return;
+      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      function eventRow(e) {
+        var photo = e.photo
+          ? '<picture><source type="image/webp" srcset="assets/events/' + esc(e.photo) + '.webp">' +
+            '<img class="ev-photo" src="assets/events/' + esc(e.photo) + '.jpg" alt="' + esc(e.title) + '" loading="lazy" decoding="async"></picture>'
+          : '';
+        var link = (e.link && e.linkLabel)
+          ? '<a href="' + esc(e.link) + '" class="btn btn-gold"' + (/^https?:/i.test(e.link) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(e.linkLabel) + '</a>'
+          : '';
+        return '<div class="event-row">' +
+          '<div class="dot"></div>' +
+          '<div>' +
+            (e.date ? '<div class="ev-date">' + esc(e.date) + '</div>' : '') +
+            '<h3>' + esc(e.title || '') + '</h3>' +
+            (e.description ? '<p>' + esc(e.description) + '</p>' : '') +
+            link +
+          '</div>' +
+          photo +
+        '</div>';
+      }
+      fetch('assets/events/events.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (list) {
+          if (!Array.isArray(list) || !list.length) return; // keep static fallback
+          block.innerHTML = '<div class="sec-label">Featured</div>' + list.map(eventRow).join('');
+        })
+        .catch(function () {});
+    })();
+
+    // Projects — driven by assets/projects/projects.json. Manage at /admin/projects.html.
+    // Falls back to the static markup already in the page if the manifest is missing.
+    (function () {
+      var grid = document.getElementById('projects-grid');
+      if (!grid) return;
+      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      function metric(m) {
+        return '<div class="metric"><div class="num">' + esc(m.num || '') + '</div><div class="lbl">' + esc(m.lbl || '') + '</div></div>';
+      }
+      function projectCard(p) {
+        var prior = p.status === 'prior';
+        var tag = '<span class="tag' + (prior ? ' prior' : '') + '">' + (prior ? 'Prior Project' : 'Active Project') + '</span>';
+        var link = (p.link && p.linkLabel)
+          ? '<a href="' + esc(p.link) + '" class="plink"' + (/^https?:/i.test(p.link) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(p.linkLabel) + '</a>'
+          : '';
+        var metrics = (Array.isArray(p.metrics) && p.metrics.length)
+          ? '<div class="metrics">' + p.metrics.map(metric).join('') + '</div>' : '';
+        var photo = p.photo
+          ? '<picture><source type="image/webp" srcset="assets/projects/' + esc(p.photo) + '.webp">' +
+            '<img class="pphoto" src="assets/projects/' + esc(p.photo) + '.jpg" alt="' + esc(p.title) + '" loading="lazy" decoding="async"></picture>'
+          : '';
+        return '<div class="project' + (p.photo ? ' has-photo' : '') + '">' +
+          '<div class="spine"></div>' +
+          photo +
+          '<div class="body">' +
+            tag +
+            '<h3>' + esc(p.title || '') + '</h3>' +
+            link +
+            (p.description ? '<p>' + esc(p.description) + '</p>' : '') +
+            metrics +
+          '</div>' +
+        '</div>';
+      }
+      fetch('assets/projects/projects.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (list) {
+          if (!Array.isArray(list) || !list.length) return; // keep static fallback
+          var active = list.filter(function (p) { return p.status !== 'prior'; });
+          var prior = list.filter(function (p) { return p.status === 'prior'; });
+          grid.innerHTML = active.concat(prior).map(projectCard).join('');
         })
         .catch(function () {});
     })();

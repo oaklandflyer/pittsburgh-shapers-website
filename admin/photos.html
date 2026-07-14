@@ -34,7 +34,10 @@
   .conn.err .dot { background:var(--red); } .conn.err { color:var(--red); }
   .bar-right a.back { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
 
-  h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.2rem,5.5vw,3.2rem); letter-spacing:0.02em; line-height:0.95; margin:38px 0 10px; }
+  .admin-nav { display:flex; gap:6px; margin:22px 0 0; flex-wrap:wrap; }
+  .admin-nav a { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); border:1px solid var(--line-2); padding:7px 14px; }
+  .admin-nav a.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+  h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.2rem,5.5vw,3.2rem); letter-spacing:0.02em; line-height:0.95; margin:22px 0 10px; }
   .lead { color:var(--slate); font-size:1.02rem; line-height:1.6; max-width:64ch; }
   .sec-label { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:10px; margin:40px 0 16px; }
   .sec-label::before { content:''; width:22px; height:2px; background:var(--gold); }
@@ -160,6 +163,11 @@
   </header>
 
   <div class="wrap">
+    <nav class="admin-nav">
+      <a href="photos.html" class="active">Photos &amp; Roster</a>
+      <a href="events.html">Events</a>
+      <a href="projects.html">Projects</a>
+    </nav>
     <h1>PHOTO MANAGER</h1>
     <p class="lead">Drop photos into a section below and hit <b>Publish</b> — they're optimized and added straight to the live website. No code, no copy-paste.</p>
 
