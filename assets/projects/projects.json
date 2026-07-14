@@ -5,10 +5,16 @@
     "link": "https://involvemint.io/",
     "linkLabel": "involveMINT's Website →",
     "description": "In partnership with involveMINT, we're building a community-based circular economy where residents earn \"Impact Credits\" through social and environmental activities — engaging Pittsburgh youth as climate changemakers.",
-    "photo": "",
+    "photo": "table-to-farm",
     "metrics": [
-      { "num": "73,000", "lbl": "lbs food waste diverted" },
-      { "num": "10+", "lbl": "partner organizations" }
+      {
+        "num": "$521,500",
+        "lbl": "Total economic output generated through involveMint"
+      },
+      {
+        "num": "60+",
+        "lbl": "Community partnerships and collaboration established"
+      }
     ]
   },
   {
@@ -19,8 +25,14 @@
     "description": "Pittsburgh joins 25+ hubs in the U.S. Shred the Debt campaign with Undue Medical Debt — every dollar donated erases $100 of medical debt.",
     "photo": "",
     "metrics": [
-      { "num": "$10K", "lbl": "hub fundraising goal" },
-      { "num": "$100K", "lbl": "debt to be erased" }
+      {
+        "num": "$10K",
+        "lbl": "hub fundraising goal"
+      },
+      {
+        "num": "$100K",
+        "lbl": "debt to be erased"
+      }
     ]
   }
 ]
