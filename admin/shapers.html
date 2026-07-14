@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Events Admin · Global Shapers Pittsburgh</title>
+<title>Shaper Links Admin · Global Shapers Pittsburgh</title>
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -48,8 +48,8 @@
   .connect-row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
   .field { display:flex; flex-direction:column; gap:6px; }
   .field label { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
-  .field input, .field select { padding:10px 12px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-mono); font-size:0.82rem; color:var(--ink); }
-  .field input:focus, .field select:focus { outline:none; border-color:var(--blue); }
+  .field input { padding:10px 12px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-mono); font-size:0.82rem; color:var(--ink); }
+  .field input:focus { outline:none; border-color:var(--blue); }
   .field.grow { flex:1; min-width:240px; }
   details.help { margin-top:14px; }
   details.help summary { cursor:pointer; font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); }
@@ -68,25 +68,19 @@
   .btn-ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line-2); }
   .btn-ghost:not(:disabled):hover { border-color:var(--blue); color:var(--blue); }
 
-  /* editor */
-  .card { background:var(--surface); border:1px solid var(--line); padding:18px; margin-bottom:14px; display:grid; grid-template-columns:150px 1fr auto; gap:18px; align-items:start; }
-  .photo-slot { width:150px; }
-  .photo-box { position:relative; width:150px; aspect-ratio:4/3; overflow:hidden; cursor:pointer; background:var(--blue-tint); border:1px solid var(--line-2); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); text-align:center; }
-  .photo-box img { width:100%; height:100%; object-fit:cover; display:block; }
-  .photo-box .cam { position:absolute; inset:auto 0 0 0; background:rgba(11,31,91,0.72); color:#fff; font-size:0.5rem; letter-spacing:0.08em; text-transform:uppercase; padding:3px 0; text-align:center; }
-  .photo-box input { display:none; }
-  .photo-clear { display:block; width:100%; margin-top:6px; background:none; border:1px solid var(--line-2); font-family:var(--font-mono); font-size:0.52rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--slate); padding:4px 0; cursor:pointer; }
-  .photo-clear:hover { border-color:var(--red); color:var(--red); }
-  .photo-clear:disabled { opacity:0.3; cursor:not-allowed; }
+  .card { background:var(--surface); border:1px solid var(--line); padding:16px 18px; margin-bottom:12px; display:grid; grid-template-columns:1fr auto; gap:14px; align-items:start; }
   .fields { display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .fields input[type=text], .fields textarea { width:100%; padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.92rem; color:var(--ink); }
+  .fields input:focus, .fields textarea:focus { outline:none; border-color:var(--blue); }
+  .fields .f-cat { font-weight:600; font-size:1rem; }
+  .fields textarea { min-height:52px; resize:vertical; line-height:1.5; }
   .fields .frow { display:flex; gap:8px; flex-wrap:wrap; }
-  .fields input[type=text], .fields textarea, .fields select { width:100%; padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.92rem; color:var(--ink); }
-  .fields input:focus, .fields textarea:focus, .fields select:focus { outline:none; border-color:var(--blue); }
-  .fields .f-title { font-weight:600; font-size:1rem; }
-  .fields textarea { min-height:72px; resize:vertical; line-height:1.5; }
-  .fields .half { flex:1; min-width:150px; }
-  .fields .hint { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.05em; color:var(--mute); }
+  .fields .half { flex:1; min-width:160px; }
+  .fields .status { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.06em; text-transform:uppercase; }
+  .fields .status.live { color:var(--green); } .fields .status.empty { color:var(--mute); }
+  .actions { display:flex; flex-direction:column; gap:4px; }
   .icon-btn { background:none; border:1px solid var(--line-2); width:30px; height:30px; cursor:pointer; font-size:0.85rem; color:var(--slate); display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s; }
+  .icon-btn:hover { border-color:var(--blue); color:var(--blue); }
   .icon-btn.del:hover { border-color:var(--red); color:var(--red); }
   .empty { border:1px dashed var(--line-2); background:var(--surface); padding:22px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.72rem; }
 
@@ -100,7 +94,7 @@
   .toast { position:fixed; left:50%; bottom:88px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.06em; padding:13px 22px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:200; }
   .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
   .note { font-size:0.85rem; color:var(--mute); margin-top:10px; line-height:1.55; }
-  @media (max-width:640px) { .card { grid-template-columns:1fr; } .photo-slot, .photo-box { width:100%; } .card .actions { justify-self:end; } }
+  @media (max-width:640px) { .card { grid-template-columns:1fr; } .actions { flex-direction:row; justify-content:flex-end; } }
 </style>
 </head>
 <body>
@@ -109,11 +103,11 @@
     <div class="bar-inner">
       <div class="id">
         <img src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh">
-        <div><b>Events Admin</b><span class="sub">Events Manager</span></div>
+        <div><b>Shaper Links</b><span class="sub">Members Resources</span></div>
       </div>
       <div class="bar-right">
         <div class="conn" id="conn"><span class="dot"></span><span id="conn-text">Not connected</span></div>
-        <a class="back" href="../index.html">View site →</a>
+        <a class="back" href="../shapers.html">View page →</a>
       </div>
     </div>
   </header>
@@ -121,12 +115,12 @@
   <div class="wrap">
     <nav class="admin-nav">
       <a href="photos.html">Photos &amp; Roster</a>
-      <a href="events.html" class="active">Events</a>
+      <a href="events.html">Events</a>
       <a href="projects.html">Projects</a>
-      <a href="shapers.html">Shaper Links</a>
+      <a href="shapers.html" class="active">Shaper Links</a>
     </nav>
-    <h1>EVENTS MANAGER</h1>
-    <p class="lead">Add or remove events, edit the details, and attach a photo if you have one. Hit <b>Publish</b> and it's live on the site.</p>
+    <h1>SHAPER LINKS</h1>
+    <p class="lead">Edit the resource cards on the members-only <b>Shaper Resources</b> page. Add a link to any card — cards with no link show an <b>[ADD LINK]</b> placeholder on the site. Hit <b>Publish</b> to go live.</p>
 
     <div class="sec-label"><span class="step-n">1</span> Connect to the website</div>
     <div class="panel" id="connect-panel">
@@ -155,9 +149,9 @@
       </details>
     </div>
 
-    <div class="sec-label"><span class="step-n">2</span> Your events</div>
-    <div id="editor"><div class="empty">Connect above to load your events.</div></div>
-    <button class="btn btn-ghost" id="add" style="margin-top:6px;" disabled>+ Add event</button>
+    <div class="sec-label"><span class="step-n">2</span> Resource cards</div>
+    <div id="editor"><div class="empty">Connect above to load the resource cards.</div></div>
+    <button class="btn btn-ghost" id="add" style="margin-top:6px;" disabled>+ Add card</button>
     <div class="log" id="log"></div>
   </div>
 
@@ -173,11 +167,10 @@
 <script>
 (function () {
   "use strict";
-  var MAX_EDGE = 1600, JPG_Q = 0.82, WEBP_Q = 0.80;
   var LS_TOKEN = 'gs_photo_token', LS_REPO = 'gs_photo_repo';
-  var MANIFEST = 'assets/events/events.json', DIR = 'assets/events/';
+  var MANIFEST = 'data/resources.json';
 
-  var items = [], removedPhotos = [], uid = 0, connected = false, publishing = false, dirty = false, loaded = false;
+  var items = [], uid = 0, connected = false, publishing = false, dirty = false, loaded = false;
 
   var el = function (id) { return document.getElementById(id); };
   var E = {
@@ -186,114 +179,70 @@
     conn: el('conn'), connText: el('conn-text'), publish: el('publish'), summary: el('summary'), log: el('log'), toast: el('toast')
   };
 
-  function slugify(s) { s = String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); return s || 'event'; }
   function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
   function toast(msg) { E.toast.textContent = msg; E.toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { E.toast.classList.remove('show'); }, 2400); }
-  function allPhotoBases() { var m = {}; items.forEach(function (x) { if (x.photo) m[x.photo] = true; }); return m; }
-  function uniqueBase(slug) { var used = allPhotoBases(); if (!used[slug]) return slug; var i = 2, b; do { b = slug + '-' + i; i++; } while (used[b]); return b; }
 
-  // ---- image optimize (mirrors photos.html) ----
-  function optimizeFile(file) {
-    var bmpP = ('createImageBitmap' in window)
-      ? createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return loadViaImg(file); })
-      : loadViaImg(file);
-    return bmpP.then(function (bmp) {
-      var w = bmp.width, h = bmp.height, scale = Math.min(1, MAX_EDGE / Math.max(w, h));
-      var ow = Math.round(w * scale), oh = Math.round(h * scale);
-      var c = document.createElement('canvas'); c.width = ow; c.height = oh;
-      var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, ow, oh); x.drawImage(bmp, 0, 0, ow, oh);
-      if (bmp.close) bmp.close();
-      return Promise.all([toBlob(c, 'image/jpeg', JPG_Q), toBlob(c, 'image/webp', WEBP_Q)]).then(function (b) { return { jpg: b[0], webp: b[1] }; });
-    });
-  }
-  function loadViaImg(file) { return new Promise(function (res, rej) { var url = URL.createObjectURL(file), img = new Image(); img.onload = function () { URL.revokeObjectURL(url); res(img); }; img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('decode failed')); }; img.src = url; }); }
-  function toBlob(canvas, type, q) { return new Promise(function (res) { canvas.toBlob(function (b) { if (!b && type === 'image/webp') canvas.toBlob(function (b2) { res(b2); }, 'image/jpeg', q); else res(b); }, type, q); }); }
-
-  // ---- model ----
-  function newItem() { return { id: ++uid, title: '', date: '', description: '', link: '', linkLabel: '', photo: '', fromRepo: false, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false }; }
+  function newItem() { return { id: ++uid, cat: '', desc: '', link: '', linkLabel: '' }; }
   function addItem() { items.push(newItem()); dirty = true; render(); update(); }
-  function removeItem(it) {
-    if (it.fromRepo && it.photo && removedPhotos.indexOf(it.photo) === -1) removedPhotos.push(it.photo);
-    if (it.thumbUrl) URL.revokeObjectURL(it.thumbUrl);
-    items = items.filter(function (x) { return x.id !== it.id; });
-    dirty = true; render(); update();
-  }
-  function clearPhoto(it) {
-    if (it.fromRepo && it.photo && removedPhotos.indexOf(it.photo) === -1) removedPhotos.push(it.photo);
-    if (it.thumbUrl) { URL.revokeObjectURL(it.thumbUrl); it.thumbUrl = ''; }
-    it.photo = ''; it.blobJpg = null; it.blobWebp = null; it.photoChanged = true; dirty = true; render(); update();
-  }
-  function addPhoto(it, file) {
-    if (!file || file.type.indexOf('image/') !== 0) { toast('Choose an image file'); return; }
-    it.busy = true; it.error = false; render(); update();
-    optimizeFile(file).then(function (r) {
-      if (it.thumbUrl) URL.revokeObjectURL(it.thumbUrl);
-      it.blobJpg = r.jpg; it.blobWebp = r.webp; it.thumbUrl = URL.createObjectURL(r.jpg);
-      it.photo = it.photo || uniqueBase(slugify(it.title || 'event')); it.photoChanged = true; it.busy = false;
-      dirty = true; render(); update();
-    }).catch(function () { it.busy = false; it.error = true; toast('Could not process that photo'); render(); });
+  function removeItem(it) { items = items.filter(function (x) { return x.id !== it.id; }); dirty = true; render(); update(); }
+  function move(it, dir) {
+    var i = items.indexOf(it), j = i + dir;
+    if (j < 0 || j >= items.length) return;
+    items[i] = items[j]; items[j] = it; dirty = true; render(); update();
   }
 
-  // ---- render ----
   function render() {
-    if (!connected && !loaded) { E.editor.innerHTML = '<div class="empty">Connect above to load your events.</div>'; return; }
-    if (!items.length) { E.editor.innerHTML = '<div class="empty">No events yet — use “Add event”.</div>'; return; }
+    if (!connected && !loaded) { E.editor.innerHTML = '<div class="empty">Connect above to load the resource cards.</div>'; return; }
+    if (!items.length) { E.editor.innerHTML = '<div class="empty">No cards yet — use “Add card”.</div>'; return; }
     E.editor.innerHTML = '';
     items.forEach(function (it) { E.editor.appendChild(row(it)); });
   }
   function row(it) {
     var card = document.createElement('div'); card.className = 'card'; card.dataset.id = it.id;
-    var inner = it.busy ? '…' : (it.thumbUrl ? '<img alt="" src="' + it.thumbUrl + '">' : (it.photo ? '<img alt="" src="../' + DIR + escapeAttr(it.photo) + '.jpg">' : 'Add photo<br>(optional)'));
+    var status = it.link
+      ? '<span class="status live">● linked</span>'
+      : '<span class="status empty">○ shows [ADD LINK] on the site</span>';
     card.innerHTML =
-      '<div class="photo-slot">' +
-        '<label class="photo-box" title="Upload photo">' + inner + '<span class="cam">Photo</span><input type="file" accept="image/*"></label>' +
-        '<button class="photo-clear" type="button"' + (it.photo || it.thumbUrl ? '' : ' disabled') + '>Clear</button>' +
-      '</div>' +
       '<div class="fields">' +
-        '<input class="f-title" type="text" placeholder="Event title" value="' + escapeAttr(it.title) + '">' +
+        '<input class="f-cat" type="text" placeholder="Category (e.g. Hub governance)" value="' + escapeAttr(it.cat) + '">' +
+        '<textarea class="f-desc" placeholder="Short description">' + escapeHtml(it.desc) + '</textarea>' +
         '<div class="frow">' +
-          '<input class="f-date half" type="text" placeholder="Date (e.g. May 15–17, 2026)" value="' + escapeAttr(it.date) + '">' +
+          '<input class="f-link half" type="text" placeholder="Link URL (leave blank for [ADD LINK])" value="' + escapeAttr(it.link) + '">' +
+          '<input class="f-linklabel half" type="text" placeholder="Link label (e.g. Open the charter →)" value="' + escapeAttr(it.linkLabel) + '">' +
         '</div>' +
-        '<textarea class="f-desc" placeholder="Description">' + escapeHtml(it.description) + '</textarea>' +
-        '<div class="frow">' +
-          '<input class="f-link half" type="text" placeholder="Button link (https://… or #)" value="' + escapeAttr(it.link) + '">' +
-          '<input class="f-linklabel half" type="text" placeholder="Button label (e.g. Visit Retreat Site)" value="' + escapeAttr(it.linkLabel) + '">' +
-        '</div>' +
-        '<div class="hint">' + (it.busy ? 'optimizing photo…' : it.error ? 'photo failed' : it.photo ? DIR + escapeHtml(it.photo) + '.jpg' : 'no photo') + '</div>' +
+        status +
       '</div>' +
-      '<div class="actions"><button class="icon-btn del" title="Remove event">✕</button></div>';
-    card.querySelector('.photo-box input').addEventListener('change', function (e) { if (e.target.files && e.target.files[0]) addPhoto(it, e.target.files[0]); e.target.value = ''; });
-    card.querySelector('.photo-clear').addEventListener('click', function () { clearPhoto(it); });
-    card.querySelector('.f-title').addEventListener('input', function (e) { it.title = e.target.value; dirty = true; update(); });
-    card.querySelector('.f-date').addEventListener('input', function (e) { it.date = e.target.value; dirty = true; update(); });
-    card.querySelector('.f-desc').addEventListener('input', function (e) { it.description = e.target.value; dirty = true; update(); });
+      '<div class="actions">' +
+        '<button class="icon-btn up" title="Move up">↑</button>' +
+        '<button class="icon-btn down" title="Move down">↓</button>' +
+        '<button class="icon-btn del" title="Remove card">✕</button>' +
+      '</div>';
+    card.querySelector('.f-cat').addEventListener('input', function (e) { it.cat = e.target.value; dirty = true; update(); });
+    card.querySelector('.f-desc').addEventListener('input', function (e) { it.desc = e.target.value; dirty = true; update(); });
     card.querySelector('.f-link').addEventListener('input', function (e) { it.link = e.target.value; dirty = true; update(); });
     card.querySelector('.f-linklabel').addEventListener('input', function (e) { it.linkLabel = e.target.value; dirty = true; update(); });
+    card.querySelector('.up').addEventListener('click', function () { move(it, -1); });
+    card.querySelector('.down').addEventListener('click', function () { move(it, 1); });
     card.querySelector('.del').addEventListener('click', function () { removeItem(it); });
     return card;
   }
 
   function update() {
-    var busy = items.some(function (x) { return x.busy; });
     E.add.disabled = !connected;
-    E.publish.disabled = !(connected && dirty && !busy && !publishing);
+    E.publish.disabled = !(connected && dirty && !publishing);
     if (!connected) E.summary.innerHTML = 'Connect a token to publish.';
     else if (!dirty) E.summary.innerHTML = 'Everything is up to date.';
-    else if (busy) E.summary.innerHTML = 'Optimizing photos…';
-    else E.summary.innerHTML = '<b>' + items.length + '</b> event' + (items.length === 1 ? '' : 's') + ' — ready to publish.';
+    else E.summary.innerHTML = '<b>' + items.length + '</b> card' + (items.length === 1 ? '' : 's') + ' — ready to publish.';
   }
 
-  // ---- GitHub API ----
   function cfg() { return { owner: E.owner.value.trim(), repo: E.repo.value.trim(), branch: E.branch.value.trim() || 'main', token: E.token.value.trim() }; }
   function apiUrl(path) { var c = cfg(); return 'https://api.github.com/repos/' + c.owner + '/' + c.repo + '/contents/' + path; }
   function headers() { return { 'Authorization': 'Bearer ' + cfg().token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; }
   function utf8ToB64(s) { return btoa(unescape(encodeURIComponent(s))); }
   function b64ToUtf8(b) { return decodeURIComponent(escape(atob(b.replace(/\n/g, '')))); }
-  function blobToB64(blob) { return new Promise(function (res, rej) { var fr = new FileReader(); fr.onload = function () { res(String(fr.result).split(',')[1]); }; fr.onerror = rej; fr.readAsDataURL(blob); }); }
   function ghGet(path) { return fetch(apiUrl(path) + '?ref=' + cfg().branch, { headers: headers(), cache: 'no-store' }).then(function (r) { if (r.status === 404) return null; if (!r.ok) return r.text().then(function (t) { throw new Error('GET ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); }); }
   function ghPut(path, contentB64, message, sha) { var body = { message: message, content: contentB64, branch: cfg().branch }; if (sha) body.sha = sha; return fetch(apiUrl(path), { method: 'PUT', headers: headers(), body: JSON.stringify(body) }).then(function (r) { if (!r.ok) return r.text().then(function (t) { throw new Error('PUT ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); }); }
-  function ghDelete(path, message, sha) { return fetch(apiUrl(path), { method: 'DELETE', headers: headers(), body: JSON.stringify({ message: message, branch: cfg().branch, sha: sha }) }).then(function (r) { if (!r.ok && r.status !== 404) return r.text().then(function (t) { throw new Error('DELETE ' + path + ' → ' + r.status + ' ' + t); }); return true; }); }
 
   function setConn(state, text) { E.conn.className = 'conn' + (state ? ' ' + state : ''); E.connText.textContent = text; }
 
@@ -309,7 +258,7 @@
         connected = true; setConn('ok', 'Connected'); E.forget.hidden = false;
         localStorage.setItem(LS_TOKEN, c.token);
         localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch }));
-        toast('Connected — loaded ' + items.length + ' event(s)'); render(); update();
+        toast('Connected — loaded ' + items.length + ' card(s)'); render(); update();
       })
       .catch(function (e) { connected = false; setConn('err', 'Failed'); toast(e.message || 'Connection failed'); })
       .then(function () { E.connect.disabled = false; });
@@ -317,12 +266,10 @@
 
   function load() {
     return ghGet(MANIFEST).then(function (res) {
-      items = []; removedPhotos = []; dirty = false;
+      items = []; dirty = false;
       var list = [];
       if (res && res.content) { try { list = JSON.parse(b64ToUtf8(res.content)) || []; } catch (e) { list = []; } }
-      list.forEach(function (m) {
-        items.push({ id: ++uid, title: m.title || '', date: m.date || '', description: m.description || '', link: m.link || '', linkLabel: m.linkLabel || '', photo: m.photo || '', fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false });
-      });
+      list.forEach(function (m) { items.push({ id: ++uid, cat: m.cat || '', desc: m.desc || '', link: m.link || '', linkLabel: m.linkLabel || '' }); });
       loaded = true; render();
     });
   }
@@ -332,54 +279,26 @@
   function publish() {
     if (publishing || !dirty) return;
     publishing = true; update(); E.publish.disabled = true; E.log.innerHTML = ''; E.log.classList.add('show');
-    log('Publishing events…', 'dim');
-    var chain = Promise.resolve();
-    items.forEach(function (it) {
-      if (it.photoChanged && it.blobJpg && it.photo) {
-        chain = chain.then(function () {
-          log('↑ ' + it.photo + '.jpg …');
-          return Promise.all([blobToB64(it.blobJpg), it.blobWebp ? blobToB64(it.blobWebp) : null]).then(function (b) {
-            return ghGet(DIR + it.photo + '.jpg').then(function (r) { return ghPut(DIR + it.photo + '.jpg', b[0], 'events: add photo ' + it.photo + '.jpg', r ? r.sha : null); })
-              .then(function () { if (!b[1]) return; return ghGet(DIR + it.photo + '.webp').then(function (r) { return ghPut(DIR + it.photo + '.webp', b[1], 'events: add photo ' + it.photo + '.webp', r ? r.sha : null); }); })
-              .then(function () { log('  ✓ uploaded ' + it.photo, 'ok'); });
-          });
-        });
-      }
-    });
-    removedPhotos.forEach(function (base) {
-      chain = chain.then(function () {
-        if (items.some(function (x) { return x.photo === base; })) return;
-        log('✕ removing ' + base + ' …');
-        return Promise.all([
-          ghGet(DIR + base + '.jpg').then(function (r) { return r ? ghDelete(DIR + base + '.jpg', 'events: remove photo ' + base + '.jpg', r.sha) : null; }),
-          ghGet(DIR + base + '.webp').then(function (r) { return r ? ghDelete(DIR + base + '.webp', 'events: remove photo ' + base + '.webp', r.sha) : null; })
-        ]).then(function () { log('  ✓ removed ' + base, 'ok'); });
-      });
-    });
-    chain = chain.then(function () {
-      log('↻ updating events.json …');
-      var out = items.map(function (it) { return { title: it.title, date: it.date, description: it.description, link: it.link, linkLabel: it.linkLabel, photo: it.photo || '' }; });
-      var json = JSON.stringify(out, null, 2) + '\n';
-      return ghGet(MANIFEST).then(function (r) { return ghPut(MANIFEST, utf8ToB64(json), 'events: update events (' + out.length + ')', r ? r.sha : null); }).then(function () { log('  ✓ saved', 'ok'); });
-    });
-    chain.then(function () {
-      items.forEach(function (it) { it.fromRepo = true; it.photoChanged = false; });
-      removedPhotos = []; dirty = false;
-      log('✓ Done. Live on the site in ~1 minute (GitHub Pages redeploy).', 'ok');
-      toast('Published! Live in ~1 min.'); publishing = false; render(); update();
-    }).catch(function (e) { log('✗ ' + (e.message || 'publish failed'), 'err'); toast('Publish failed — see the log'); publishing = false; update(); });
+    log('Publishing resource cards…', 'dim');
+    var out = items.map(function (it) { return { cat: it.cat, desc: it.desc, link: it.link, linkLabel: it.linkLabel }; });
+    var json = JSON.stringify(out, null, 2) + '\n';
+    ghGet(MANIFEST)
+      .then(function (r) { return ghPut(MANIFEST, utf8ToB64(json), 'shapers: update resource links (' + out.length + ')', r ? r.sha : null); })
+      .then(function () {
+        dirty = false;
+        log('✓ Done. Live on the site in ~1 minute (GitHub Pages redeploy).', 'ok');
+        toast('Published! Live in ~1 min.'); publishing = false; update();
+      })
+      .catch(function (e) { log('✗ ' + (e.message || 'publish failed'), 'err'); toast('Publish failed — see the log'); publishing = false; update(); });
   }
 
-  // ---- wiring ----
   render(); update();
   E.advToggle.addEventListener('click', function () { E.adv.classList.toggle('show'); E.advToggle.textContent = (E.adv.classList.contains('show') ? '▾' : '▸') + ' Repository settings'; });
   E.connect.addEventListener('click', connect);
   E.publish.addEventListener('click', publish);
   E.add.addEventListener('click', addItem);
-  E.forget.addEventListener('click', function () { localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; loaded = false; items = []; removedPhotos = []; dirty = false; setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render(); update(); });
+  E.forget.addEventListener('click', function () { localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; loaded = false; items = []; dirty = false; setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render(); update(); });
   E.token.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
-  window.addEventListener('dragover', function (e) { e.preventDefault(); });
-  window.addEventListener('drop', function (e) { e.preventDefault(); });
   (function restore() {
     try {
       var saved = JSON.parse(localStorage.getItem(LS_REPO) || 'null');
