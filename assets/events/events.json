@@ -1,10 +1,18 @@
 [
   {
-    "title": "2026 Northeast Hubs Retreat",
-    "date": "May 15–17, 2026",
-    "description": "Pittsburgh is proud to host the 2026 Northeast Hubs retreat, May 15–17 — three days of connection across hubs, ideas, and differences.",
+    "title": "Hub Meeting",
+    "date": "July 25, 2026",
+    "description": "Join the Pittsburgh Hub at 12pm for their Hub Meeting! Information about ongoing projects and the hub agenda to the upcoming Shaper year will be discussed! ",
     "link": "",
     "linkLabel": "",
-    "photo": "2026-northeast-hubs-retreat"
+    "photo": "event"
+  },
+  {
+    "title": "Shred the Debt Fundraiser at Jeni's in Bakery Square",
+    "date": "July 30, 2026",
+    "description": "Join the Pittsburgh Hub fundraise against medical debt at Jeni's in Bakery Square from 4-7pm! ",
+    "link": "",
+    "linkLabel": "",
+    "photo": "shred-the-debt-fundraiser-at-jeni-s-in-bakery-square"
   }
 ]
