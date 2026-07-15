@@ -357,7 +357,6 @@
       catch (e) { return false; }
     }
     (function wireGate() {
-      if (checkUnlocked()) { reveal(); return; }
       var form = $('gate-form'), input = $('gate-input'), err = $('gate-err');
       form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -636,6 +635,12 @@
       var close = $('hp-close');
       if (close) close.addEventListener('click', function () { $('hub-panel').classList.remove('show'); });
     })();
+
+    // Auto-open the gate for already-unlocked visitors. This runs LAST, after
+    // every function and data array above (RESOURCES, etc.) has been defined —
+    // calling reveal()/initContent() any earlier would hit undefined values and
+    // throw before the hub data loads, wiping the page on reload.
+    if (checkUnlocked()) reveal();
 
   })();
   </script>
