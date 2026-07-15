@@ -253,19 +253,22 @@
         </div>
 
         <div class="globe-wrap">
-          <div id="globe">
-            <div class="globe-legend">
-              <div><span class="dot home"></span> Pittsburgh (home)</div>
-              <div><span class="dot hub"></span> Visiting Shapers hub</div>
-            </div>
-            <div class="globe-hint">Drag to spin · scroll to zoom · click a dot</div>
-            <div class="globe-fail" id="globe-fail">
-              The interactive globe couldn't load here.<br>Use the searchable hub list below to find a city.
-            </div>
-            <div class="hub-panel" id="hub-panel">
-              <button class="hp-close" id="hp-close" aria-label="Close">✕</button>
-              <div id="hp-body"></div>
-            </div>
+          <!-- globe.gl takes over #globe and replaces its inner HTML, so the
+               overlays below live as siblings inside .globe-wrap (not inside
+               #globe) — otherwise the legend, hint and detail panel get wiped
+               the moment the globe renders. -->
+          <div id="globe"></div>
+          <div class="globe-legend">
+            <div><span class="dot home"></span> Pittsburgh (home)</div>
+            <div><span class="dot hub"></span> Visiting Shapers hub</div>
+          </div>
+          <div class="globe-hint">Drag to spin · scroll to zoom · click a dot</div>
+          <div class="globe-fail" id="globe-fail">
+            The interactive globe couldn't load here.<br>Use the searchable hub list below to find a city.
+          </div>
+          <div class="hub-panel" id="hub-panel">
+            <button class="hp-close" id="hp-close" aria-label="Close">✕</button>
+            <div id="hp-body"></div>
           </div>
         </div>
 
