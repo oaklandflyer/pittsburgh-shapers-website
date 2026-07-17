@@ -2,20 +2,68 @@
   "title": "THE SHAPERS CALENDAR",
   "dateRange": "July 2026 – June 2027",
   "footerText": "RUNNING ALL YEAR • MONTHLY NEWSLETTER",
-  "background": "",
+  "background": "bg.jpg",
   "highlightMonth": "JUL",
   "months": [
-    { "month": "JUL", "title": "Campaign Launch", "description": "Member audit, roster refresh, Shred the Debt launch." },
-    { "month": "AUG", "title": "Pro Outreach", "description": "Target young pros 20–27; restaurant week Aug 10–16." },
-    { "month": "SEP", "title": "Selection & Transition", "description": "Select the cohort; Shred the Debt closes Sept 22." },
-    { "month": "OCT", "title": "Integration & Retreat", "description": "Hub Retreat; assign members to project committees." },
-    { "month": "NOV", "title": "Impact Launch", "description": "First CulturePGH dining event; year-end celebration." },
-    { "month": "DEC", "title": "Impact Launch · Cont.", "description": "Weekly Bridging Borders sessions; holiday service." },
-    { "month": "JAN", "title": "Mid-Year Review", "description": "Assess metrics; set spring \"Impact Sprint\" goals." },
-    { "month": "FEB", "title": "Sustainability", "description": "Continue projects; open 27–28 leadership noms." },
-    { "month": "MAR", "title": "Sustainability · Cont.", "description": "Strengthen impact; prep leadership elections." },
-    { "month": "APR", "title": "Regional & Global", "description": "NE Hub meetups; explore new collaborations." },
-    { "month": "MAY", "title": "Regional · Cont.", "description": "Support Shred the Debt national push; measure impact." },
-    { "month": "JUN", "title": "Handover & Reporting", "description": "2026–27 Impact Report; handover to new curators." }
+    {
+      "month": "JUL",
+      "title": "Campaign Launch",
+      "description": "Member audit, roster refresh, Shred the Debt launch."
+    },
+    {
+      "month": "AUG",
+      "title": "Pro Outreach",
+      "description": "Target young pros 20–27; restaurant week Aug 10–16."
+    },
+    {
+      "month": "SEP",
+      "title": "Selection & Transition",
+      "description": "Select the cohort; Shred the Debt closes Sept 22."
+    },
+    {
+      "month": "OCT",
+      "title": "Integration & Retreat",
+      "description": "Hub Retreat; assign members to project committees."
+    },
+    {
+      "month": "NOV",
+      "title": "Impact Launch",
+      "description": "First CulturePGH dining event; year-end celebration."
+    },
+    {
+      "month": "DEC",
+      "title": "Impact Launch · Cont.",
+      "description": "Weekly Bridging Borders sessions; holiday service."
+    },
+    {
+      "month": "JAN",
+      "title": "Mid-Year Review",
+      "description": "Assess metrics; set spring \"Impact Sprint\" goals."
+    },
+    {
+      "month": "FEB",
+      "title": "Sustainability",
+      "description": "Continue projects; open 27–28 leadership noms."
+    },
+    {
+      "month": "MAR",
+      "title": "Sustainability · Cont.",
+      "description": "Strengthen impact; prep leadership elections."
+    },
+    {
+      "month": "APR",
+      "title": "Regional & Global",
+      "description": "NE Hub meetups; explore new collaborations."
+    },
+    {
+      "month": "MAY",
+      "title": "Regional · Cont.",
+      "description": "Support Shred the Debt national push; measure impact."
+    },
+    {
+      "month": "JUN",
+      "title": "Handover & Reporting",
+      "description": "2026–27 Impact Report; handover to new curators."
+    }
   ]
 }
