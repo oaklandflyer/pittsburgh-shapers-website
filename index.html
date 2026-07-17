@@ -232,6 +232,82 @@
   .btn-gold { background: var(--gold); color: var(--navy); }
   .btn-gold:hover { background: #fff; color: var(--navy); transform: translateY(-2px); }
 
+  /* ---------- SHAPERS CALENDAR ---------- */
+  .calendar-block {
+    position: relative; overflow: hidden;
+    background: var(--navy) center/cover no-repeat;
+    color: #fff;
+    padding: 44px 44px 28px;
+    margin-top: 8px;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+    isolation: isolate;
+  }
+  .calendar-block::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(11,31,91,0.55) 0%, rgba(11,31,91,0.72) 100%);
+  }
+  .calendar-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap; margin-bottom: 26px;
+  }
+  .calendar-title {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(1.8rem, 4.2vw, 2.9rem);
+    letter-spacing: 0.03em; line-height: 1; color: #fff;
+  }
+  .calendar-range {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); padding-top: 6px;
+  }
+  .calendar-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.35);
+    border-left: 1px solid rgba(255,255,255,0.35);
+  }
+  .cal-cell {
+    padding: 18px 20px 22px;
+    border-right: 1px solid rgba(255,255,255,0.35);
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+    min-height: 150px;
+    display: flex; flex-direction: column;
+  }
+  .cal-cell.highlight { background: rgba(255,203,5,0.28); }
+  .cal-month {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: 1.75rem; letter-spacing: 0.05em; color: var(--gold);
+    line-height: 1; margin-bottom: 12px;
+  }
+  .cal-title {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: #fff; margin-bottom: 10px; font-weight: 700;
+  }
+  .cal-desc {
+    font-family: var(--font-body); font-size: 0.9rem;
+    line-height: 1.5; color: rgba(255,255,255,0.82);
+  }
+  .calendar-foot {
+    margin-top: 22px; font-family: var(--font-mono);
+    font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .calendar-foot .dot-sep {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold); vertical-align: middle; margin: 0 6px;
+  }
+  @media (max-width: 900px) {
+    .calendar-block { padding: 32px 26px 22px; }
+    .calendar-grid { grid-template-columns: repeat(2, 1fr); }
+    .cal-cell { min-height: 130px; padding: 16px 16px 18px; }
+  }
+  @media (max-width: 480px) {
+    .calendar-block { padding: 26px 18px 18px; }
+    .calendar-grid { grid-template-columns: 1fr; }
+    .cal-cell { min-height: 0; }
+    .calendar-title { font-size: 1.6rem; }
+  }
+
   /* ---------- PROJECTS ---------- */
   .projects { display: grid; gap: 18px; }
   .project {
@@ -420,6 +496,7 @@
       <div class="nav-links" id="nav-links">
         <a href="#overview">Overview</a>
         <a href="#events">Events</a>
+        <a href="#calendar">Calendar</a>
         <a href="#projects">Projects</a>
         <a href="#gallery">Photos</a>
         <a href="#roster">Team</a>
@@ -506,6 +583,26 @@
             <a href="#" class="btn btn-gold">Visit Retreat Site</a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHAPERS CALENDAR -->
+  <section id="calendar">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Calendar</div>
+        <h2 class="sec-title">THE YEAR AHEAD</h2>
+        <p class="sec-intro">Our twelve-month roadmap — campaigns, cohort transitions, and impact milestones.</p>
+      </div>
+      <!-- Rendered from assets/calendar/calendar.json — manage at /admin/calendar.html -->
+      <div class="calendar-block" id="calendar-block">
+        <div class="calendar-head">
+          <div class="calendar-title" id="cal-title">THE SHAPERS CALENDAR</div>
+          <div class="calendar-range" id="cal-range">July 2026 – June 2027</div>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <div class="calendar-foot" id="cal-foot">RUNNING ALL YEAR<span class="dot-sep"></span>MONTHLY NEWSLETTER</div>
       </div>
     </div>
   </section>
@@ -711,6 +808,56 @@
           if (!Array.isArray(list) || !list.length) return; // keep static fallback
           block.innerHTML = '<div class="sec-label">Featured</div>' + list.map(eventRow).join('');
         })
+        .catch(function () {});
+    })();
+
+    // Calendar — driven by assets/calendar/calendar.json. Manage at /admin/calendar.html.
+    (function () {
+      var block = document.getElementById('calendar-block');
+      var grid = document.getElementById('calendar-grid');
+      if (!block || !grid) return;
+      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      var DEFAULTS = [
+        { month: 'JUL', title: '', description: '' }, { month: 'AUG', title: '', description: '' },
+        { month: 'SEP', title: '', description: '' }, { month: 'OCT', title: '', description: '' },
+        { month: 'NOV', title: '', description: '' }, { month: 'DEC', title: '', description: '' },
+        { month: 'JAN', title: '', description: '' }, { month: 'FEB', title: '', description: '' },
+        { month: 'MAR', title: '', description: '' }, { month: 'APR', title: '', description: '' },
+        { month: 'MAY', title: '', description: '' }, { month: 'JUN', title: '', description: '' }
+      ];
+      function render(data) {
+        var title = data.title || 'THE SHAPERS CALENDAR';
+        var range = data.dateRange || '';
+        var foot = data.footerText || '';
+        var highlight = (data.highlightMonth || '').toUpperCase();
+        var months = (Array.isArray(data.months) && data.months.length === 12) ? data.months : DEFAULTS;
+        document.getElementById('cal-title').textContent = title;
+        document.getElementById('cal-range').textContent = range;
+        var footEl = document.getElementById('cal-foot');
+        if (foot) {
+          var parts = foot.split(/\s*[•·]\s*/);
+          footEl.innerHTML = parts.map(esc).join('<span class="dot-sep"></span>');
+        } else {
+          footEl.textContent = '';
+        }
+        grid.innerHTML = months.map(function (m) {
+          var mo = (m.month || '').toUpperCase();
+          var cls = 'cal-cell' + (highlight && mo === highlight ? ' highlight' : '');
+          return '<div class="' + cls + '">' +
+            '<div class="cal-month">' + esc(mo) + '</div>' +
+            (m.title ? '<div class="cal-title">' + esc(m.title) + '</div>' : '') +
+            (m.description ? '<div class="cal-desc">' + esc(m.description) + '</div>' : '') +
+          '</div>';
+        }).join('');
+        if (data.background) {
+          block.style.backgroundImage = "url('assets/calendar/" + encodeURIComponent(data.background) + "')";
+        } else {
+          block.style.backgroundImage = '';
+        }
+      }
+      fetch('assets/calendar/calendar.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) { if (data) render(data); })
         .catch(function () {});
     })();
 
