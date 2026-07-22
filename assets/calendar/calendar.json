@@ -1,7 +1,7 @@
 {
   "title": "THE SHAPERS CALENDAR",
   "dateRange": "July 2026 – June 2027",
-  "footerText": "RUNNING ALL YEAR • MONTHLY NEWSLETTER",
+  "footerText": "RUNNING ALL YEAR ",
   "background": "bg.jpg",
   "highlightMonth": "JUL",
   "months": [
@@ -13,7 +13,7 @@
     {
       "month": "AUG",
       "title": "Pro Outreach",
-      "description": "Target young pros 20–27; restaurant week Aug 10–16."
+      "description": "Target young pros 20–27"
     },
     {
       "month": "SEP",
