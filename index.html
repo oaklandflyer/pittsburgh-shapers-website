@@ -490,7 +490,8 @@
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px) {
     .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .hero-visual { aspect-ratio: 16/10; max-height: 340px; }
+    .hero-visual { aspect-ratio: auto; max-height: none; flex-direction: column; align-items: stretch; justify-content: flex-start; }
+    .hero-visual .tagline { position: static; left: auto; bottom: auto; margin: 2px 40px 34px; }
     .cards-2, .roster { grid-template-columns: 1fr; }
     .roster { grid-template-columns: 1fr 1fr; }
     .gallery { grid-template-columns: repeat(2, 1fr); }
