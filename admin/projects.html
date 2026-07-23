@@ -94,6 +94,8 @@
   .mini-btn:hover { border-color:var(--blue); color:var(--blue); }
   .icon-btn { background:none; border:1px solid var(--line-2); width:30px; height:30px; cursor:pointer; font-size:0.85rem; color:var(--slate); display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s; flex-shrink:0; }
   .icon-btn.del:hover { border-color:var(--red); color:var(--red); }
+  .icon-btn:disabled { opacity:0.3; cursor:not-allowed; }
+  .card .actions { display:flex; flex-direction:column; gap:6px; }
   .empty { border:1px dashed var(--line-2); background:var(--surface); padding:22px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.72rem; }
 
   .publish { position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(11,31,91,0.06); z-index:40; }
@@ -133,7 +135,7 @@
       <a href="shapers.html">Shaper Links</a>
     </nav>
     <h1>PROJECTS MANAGER</h1>
-    <p class="lead">Add or remove projects, mark each one <b>Ongoing</b> or <b>Prior</b>, edit the details and impact metrics, and attach a photo if you have one. Hit <b>Publish</b> to go live.</p>
+    <p class="lead">Add or remove projects, mark each one <b>Upcoming</b>, <b>Ongoing</b> or <b>Prior</b>, reorder them with the <b>▲ ▼</b> arrows, edit the details and impact metrics, and attach a photo if you have one. Projects appear on the site in the order shown here. Hit <b>Publish</b> to go live.</p>
 
     <div class="sec-label"><span class="step-n">1</span> Connect to the website</div>
     <div class="panel" id="connect-panel">
@@ -239,6 +241,12 @@
       dirty = true; render(); update();
     }).catch(function () { it.busy = false; it.error = true; toast('Could not process that photo'); render(); });
   }
+  function moveItem(it, dir) {
+    var i = items.indexOf(it), j = i + dir;
+    if (i === -1 || j < 0 || j >= items.length) return;
+    items[i] = items[j]; items[j] = it;
+    dirty = true; render(); update();
+  }
   function addMetric(it) { it.metrics.push({ num: '', lbl: '' }); dirty = true; render(); update(); }
   function removeMetric(it, idx) { it.metrics.splice(idx, 1); dirty = true; render(); update(); }
 
@@ -249,6 +257,7 @@
     items.forEach(function (it) { E.editor.appendChild(row(it)); });
   }
   function row(it) {
+    var idx = items.indexOf(it), last = items.length - 1;
     var card = document.createElement('div'); card.className = 'card'; card.dataset.id = it.id;
     var inner = it.busy ? '…' : (it.thumbUrl ? '<img alt="" src="' + it.thumbUrl + '">' : (it.photo ? '<img alt="" src="../' + DIR + escapeAttr(it.photo) + '.jpg">' : 'Add photo<br>(optional)'));
     var metricsHtml = it.metrics.map(function (m, i) {
@@ -267,7 +276,8 @@
         '<div class="frow">' +
           '<input class="f-title" type="text" placeholder="Project title" value="' + escapeAttr(it.title) + '">' +
           '<select class="f-status">' +
-            '<option value="active"' + (it.status !== 'prior' ? ' selected' : '') + '>Ongoing project</option>' +
+            '<option value="upcoming"' + (it.status === 'upcoming' ? ' selected' : '') + '>Upcoming project</option>' +
+            '<option value="active"' + (it.status === 'active' ? ' selected' : '') + '>Ongoing project</option>' +
             '<option value="prior"' + (it.status === 'prior' ? ' selected' : '') + '>Prior project</option>' +
           '</select>' +
         '</div>' +
@@ -281,7 +291,11 @@
         '<button class="mini-btn add-metric" type="button">+ Add metric</button>' +
         '<div class="hint">' + (it.busy ? 'optimizing photo…' : it.error ? 'photo failed' : it.photo ? DIR + escapeHtml(it.photo) + '.jpg' : 'no photo') + '</div>' +
       '</div>' +
-      '<div class="actions"><button class="icon-btn del" title="Remove project">✕</button></div>';
+      '<div class="actions">' +
+        '<button class="icon-btn up" title="Move up"' + (idx <= 0 ? ' disabled' : '') + '>▲</button>' +
+        '<button class="icon-btn down" title="Move down"' + (idx >= last ? ' disabled' : '') + '>▼</button>' +
+        '<button class="icon-btn del" title="Remove project">✕</button>' +
+      '</div>';
     card.querySelector('.photo-box input').addEventListener('change', function (e) { if (e.target.files && e.target.files[0]) addPhoto(it, e.target.files[0]); e.target.value = ''; });
     card.querySelector('.photo-clear').addEventListener('click', function () { clearPhoto(it); });
     card.querySelector('.f-title').addEventListener('input', function (e) { it.title = e.target.value; dirty = true; update(); });
@@ -297,6 +311,8 @@
       mr.querySelector('.del-metric').addEventListener('click', function () { removeMetric(it, i); });
     });
     card.querySelector('.del').addEventListener('click', function () { removeItem(it); });
+    card.querySelector('.up').addEventListener('click', function () { moveItem(it, -1); });
+    card.querySelector('.down').addEventListener('click', function () { moveItem(it, 1); });
     return card;
   }
 
@@ -346,7 +362,7 @@
       var list = [];
       if (res && res.content) { try { list = JSON.parse(b64ToUtf8(res.content)) || []; } catch (e) { list = []; } }
       list.forEach(function (m) {
-        items.push({ id: ++uid, title: m.title || '', status: m.status === 'prior' ? 'prior' : 'active', link: m.link || '', linkLabel: m.linkLabel || '', description: m.description || '', metrics: Array.isArray(m.metrics) ? m.metrics.map(function (x) { return { num: x.num || '', lbl: x.lbl || '' }; }) : [], photo: m.photo || '', fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false });
+        items.push({ id: ++uid, title: m.title || '', status: (m.status === 'prior' || m.status === 'upcoming') ? m.status : 'active', link: m.link || '', linkLabel: m.linkLabel || '', description: m.description || '', metrics: Array.isArray(m.metrics) ? m.metrics.map(function (x) { return { num: x.num || '', lbl: x.lbl || '' }; }) : [], photo: m.photo || '', fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false });
       });
       loaded = true; render();
     });
