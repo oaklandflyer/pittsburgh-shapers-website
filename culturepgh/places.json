@@ -1,0 +1,85 @@
+{
+  "note": "CulturePGH map data. Add local and immigrant-owned businesses here. lat/lng are approximate — correct them by right-clicking the spot in Google Maps and copying the coordinates. category drives the marker color: 'restaurant', 'market', or 'cafe'.",
+  "places": [
+    {
+      "name": "Gaucho Parrilla Argentina",
+      "category": "restaurant",
+      "cuisine": "Argentine",
+      "neighborhood": "Strip District",
+      "blurb": "Wood-fired Argentine grill from an Argentine-American family.",
+      "lat": 40.4506,
+      "lng": -79.9853,
+      "url": "https://www.eatgaucho.com/"
+    },
+    {
+      "name": "Apteka",
+      "category": "restaurant",
+      "cuisine": "Central & Eastern European",
+      "neighborhood": "Bloomfield",
+      "blurb": "Plant-based Central & Eastern European cooking.",
+      "lat": 40.4623,
+      "lng": -79.9486,
+      "url": "https://www.aptekapgh.com/"
+    },
+    {
+      "name": "Pusadee's Garden",
+      "category": "restaurant",
+      "cuisine": "Thai",
+      "neighborhood": "Lawrenceville",
+      "blurb": "Family-run Thai kitchen with a garden dining room.",
+      "lat": 40.4708,
+      "lng": -79.9606,
+      "url": "https://www.pusadeesgarden.com/"
+    },
+    {
+      "name": "Everyday Noodles",
+      "category": "restaurant",
+      "cuisine": "Taiwanese",
+      "neighborhood": "Squirrel Hill",
+      "blurb": "Hand-pulled noodles and soup dumplings made in-house.",
+      "lat": 40.4381,
+      "lng": -79.9229,
+      "url": ""
+    },
+    {
+      "name": "Salem's Market & Grill",
+      "category": "market",
+      "cuisine": "Middle Eastern",
+      "neighborhood": "Strip District",
+      "blurb": "Halal grocery and grill — a Middle Eastern and South Asian staple.",
+      "lat": 40.4514,
+      "lng": -79.9819,
+      "url": "https://www.salemsmarket.com/"
+    },
+    {
+      "name": "Reyna Foods",
+      "category": "market",
+      "cuisine": "Mexican",
+      "neighborhood": "Strip District",
+      "blurb": "Family-owned Mexican grocer and taqueria since 1998.",
+      "lat": 40.4509,
+      "lng": -79.9793,
+      "url": "https://www.reynafoods.com/"
+    },
+    {
+      "name": "Kaibur Coffee",
+      "category": "cafe",
+      "cuisine": "Ethiopian",
+      "neighborhood": "East Liberty",
+      "blurb": "Ethiopian-owned coffee house and community space.",
+      "lat": 40.4611,
+      "lng": -79.9250,
+      "url": ""
+    },
+    {
+      "name": "Banh Mi & Ti",
+      "category": "cafe",
+      "cuisine": "Vietnamese",
+      "neighborhood": "Downtown",
+      "blurb": "Vietnamese sandwiches, spring rolls, and iced coffee.",
+      "lat": 40.4419,
+      "lng": -79.9990,
+      "url": ""
+    }
+  ]
+}
