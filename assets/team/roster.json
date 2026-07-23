@@ -21,6 +21,13 @@
     "photo": "seong-kim"
   },
   {
+    "name": "Steven Guo",
+    "role": "Hub Member",
+    "group": "members",
+    "note": "Outgoing Curator",
+    "photo": "steven-guo"
+  },
+  {
     "name": "Sarah Yeager",
     "role": "Hub Member",
     "group": "members",
@@ -33,6 +40,13 @@
     "group": "members",
     "note": "Former Curator",
     "photo": "michael-coutinho"
+  },
+  {
+    "name": "Gisele DeWitt",
+    "role": "Hub Member",
+    "group": "members",
+    "note": "",
+    "photo": "gisele-dewitt"
   },
   {
     "name": "Tehya Lim",
@@ -70,13 +84,6 @@
     "photo": "ramiya-shelton"
   },
   {
-    "name": "Gisele DeWitt",
-    "role": "Hub Member",
-    "group": "members",
-    "note": "",
-    "photo": "gisele-dewitt"
-  },
-  {
     "name": "Raya Sweigart",
     "role": "Hub Member",
     "group": "members",
@@ -96,12 +103,5 @@
     "group": "members",
     "note": "",
     "photo": "egshiglen-batjargal"
-  },
-  {
-    "name": "Steven Guo",
-    "role": "Hub Member",
-    "group": "members",
-    "note": "Outgoing Curator",
-    "photo": "steven-guo"
   }
 ]
