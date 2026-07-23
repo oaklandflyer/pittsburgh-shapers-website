@@ -132,7 +132,8 @@
   .link-list li { border-bottom:1px solid var(--line); padding:12px 0; }
   .link-list li a { font-family:var(--font-body); font-size:0.98rem; color:var(--ink); display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
   .link-list li a:hover { color:var(--blue); }
-  .link-list li a .go { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); }
+  .link-list li a .go { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); white-space:nowrap; flex-shrink:0; }
+  .link-list li a span:first-child { min-width:0; }
   .col-title { font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
   .col-title::before { content:''; width:18px; height:2px; background:var(--gold); }
 
@@ -155,7 +156,16 @@
   @media (max-width:560px) {
     .wrap, .nav-inner, .foot-inner { padding-left:22px; padding-right:22px; }
     .nav-inner .wordmark .mark { height:38px; }
-    .hub-item { flex-direction:column; align-items:flex-start; gap:4px; }
+    section { padding:54px 0; }
+    .sec-head { margin-bottom:30px; }
+    .page-hero { padding:44px 0 4px; }
+    .page-hero h1 { font-size:clamp(2.6rem,12vw,3.4rem); }
+    .page-hero p.lead { font-size:1.04rem; }
+    .res-card { padding:22px 22px; }
+    .res-card .r-cat { font-size:1.35rem; }
+    #globe { height:clamp(340px,52vh,560px); }
+    .globe-legend { font-size:0.58rem; padding:10px 12px; line-height:1.7; }
+    .hub-item { flex-direction:column; align-items:flex-start; gap:4px; padding:12px 16px; }
     .hub-item .hi-contact { text-align:left; max-width:100%; }
     .foot-inner { flex-direction:column; align-items:flex-start; }
   }
@@ -237,7 +247,7 @@
         <div class="sec-head">
           <div class="sec-label">Toolkit</div>
           <h2 class="sec-title">HUB RESOURCES</h2>
-          <p class="sec-intro">Links are seeded as placeholders — a curator can drop the real URLs into the <code>RESOURCES</code> list at the top of this page's script.</p>
+          <p class="sec-intro">Working docs and tools for the hub. Cards without a link show an <b>[ADD LINK]</b> placeholder — a curator can add the real URLs from the members admin.</p>
         </div>
         <div class="res-grid" id="res-grid"></div>
       </div>
@@ -547,7 +557,7 @@
           .backgroundColor('rgba(0,0,0,0)')
           .globeImageUrl('assets/vendor/earth-dark.jpg')
           .showAtmosphere(true).atmosphereColor('#4a7bff').atmosphereAltitude(0.18)
-          .pointsData(HUBS)
+          .pointsData(HUBS.filter(function (h) { return isFinite(h.lat) && isFinite(h.lng); }))
           .pointLat('lat').pointLng('lng')
           .pointColor(function (d) { return d.home ? HOME_COLOR : HUB_COLOR; })
           .pointAltitude(function (d) { return d.home ? 0.14 : 0.04; })

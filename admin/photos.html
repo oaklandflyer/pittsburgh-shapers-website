@@ -129,7 +129,8 @@
   .m-fields .m-note { flex:1; min-width:160px; }
   .m-fields .m-sel { font-family:var(--font-mono); font-size:0.66rem; }
   .m-fields .m-hint { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.05em; color:var(--mute); }
-  .member .actions { align-self:start; }
+  .member .actions { align-self:start; display:flex; flex-direction:column; gap:4px; }
+  .member .icon-btn:disabled { opacity:0.3; cursor:not-allowed; }
 
   /* publish bar */
   .publish { position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(11,31,91,0.06); z-index:40; }
@@ -554,6 +555,15 @@
       origSize: 0, outSize: 0, busy: false, error: false, photoChanged: false };
   }
   function addMember(group) { members.push(newMember(group)); rosterDirty = true; renderRoster(); updatePublish(); }
+  function nudgeMember(m, dir) {
+    // Reorder within the member's own group (leadership / members).
+    var group = members.filter(function (x) { return x.group === m.group; });
+    var target = group[group.indexOf(m) + dir];
+    if (!target) return;
+    var i = members.indexOf(m), j = members.indexOf(target);
+    members[i] = target; members[j] = m;
+    rosterDirty = true; renderRoster(); updatePublish();
+  }
   function removeMember(m) {
     if (m.fromRepo && m.photo && removedHeads.indexOf(m.photo) === -1) removedHeads.push(m.photo);
     if (m.thumbUrl) URL.revokeObjectURL(m.thumbUrl);
@@ -613,6 +623,9 @@
   function memberRow(m) {
     var row = document.createElement('div');
     row.className = 'member'; row.dataset.id = m.id;
+    var groupList = members.filter(function (x) { return x.group === m.group; });
+    var mpos = groupList.indexOf(m);
+    var isFirst = mpos <= 0, isLast = mpos >= groupList.length - 1;
     var inner = m.busy ? '…'
       : (m.thumbUrl ? '<img alt="" src="' + m.thumbUrl + '">'
         : (m.photo ? '<img alt="" src="../assets/team/' + escapeAttr(m.photo) + '.jpg">'
@@ -635,6 +648,8 @@
         '<div class="m-hint">' + (m.busy ? 'optimizing photo…' : m.error ? 'photo failed' : m.photo ? escapeHtml(m.photo) + '.jpg' : 'no photo — initials shown') + '</div>' +
       '</div>' +
       '<div class="actions">' +
+        '<button class="icon-btn up" title="Move up"' + (isFirst ? ' disabled' : '') + '>↑</button>' +
+        '<button class="icon-btn down" title="Move down"' + (isLast ? ' disabled' : '') + '>↓</button>' +
         '<button class="icon-btn del" title="Remove member">✕</button>' +
       '</div>';
     row.querySelector('.head-photo input').addEventListener('change', function (e) {
@@ -646,6 +661,8 @@
     row.querySelector('.m-role').addEventListener('input', function (e) { m.role = e.target.value; rosterDirty = true; updatePublish(); });
     row.querySelector('.m-note').addEventListener('input', function (e) { m.note = e.target.value; rosterDirty = true; updatePublish(); });
     row.querySelector('.m-sel').addEventListener('change', function (e) { m.group = e.target.value; rosterDirty = true; renderRoster(); updatePublish(); });
+    row.querySelector('.up').addEventListener('click', function () { nudgeMember(m, -1); });
+    row.querySelector('.down').addEventListener('click', function () { nudgeMember(m, 1); });
     row.querySelector('.del').addEventListener('click', function () { removeMember(m); });
     return row;
   }

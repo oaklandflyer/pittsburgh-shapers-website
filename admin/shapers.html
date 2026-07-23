@@ -94,7 +94,35 @@
   .toast { position:fixed; left:50%; bottom:88px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.06em; padding:13px 22px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:200; }
   .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
   .note { font-size:0.85rem; color:var(--mute); margin-top:10px; line-height:1.55; }
-  @media (max-width:640px) { .card { grid-template-columns:1fr; } .actions { flex-direction:row; justify-content:flex-end; } }
+
+  /* visiting-shaper hub rows */
+  .hub-card { background:var(--surface); border:1px solid var(--line); padding:16px 18px; margin-bottom:12px; display:grid; grid-template-columns:1fr auto; gap:14px; align-items:start; }
+  .hub-card .fields { display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .hub-card input[type=text], .hub-card select { padding:9px 11px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.92rem; color:var(--ink); }
+  .hub-card input:focus, .hub-card select:focus { outline:none; border-color:var(--blue); }
+  .hub-card .f-hname { font-weight:600; font-size:1rem; }
+  .hub-card .frow { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .hub-card .half { flex:1; min-width:150px; }
+  .hub-card .f-htype { font-family:var(--font-mono); font-size:0.72rem; min-width:150px; }
+  .hub-card input.coord { width:104px; flex:0 0 104px; }
+  .hub-card .pick { background:var(--blue-tint); border:1px solid var(--blue); color:var(--blue); font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; padding:9px 12px; cursor:pointer; white-space:nowrap; }
+  .hub-card .pick:hover { background:var(--blue); color:#fff; }
+  .hub-card .hstatus { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.06em; text-transform:uppercase; }
+  .hub-card .hstatus.plotted { color:var(--green); } .hub-card .hstatus.noloc { color:var(--red); }
+  .hub-card .home-tag { font-family:var(--font-mono); font-size:0.54rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-deep); background:#FBF3D6; padding:3px 8px; }
+
+  /* map picker modal */
+  .mapmodal { position:fixed; inset:0; z-index:300; background:rgba(6,11,28,0.72); display:none; align-items:center; justify-content:center; padding:20px; }
+  .mapmodal.show { display:flex; }
+  .mapmodal-inner { background:var(--surface); padding:20px 22px; max-width:760px; width:100%; box-shadow:var(--shadow-md); }
+  .mapmodal h3 { font-family:var(--font-display); font-weight:400; font-size:1.5rem; letter-spacing:0.04em; margin-bottom:6px; }
+  .mapmodal .mm-note { font-size:0.82rem; color:var(--slate); line-height:1.5; margin-bottom:14px; }
+  .mappick { position:relative; width:100%; aspect-ratio:2/1; background:#e6ecf6 url('../assets/img/world-equirect.svg') center/100% 100% no-repeat; border:1px solid var(--line-2); cursor:crosshair; overflow:hidden; }
+  .mm-pin { position:absolute; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:var(--gold); border:2px solid var(--gold-deep); box-shadow:0 0 0 4px rgba(255,203,5,0.28); pointer-events:none; }
+  .mm-readout { font-family:var(--font-mono); font-size:0.72rem; color:var(--slate); margin:14px 0; }
+  .mm-readout b { color:var(--ink); }
+  .mm-actions { display:flex; gap:10px; justify-content:flex-end; }
+  @media (max-width:640px) { .card, .hub-card { grid-template-columns:1fr; } .actions { flex-direction:row; justify-content:flex-end; } }
 </style>
 </head>
 <body>
@@ -121,7 +149,7 @@
       <a href="shapers.html" class="active">Shaper Links</a>
     </nav>
     <h1>SHAPER LINKS</h1>
-    <p class="lead">Edit the resource cards on the members-only <b>Shaper Resources</b> page. Add a link to any card — cards with no link show an <b>[ADD LINK]</b> placeholder on the site. Hit <b>Publish</b> to go live.</p>
+    <p class="lead">Edit the resource cards and the <b>Visiting Shapers group chats</b> on the members-only <b>Shaper Resources</b> page. Cards with no link show an <b>[ADD LINK]</b> placeholder; each group chat you add drops a dot on the globe. Hit <b>Publish</b> to go live.</p>
 
     <div class="sec-label"><span class="step-n">1</span> Connect to the website</div>
     <div class="panel" id="connect-panel">
@@ -153,7 +181,27 @@
     <div class="sec-label"><span class="step-n">2</span> Resource cards</div>
     <div id="editor"><div class="empty">Connect above to load the resource cards.</div></div>
     <button class="btn btn-ghost" id="add" style="margin-top:6px;" disabled>+ Add card</button>
+
+    <div class="sec-label"><span class="step-n">3</span> Visiting Shapers group chats <span style="color:var(--mute);text-transform:none;letter-spacing:0;font-size:0.72rem;">(dots on the globe)</span></div>
+    <p class="note" style="margin-top:0;">Add a hub's WhatsApp / group-chat link and drop its location on the map — each one becomes a dot on the interactive globe on the members page. Use the arrows to reorder and ✕ to remove.</p>
+    <div id="hubs-editor"><div class="empty">Connect above to load the visiting-shaper hubs.</div></div>
+    <button class="btn btn-ghost" id="add-hub" style="margin-top:6px;" disabled>+ Add group chat</button>
+
     <div class="log" id="log"></div>
+  </div>
+
+  <!-- map picker modal -->
+  <div class="mapmodal" id="mapmodal" role="dialog" aria-modal="true" aria-label="Pick hub location">
+    <div class="mapmodal-inner">
+      <h3>Drop the hub on the map</h3>
+      <div class="mm-note">Click the map where the hub city is — the gold pin marks where the dot appears on the globe. You can fine-tune the latitude/longitude numbers afterward.</div>
+      <div class="mappick" id="mappick"><div class="mm-pin" id="mm-pin" hidden></div></div>
+      <div class="mm-readout" id="mm-readout">No location selected yet.</div>
+      <div class="mm-actions">
+        <button class="btn btn-ghost" id="mm-cancel" type="button">Cancel</button>
+        <button class="btn btn-primary" id="mm-use" type="button" disabled>Use this location</button>
+      </div>
+    </div>
   </div>
 
   <div class="publish">
@@ -170,14 +218,18 @@
   "use strict";
   var LS_TOKEN = 'gs_photo_token', LS_REPO = 'gs_photo_repo';
   var MANIFEST = 'data/resources.json';
+  var HUBS_FILE = 'data/hubs.json';
 
   var items = [], uid = 0, connected = false, publishing = false, dirty = false, loaded = false;
+  // Visiting-shaper hubs (globe). We preserve the rest of hubs.json (meta, communities, interestGroups).
+  var hubs = [], hubsData = null, hubsDirty = false, hubsSha = null;
 
   var el = function (id) { return document.getElementById(id); };
   var E = {
     editor: el('editor'), add: el('add'), token: el('token'), connect: el('connect'), forget: el('forget'),
     owner: el('owner'), repo: el('repo'), branch: el('branch'), adv: el('adv'), advToggle: el('adv-toggle'),
-    conn: el('conn'), connText: el('conn-text'), publish: el('publish'), summary: el('summary'), log: el('log'), toast: el('toast')
+    conn: el('conn'), connText: el('conn-text'), publish: el('publish'), summary: el('summary'), log: el('log'), toast: el('toast'),
+    hubsEditor: el('hubs-editor'), addHub: el('add-hub')
   };
 
   function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -192,6 +244,114 @@
     if (j < 0 || j >= items.length) return;
     items[i] = items[j]; items[j] = it; dirty = true; render(); update();
   }
+
+  // ---------- visiting-shaper hubs ----------
+  function hasLoc(h) { return h.lat !== '' && h.lng !== '' && isFinite(h.lat) && isFinite(h.lng); }
+  function newHub() { return { id: ++uid, name: '', link: '', linkType: 'link', lat: '', lng: '', guide: '', home: false }; }
+  function addHub() { hubs.push(newHub()); hubsDirty = true; renderHubs(); update(); }
+  function removeHub(h) { hubs = hubs.filter(function (x) { return x.id !== h.id; }); hubsDirty = true; renderHubs(); update(); }
+  function moveHub(h, dir) {
+    var i = hubs.indexOf(h), j = i + dir;
+    if (j < 0 || j >= hubs.length) return;
+    hubs[i] = hubs[j]; hubs[j] = h; hubsDirty = true; renderHubs(); update();
+  }
+
+  function renderHubs() {
+    if (!E.hubsEditor) return;
+    if (!connected && !loaded) { E.hubsEditor.innerHTML = '<div class="empty">Connect above to load the visiting-shaper hubs.</div>'; return; }
+    if (!hubs.length) { E.hubsEditor.innerHTML = '<div class="empty">No group chats yet — use “Add group chat”.</div>'; return; }
+    E.hubsEditor.innerHTML = '';
+    hubs.forEach(function (h, idx) { E.hubsEditor.appendChild(hubRow(h, idx)); });
+  }
+  function hubRow(h, idx) {
+    var card = document.createElement('div'); card.className = 'hub-card'; card.dataset.id = h.id;
+    var status = hasLoc(h)
+      ? '<span class="hstatus plotted">● ' + h.lat + ', ' + h.lng + ' — on the globe</span>'
+      : '<span class="hstatus noloc">○ no location — won’t show on the globe</span>';
+    var typeSel = '<select class="f-htype">' +
+      '<option value="link"' + (h.linkType !== 'contact' ? ' selected' : '') + '>Group-chat link</option>' +
+      '<option value="contact"' + (h.linkType === 'contact' ? ' selected' : '') + '>Contact text (no link)</option>' +
+      '</select>';
+    card.innerHTML =
+      '<div class="fields">' +
+        '<div class="frow">' +
+          '<input class="f-hname half" type="text" placeholder="City, Country (e.g. Lisbon, Portugal)" value="' + escapeAttr(h.name) + '">' +
+          (h.home ? '<span class="home-tag">★ home hub</span>' : '') +
+        '</div>' +
+        '<div class="frow">' +
+          '<input class="f-hlink half" type="text" placeholder="' + (h.linkType === 'contact' ? 'Contact (e.g. email / name)' : 'WhatsApp / group-chat link') + '" value="' + escapeAttr(h.link) + '">' +
+          typeSel +
+        '</div>' +
+        '<div class="frow">' +
+          '<input class="f-hlat coord" type="text" inputmode="decimal" placeholder="Latitude" value="' + escapeAttr(h.lat) + '">' +
+          '<input class="f-hlng coord" type="text" inputmode="decimal" placeholder="Longitude" value="' + escapeAttr(h.lng) + '">' +
+          '<button class="pick" type="button">📍 Pick on map</button>' +
+          status +
+        '</div>' +
+        '<input class="f-hguide" type="text" placeholder="City guide link (optional)" value="' + escapeAttr(h.guide) + '">' +
+      '</div>' +
+      '<div class="actions">' +
+        '<button class="icon-btn up" title="Move up"' + (idx <= 0 ? ' disabled' : '') + '>↑</button>' +
+        '<button class="icon-btn down" title="Move down"' + (idx >= hubs.length - 1 ? ' disabled' : '') + '>↓</button>' +
+        '<button class="icon-btn del" title="Remove group chat">✕</button>' +
+      '</div>';
+    card.querySelector('.f-hname').addEventListener('input', function (e) { h.name = e.target.value; hubsDirty = true; update(); });
+    card.querySelector('.f-hlink').addEventListener('input', function (e) { h.link = e.target.value; hubsDirty = true; update(); });
+    card.querySelector('.f-htype').addEventListener('change', function (e) { h.linkType = e.target.value; hubsDirty = true; renderHubs(); update(); });
+    function onCoord() {
+      var la = card.querySelector('.f-hlat').value.trim(), ln = card.querySelector('.f-hlng').value.trim();
+      h.lat = la === '' ? '' : (isFinite(la) ? parseFloat(la) : la);
+      h.lng = ln === '' ? '' : (isFinite(ln) ? parseFloat(ln) : ln);
+      hubsDirty = true; update();
+    }
+    card.querySelector('.f-hlat').addEventListener('input', onCoord);
+    card.querySelector('.f-hlng').addEventListener('input', onCoord);
+    card.querySelector('.f-hlat').addEventListener('change', renderHubs);
+    card.querySelector('.f-hlng').addEventListener('change', renderHubs);
+    card.querySelector('.f-hguide').addEventListener('input', function (e) { h.guide = e.target.value; hubsDirty = true; update(); });
+    card.querySelector('.pick').addEventListener('click', function () { openMap(h); });
+    card.querySelector('.up').addEventListener('click', function () { moveHub(h, -1); });
+    card.querySelector('.down').addEventListener('click', function () { moveHub(h, 1); });
+    card.querySelector('.del').addEventListener('click', function () { removeHub(h); });
+    return card;
+  }
+
+  // ---------- map picker ----------
+  var mapTarget = null, mapPicked = null;
+  function projToPct(lat, lng) { return { x: (lng + 180) / 360 * 100, y: (90 - lat) / 180 * 100 }; }
+  function placePin(lat, lng) {
+    var pin = el('mm-pin'), pos = projToPct(lat, lng);
+    pin.style.left = pos.x + '%'; pin.style.top = pos.y + '%'; pin.hidden = false;
+    mapPicked = { lat: lat, lng: lng };
+    el('mm-readout').innerHTML = 'Selected: <b>' + lat.toFixed(2) + ', ' + lng.toFixed(2) + '</b>';
+    el('mm-use').disabled = false;
+  }
+  function openMap(h) {
+    mapTarget = h; mapPicked = null;
+    var pin = el('mm-pin');
+    if (hasLoc(h)) { placePin(parseFloat(h.lat), parseFloat(h.lng)); }
+    else { pin.hidden = true; el('mm-readout').textContent = 'No location selected yet.'; el('mm-use').disabled = true; }
+    el('mapmodal').classList.add('show');
+  }
+  function closeMap() { el('mapmodal').classList.remove('show'); mapTarget = null; }
+  (function wireMap() {
+    var pick = el('mappick');
+    if (!pick) return;
+    pick.addEventListener('click', function (e) {
+      var r = pick.getBoundingClientRect();
+      var x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      var y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+      var lng = Math.round((x * 360 - 180) * 100) / 100;
+      var lat = Math.round((90 - y * 180) * 100) / 100;
+      placePin(lat, lng);
+    });
+    el('mm-cancel').addEventListener('click', closeMap);
+    el('mapmodal').addEventListener('click', function (e) { if (e.target === el('mapmodal')) closeMap(); });
+    el('mm-use').addEventListener('click', function () {
+      if (mapTarget && mapPicked) { mapTarget.lat = mapPicked.lat; mapTarget.lng = mapPicked.lng; hubsDirty = true; renderHubs(); update(); }
+      closeMap();
+    });
+  })();
 
   function render() {
     if (!connected && !loaded) { E.editor.innerHTML = '<div class="empty">Connect above to load the resource cards.</div>'; return; }
@@ -231,10 +391,14 @@
 
   function update() {
     E.add.disabled = !connected;
-    E.publish.disabled = !(connected && dirty && !publishing);
-    if (!connected) E.summary.innerHTML = 'Connect a token to publish.';
-    else if (!dirty) E.summary.innerHTML = 'Everything is up to date.';
-    else E.summary.innerHTML = '<b>' + items.length + '</b> card' + (items.length === 1 ? '' : 's') + ' — ready to publish.';
+    if (E.addHub) E.addHub.disabled = !connected;
+    E.publish.disabled = !(connected && (dirty || hubsDirty) && !publishing);
+    if (!connected) { E.summary.innerHTML = 'Connect a token to publish.'; return; }
+    if (!dirty && !hubsDirty) { E.summary.innerHTML = 'Everything is up to date.'; return; }
+    var parts = [];
+    if (dirty) parts.push(items.length + ' card' + (items.length === 1 ? '' : 's'));
+    if (hubsDirty) parts.push(hubs.length + ' group chat' + (hubs.length === 1 ? '' : 's'));
+    E.summary.innerHTML = '<b>' + parts.join(' · ') + '</b> — ready to publish.';
   }
 
   function cfg() { return { owner: E.owner.value.trim(), repo: E.repo.value.trim(), branch: E.branch.value.trim() || 'main', token: E.token.value.trim() }; }
@@ -259,13 +423,15 @@
         connected = true; setConn('ok', 'Connected'); E.forget.hidden = false;
         localStorage.setItem(LS_TOKEN, c.token);
         localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch }));
-        toast('Connected — loaded ' + items.length + ' card(s)'); render(); update();
+        toast('Connected — loaded ' + items.length + ' card(s), ' + hubs.length + ' group chat(s)'); render(); renderHubs(); update();
       })
       .catch(function (e) { connected = false; setConn('err', 'Failed'); toast(e.message || 'Connection failed'); })
       .then(function () { E.connect.disabled = false; });
   }
 
-  function load() {
+  function load() { return Promise.all([loadResources(), loadHubs()]); }
+
+  function loadResources() {
     return ghGet(MANIFEST).then(function (res) {
       items = []; dirty = false;
       var list = [];
@@ -275,30 +441,73 @@
     });
   }
 
+  function loadHubs() {
+    return ghGet(HUBS_FILE).then(function (res) {
+      hubs = []; hubsDirty = false; hubsSha = res ? res.sha : null;
+      hubsData = { hubs: [] };
+      if (res && res.content) { try { hubsData = JSON.parse(b64ToUtf8(res.content)) || { hubs: [] }; } catch (e) { hubsData = { hubs: [] }; } }
+      var list = Array.isArray(hubsData.hubs) ? hubsData.hubs : [];
+      list.forEach(function (m) {
+        hubs.push({ id: ++uid, name: m.name || '', link: m.link || '', linkType: m.linkType === 'contact' ? 'contact' : 'link',
+          lat: typeof m.lat === 'number' ? m.lat : '', lng: typeof m.lng === 'number' ? m.lng : '',
+          guide: m.guide || '', home: !!m.home });
+      });
+      renderHubs();
+    });
+  }
+
   function log(msg, cls) { E.log.classList.add('show'); E.log.innerHTML += '<div' + (cls ? ' class="' + cls + '"' : '') + '>' + msg + '</div>'; E.log.scrollTop = E.log.scrollHeight; }
 
   function publish() {
-    if (publishing || !dirty) return;
+    if (publishing || (!dirty && !hubsDirty)) return;
     publishing = true; update(); E.publish.disabled = true; E.log.innerHTML = ''; E.log.classList.add('show');
-    log('Publishing resource cards…', 'dim');
-    var out = items.map(function (it) { return { cat: it.cat, desc: it.desc, link: it.link, linkLabel: it.linkLabel }; });
-    var json = JSON.stringify(out, null, 2) + '\n';
-    ghGet(MANIFEST)
-      .then(function (r) { return ghPut(MANIFEST, utf8ToB64(json), 'shapers: update resource links (' + out.length + ')', r ? r.sha : null); })
-      .then(function () {
-        dirty = false;
-        log('✓ Done. Live on the site in ~1 minute (GitHub Pages redeploy).', 'ok');
-        toast('Published! Live in ~1 min.'); publishing = false; update();
-      })
-      .catch(function (e) { log('✗ ' + (e.message || 'publish failed'), 'err'); toast('Publish failed — see the log'); publishing = false; update(); });
+    log('Publishing…', 'dim');
+    var chain = Promise.resolve();
+
+    if (dirty) {
+      chain = chain.then(function () {
+        log('↻ resource cards…');
+        var out = items.map(function (it) { return { cat: it.cat, desc: it.desc, link: it.link, linkLabel: it.linkLabel }; });
+        var json = JSON.stringify(out, null, 2) + '\n';
+        return ghGet(MANIFEST)
+          .then(function (r) { return ghPut(MANIFEST, utf8ToB64(json), 'shapers: update resource links (' + out.length + ')', r ? r.sha : null); })
+          .then(function () { log('  ✓ resources saved', 'ok'); });
+      });
+    }
+
+    if (hubsDirty) {
+      chain = chain.then(function () {
+        log('↻ visiting-shaper hubs…');
+        var obj = (hubsData && typeof hubsData === 'object') ? hubsData : {};
+        obj.hubs = hubs.map(function (h) {
+          var o = { name: h.name };
+          if (hasLoc(h)) { o.lat = parseFloat(h.lat); o.lng = parseFloat(h.lng); }
+          o.link = h.link; o.linkType = h.linkType === 'contact' ? 'contact' : 'link';
+          if (h.guide) o.guide = h.guide;
+          if (h.home) o.home = true;
+          return o;
+        });
+        var json = JSON.stringify(obj, null, 2) + '\n';
+        return ghGet(HUBS_FILE)
+          .then(function (r) { return ghPut(HUBS_FILE, utf8ToB64(json), 'shapers: update visiting-shaper hubs (' + obj.hubs.length + ')', r ? r.sha : null); })
+          .then(function () { log('  ✓ hubs saved', 'ok'); });
+      });
+    }
+
+    chain.then(function () {
+      dirty = false; hubsDirty = false;
+      log('✓ Done. Live on the site in ~1 minute (GitHub Pages redeploy).', 'ok');
+      toast('Published! Live in ~1 min.'); publishing = false; update();
+    }).catch(function (e) { log('✗ ' + (e.message || 'publish failed'), 'err'); toast('Publish failed — see the log'); publishing = false; update(); });
   }
 
-  render(); update();
+  render(); renderHubs(); update();
   E.advToggle.addEventListener('click', function () { E.adv.classList.toggle('show'); E.advToggle.textContent = (E.adv.classList.contains('show') ? '▾' : '▸') + ' Repository settings'; });
   E.connect.addEventListener('click', connect);
   E.publish.addEventListener('click', publish);
   E.add.addEventListener('click', addItem);
-  E.forget.addEventListener('click', function () { localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; loaded = false; items = []; dirty = false; setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render(); update(); });
+  E.addHub.addEventListener('click', addHub);
+  E.forget.addEventListener('click', function () { localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; loaded = false; items = []; dirty = false; hubs = []; hubsDirty = false; hubsData = null; setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render(); renderHubs(); update(); });
   E.token.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
   (function restore() {
     try {
