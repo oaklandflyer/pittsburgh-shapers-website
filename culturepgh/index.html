@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CulturePGH · A Dinner Series | Global Shapers Pittsburgh</title>
+<meta name="description" content="CulturePGH is a Pittsburgh dinner series pairing a local restaurant with the story of the people and country behind its food. A project of the Global Shapers Pittsburgh Hub.">
+<link rel="canonical" href="https://pittsburghshapers.org/culturepgh/">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/gs-pittsburgh-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Inherited from pittsburghshapers.org — WEF-clean, Pittsburgh-warm */
+    --paper:  #FAFAF6;
+    --surface:#FFFFFF;
+    --raise:  #F3F2EC;
+    --ink:    #16181D;
+    --slate:  #5B6170;
+    --mute:   #8A8F9C;
+    --line:   #E7E6DF;
+    --line-2: #DEDDD3;
+
+    --blue:   #1A4FFF;
+    --navy:   #0B1F5B;
+    --blue-tint:#EEF2FF;
+    --gold:   #FFCB05;
+    --gold-deep:#B8860B;
+
+    /* CulturePGH's own accent — a warm terracotta for the "table" moments */
+    --ember:  #D2582A;
+    --ember-tint:#FBEDE6;
+
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'Space Mono', monospace;
+
+    --shadow-sm: 0 1px 2px rgba(11,31,91,0.04), 0 1px 3px rgba(11,31,91,0.06);
+    --shadow-md: 0 12px 32px rgba(11,31,91,0.10);
+    --ease: cubic-bezier(0.4,0,0.2,1);
+    --container: 1180px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--navy); }
+  .wrap { max-width: var(--container); margin: 0 auto; padding: 0 40px; }
+
+  /* ---------- NAV (mirrors index.html) ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,250,246,0.85);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: var(--container); margin: 0 auto; padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wordmark { display: flex; align-items: center; gap: 13px; color: var(--ink); text-decoration: none; }
+  .wordmark:hover { color: var(--ink); }
+  .wordmark .mark { height: 50px; width: auto; display: block; flex-shrink: 0; transition: transform 0.25s var(--ease); }
+  .wordmark:hover .mark { transform: rotate(-8deg); }
+  .wordmark .lockup {
+    font-family: var(--font-display); font-size: 1.45rem; letter-spacing: 0.08em;
+    line-height: 1; display: flex; align-items: baseline; gap: 2px; color: var(--ink);
+  }
+  .wordmark .lockup b { color: var(--ember); font-weight: 400; }
+  .wordmark .sub {
+    display: block; font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--mute); margin-top: 3px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; margin: -8px; }
+  .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); transition: transform 0.25s var(--ease), opacity 0.2s var(--ease); }
+  .nav-toggle span + span { margin-top: 5px; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--slate); padding: 10px 16px;
+    border-radius: 2px; transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--raise); }
+  .nav-cta {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase; font-weight: 700; color: #fff !important;
+    background: var(--ember); padding: 11px 22px; margin-left: 12px; white-space: nowrap;
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+  .nav-cta:hover { color: #fff !important; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(210,88,42,0.30); }
+
+  /* ---------- BUTTONS (mirrors index.html) ---------- */
+  .btn {
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 700; padding: 15px 30px;
+    cursor: pointer; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+    display: inline-block; border: none;
+  }
+  .btn-primary {
+    background: var(--ember); color: #fff;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .btn-primary:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(210,88,42,0.30); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line-2); }
+  .btn-ghost:hover { border-color: var(--ember); color: var(--ember); transform: translateY(-2px); }
+  .btn-gold { background: var(--gold); color: var(--navy); }
+  .btn-gold:hover { background: #fff; color: var(--navy); transform: translateY(-2px); }
+  :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+
+  /* ---------- SHARED SECTION SHELL (mirrors index.html) ---------- */
+  section { padding: 92px 0; border-top: 1px solid var(--line); }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--ember); margin-bottom: 24px;
+  }
+  .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--gold); }
+  .sec-head { margin-bottom: 52px; max-width: 760px; }
+  .sec-label {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-deep); display: flex; align-items: center; gap: 12px;
+    margin-bottom: 18px;
+  }
+  .sec-label::before { content: ''; width: 24px; height: 2px; background: var(--gold); }
+  .sec-title {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(2.4rem, 4.5vw, 3.6rem); line-height: 1; letter-spacing: 0.02em; color: var(--ink);
+  }
+  .sec-intro { font-size: 1.05rem; line-height: 1.65; color: var(--slate); margin-top: 16px; max-width: 66ch; }
+
+  /* ---------- HERO ---------- */
+  header.hero { position: relative; overflow: hidden; }
+  .hero-grid {
+    max-width: var(--container); margin: 0 auto; padding: 96px 40px 80px;
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(3.5rem, 6.5vw, 6rem); line-height: 0.92; letter-spacing: 0.02em;
+    color: var(--ink); margin-bottom: 24px;
+  }
+  .hero h1 .ember { color: var(--ember); }
+  .hero p.lead {
+    font-size: 1.2rem; line-height: 1.65; color: var(--slate);
+    max-width: 38ch; margin-bottom: 36px; font-weight: 400;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* Hero visual — the signature "menu card", rendered navy like index's hero-visual */
+  .menu-card {
+    position: relative; background: var(--navy); color: #fff;
+    padding: 40px 38px 34px; overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+  }
+  .menu-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(210,88,42,0.30) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .menu-card > * { position: relative; z-index: 2; }
+  .menu-card .kicker {
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); display: flex; justify-content: space-between;
+    padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.16);
+  }
+  .menu-card h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.6rem; letter-spacing: 0.03em; line-height: 1; }
+  .menu-card .mc-note { color: rgba(255,255,255,0.72); font-size: 0.95rem; line-height: 1.6; margin: 14px 0 22px; }
+  .spec { font-family: var(--font-mono); font-size: 0.72rem; border-top: 1px dashed rgba(255,255,255,0.28); padding-top: 16px; }
+  .spec div { display: flex; justify-content: space-between; padding: 6px 0; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; }
+  .spec div span:last-child { color: #fff; }
+
+  /* ---------- COURSES (The Evening) ---------- */
+  .courses { border-top: 1px solid var(--line); margin-top: 8px; }
+  .course {
+    display: grid; grid-template-columns: 11rem 1fr; gap: 40px;
+    padding: 36px 0; border-bottom: 1px solid var(--line); align-items: start;
+  }
+  .course .no { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); padding-top: 6px; }
+  .course h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 10px; }
+  .course p { color: var(--slate); line-height: 1.75; font-size: 0.98rem; max-width: 62ch; margin: 0; }
+  @media (max-width: 720px) { .course { grid-template-columns: 1fr; gap: 8px; } }
+
+  /* ---------- SEATINGS ---------- */
+  .seatings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .seat {
+    background: var(--surface); border: 1px solid var(--line); padding: 34px 32px;
+    display: flex; flex-direction: column;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+  .seat:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+  .seat .st { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ember); margin-bottom: 18px; }
+  .seat.tbd .st { color: var(--mute); }
+  .seat h3 { font-family: var(--font-display); font-weight: 400; font-size: 2.2rem; letter-spacing: 0.03em; margin-bottom: 12px; }
+  .seat p { color: var(--slate); line-height: 1.7; font-size: 0.95rem; margin: 0; }
+  @media (max-width: 820px) { .seatings { grid-template-columns: 1fr; } }
+
+  /* ---------- FORMS ---------- */
+  .form-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: start; }
+  @media (max-width: 820px) { .form-grid { grid-template-columns: 1fr; } }
+  .form {
+    background: var(--surface); border: 1px solid var(--line);
+    padding: clamp(28px, 4vw, 44px);
+  }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+  input, select, textarea {
+    width: 100%; padding: 13px 14px; background: var(--paper); border: 1px solid var(--line-2);
+    color: var(--ink); font-family: var(--font-body); font-size: 0.98rem; border-radius: 0;
+    transition: border-color 0.2s var(--ease);
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ember); }
+  textarea { min-height: 104px; resize: vertical; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
+  .note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--mute); margin-top: 16px; line-height: 1.6; }
+  .ok {
+    background: var(--ember-tint); border: 1px solid #EAD3C7; color: var(--ink);
+    padding: 26px; font-size: 0.95rem; line-height: 1.6;
+  }
+  .ok strong { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; letter-spacing: 0.03em; display: block; margin-bottom: 6px; color: var(--ember); }
+  .hidden { display: none; }
+
+  /* ---------- PARTNERS (color moment, navy like index events-block) ---------- */
+  .partners {
+    position: relative; overflow: hidden; background: var(--navy); color: #fff;
+    border-top: none;
+  }
+  .partners .wrap { position: relative; z-index: 2; }
+  .partners::after {
+    content: 'HOST'; position: absolute; right: -20px; top: 8%;
+    font-family: var(--font-display); font-size: 9rem; color: rgba(255,255,255,0.05); letter-spacing: 0.1em; pointer-events: none;
+  }
+  .partners .eyebrow { color: var(--gold); }
+  .partners .sec-title { color: #fff; }
+  .partners .sec-intro { color: rgba(255,255,255,0.74); }
+  .give { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin: 48px 0; }
+  @media (max-width: 720px) { .give { grid-template-columns: 1fr; } }
+  .give h4 { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+  .give .b h4 { color: var(--ember); }
+  .give ul { list-style: none; padding: 0; margin: 0; }
+  .give li { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.14); font-size: 0.97rem; line-height: 1.55; color: rgba(255,255,255,0.86); }
+  .partners .form { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.14); max-width: 680px; }
+  .partners label { color: rgba(255,255,255,0.66); }
+  .partners input, .partners select, .partners textarea { background: rgba(0,0,0,0.25); border-color: rgba(255,255,255,0.18); color: #fff; }
+  .partners .note { color: rgba(255,255,255,0.5); }
+  .partners .ok { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: #fff; }
+  .partners .ok strong { color: var(--gold); }
+
+  /* ---------- FOOTER (mirrors index.html) ---------- */
+  footer { border-top: 1px solid var(--line); padding: 48px 0; }
+  .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  .foot-brand { max-width: 52ch; font-size: 0.9rem; line-height: 1.7; color: var(--slate); }
+  .foot-brand .lockup { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.08em; color: var(--ink); display: block; margin-bottom: 8px; }
+  .foot-brand .lockup b { color: var(--ember); font-weight: 400; }
+  .foot-brand a { color: var(--blue); }
+  .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); text-align: right; line-height: 1.9; }
+
+  /* ---------- REVEAL ---------- */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; padding: 64px 40px 56px; }
+    section { padding: 68px 0; }
+    .nav-toggle { display: block; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: rgba(250,250,246,0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); padding: 8px 0;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 15px 40px; border-radius: 0; }
+    .nav-cta { margin: 12px 40px 6px; text-align: center; clip-path: none; }
+  }
+  @media (max-width: 560px) {
+    .wrap, .nav-inner, .hero-grid, .foot-inner { padding-left: 22px; padding-right: 22px; }
+    .foot-inner { flex-direction: column; align-items: flex-start; }
+    .foot-note { text-align: left; }
+    .nav-inner .wordmark .mark { height: 38px; }
+    .hero h1 { font-size: clamp(2.6rem, 12.5vw, 4rem); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="top">
+    <div class="nav-inner">
+      <a href="../index.html" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
+        <img class="mark" src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
+        <span class="lockup">Culture<b>PGH</b><span class="sub">Global Shapers Pittsburgh</span></span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="#evening">The Evening</a>
+        <a href="#seatings">Seatings</a>
+        <a href="#partners">For Restaurants</a>
+        <a href="../index.html">← The Hub</a>
+        <a href="#rsvp" class="nav-cta">Save a Seat</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">A Global Shapers Pittsburgh Project</span>
+        <h1>EVERY DISH<br>CAME FROM<br><span class="ember">SOMEWHERE</span></h1>
+        <p class="lead">A Pittsburgh dinner series. One restaurant, one table, and the people who carried the recipe here telling you how it arrived.</p>
+        <div class="hero-actions">
+          <a href="#rsvp" class="btn btn-primary">Save Me a Seat</a>
+          <a href="#partners" class="btn btn-ghost">Host a Night</a>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="kicker"><span>First Seating</span><span>No. 01</span></div>
+        <h2>September 2026</h2>
+        <p class="mc-note">Restaurant and date announced in August. Seats go to the list first, then to the public.</p>
+        <div class="spec">
+          <div><span>Table</span><span>25–30 guests</span></div>
+          <div><span>Cost</span><span>Set menu, paid at the table</span></div>
+          <div><span>Runs</span><span>Two hours, one speaker</span></div>
+          <div><span>Open to</span><span>Anyone in Pittsburgh</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- THE EVENING -->
+  <section id="evening">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">How a Night Runs</div>
+        <h2 class="sec-title">THE EVENING IS THE MENU</h2>
+        <p class="sec-intro">Three parts, in order, every time. The format is fixed so the food and the people can change.</p>
+      </div>
+
+      <div class="courses">
+        <div class="course reveal">
+          <div class="no">First Course</div>
+          <div>
+            <h3>Arrive and Sit Down</h3>
+            <p>No name tags at the door and no working the room. Assigned seats, mixed tables, and a first course already on the way.</p>
+          </div>
+        </div>
+        <div class="course reveal">
+          <div class="no">Second Course</div>
+          <div>
+            <h3>Someone Tells You Where It Came From</h3>
+            <p>The owner, the cook, or a family member takes fifteen minutes between courses. Not a lecture. What the dish is, who made it first, and how it got to Pittsburgh.</p>
+          </div>
+        </div>
+        <div class="course reveal">
+          <div class="no">Third Course</div>
+          <div>
+            <h3>Questions, Then Dessert</h3>
+            <p>Open floor while the last plates come out. Most nights this runs longer than the talk did.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEATINGS -->
+  <section id="seatings">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Seatings</div>
+        <h2 class="sec-title">WHERE WE ARE EATING NEXT</h2>
+        <p class="sec-intro">Every six weeks, a different kitchen and a different country. Partners are confirmed one to two nights ahead.</p>
+      </div>
+
+      <div class="seatings">
+        <div class="seat reveal">
+          <div class="st">Announcing August</div>
+          <h3>No. 01</h3>
+          <p>September 2026. Restaurant being confirmed now. Join the list to hear first.</p>
+        </div>
+        <div class="seat tbd reveal">
+          <div class="st">Scheduled</div>
+          <h3>No. 02</h3>
+          <p>Late October 2026.</p>
+        </div>
+        <div class="seat tbd reveal">
+          <div class="st">Scheduled</div>
+          <h3>No. 03</h3>
+          <p>December 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp">
+    <div class="wrap">
+      <div class="form-grid">
+        <div>
+          <div class="eyebrow">Reservations</div>
+          <h2 class="sec-title">GET ON THE LIST</h2>
+          <p class="sec-intro">We announce each seating to the list a week before it goes public. Tables are small, so that week matters.</p>
+        </div>
+
+        <div class="form">
+          <form id="rsvpForm" name="rsvp" method="POST" data-netlify="true" novalidate>
+            <input type="hidden" name="form-name" value="rsvp">
+            <div class="two">
+              <div class="field">
+                <label for="r-name">Name</label>
+                <input id="r-name" name="name" type="text" required>
+              </div>
+              <div class="field">
+                <label for="r-email">Email</label>
+                <input id="r-email" name="email" type="email" required>
+              </div>
+            </div>
+            <div class="two">
+              <div class="field">
+                <label for="r-seats">Seats</label>
+                <select id="r-seats" name="seats">
+                  <option>1</option><option>2</option><option>3</option><option>4</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="r-tie">How You Found Us</label>
+                <select id="r-tie" name="connection">
+                  <option>Global Shapers</option>
+                  <option>A friend</option>
+                  <option>The restaurant</option>
+                  <option>Somewhere else</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="r-diet">Anything the Kitchen Should Know</label>
+              <input id="r-diet" name="dietary" type="text" placeholder="Allergies, halal, vegetarian">
+            </div>
+            <button class="btn btn-primary" type="submit">Save My Seat</button>
+            <p class="note">We email about seatings only. Two or three messages a month at most.</p>
+          </form>
+          <div id="rsvpOk" class="ok hidden">
+            <strong>You're on the list.</strong>
+            Watch for the September seating announcement in August. Seats are released to the list first.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOR RESTAURANTS -->
+  <section id="partners" class="partners">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">For Restaurants &amp; Partners</div>
+        <h2 class="sec-title">FILL YOUR SLOWEST NIGHT WITH PEOPLE WHO CAME TO LISTEN</h2>
+        <p class="sec-intro">CulturePGH books a private room or a closed section on a weeknight, brings a full table, and puts your story in front of it. You cook what you actually want to serve.</p>
+      </div>
+
+      <div class="give">
+        <div class="a">
+          <h4>What We Ask</h4>
+          <ul>
+            <li>A weeknight, a room, and 25 to 30 covers</li>
+            <li>A set menu you choose, priced per head</li>
+            <li>Fifteen minutes from you or your family between courses</li>
+            <li>A headcount confirmation 48 hours out</li>
+          </ul>
+        </div>
+        <div class="b">
+          <h4>What You Get</h4>
+          <ul>
+            <li>A booked room on a night that is usually quiet, paid at the table</li>
+            <li>Photography from the night, yours to use</li>
+            <li>A written feature on this site and across Global Shapers channels</li>
+            <li>A room of guests who leave knowing your name</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form">
+        <form id="partnerForm" name="partner" method="POST" data-netlify="true" novalidate>
+          <input type="hidden" name="form-name" value="partner">
+          <div class="two">
+            <div class="field">
+              <label for="p-rest">Restaurant or Organization</label>
+              <input id="p-rest" name="restaurant" type="text" required>
+            </div>
+            <div class="field">
+              <label for="p-name">Your Name</label>
+              <input id="p-name" name="name" type="text" required>
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label for="p-email">Email</label>
+              <input id="p-email" name="email" type="email" required>
+            </div>
+            <div class="field">
+              <label for="p-phone">Phone</label>
+              <input id="p-phone" name="phone" type="tel">
+            </div>
+          </div>
+          <div class="field">
+            <label for="p-msg">What Would You Want to Cook and Talk About</label>
+            <textarea id="p-msg" name="message"></textarea>
+          </div>
+          <button class="btn btn-gold" type="submit">Start the Conversation</button>
+          <p class="note">One of the project leads replies within a few days. No obligation on a first call.</p>
+        </form>
+        <div id="partnerOk" class="ok hidden">
+          <strong>Thank you.</strong>
+          A CulturePGH lead will reach out within a few days to talk through dates and menus.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <span class="lockup">Culture<b>PGH</b></span>
+        A project of the <a href="../index.html">Global Shapers Pittsburgh Hub</a>, an initiative of the World Economic Forum.<br>
+        Adapted from CultureCLE, Global Shapers Cleveland Hub.
+      </div>
+      <div class="foot-note">
+        hello@pittsburghshapers.org<br>
+        Pittsburgh, Pennsylvania
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle (mirrors index.html)
+    (function () {
+      var toggle = document.querySelector('.nav-toggle');
+      var links = document.getElementById('nav-links');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function () {
+        var open = links.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          links.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+
+    // Scroll reveal
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.15 });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+
+    // Forms. Netlify Forms attributes are in the markup; on GitHub Pages the
+    // native POST has nowhere to go, so this handler shows the confirmation
+    // inline. On a Netlify deploy you can delete this and let the POST run.
+    function wire(formId, okId) {
+      var f = document.getElementById(formId), ok = document.getElementById(okId);
+      if (!f || !ok) return;
+      f.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var missing = [].slice.call(f.querySelectorAll('[required]')).filter(function (i) { return !i.value.trim(); });
+        if (missing.length) { missing[0].focus(); return; }
+        f.classList.add('hidden'); ok.classList.remove('hidden');
+      });
+    }
+    wire('rsvpForm', 'rsvpOk');
+    wire('partnerForm', 'partnerOk');
+  </script>
+</body>
+</html>
