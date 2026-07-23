@@ -210,6 +210,46 @@
   .impact-stat .is-lbl { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 6px; }
   @media (max-width: 700px) { .impact-grid { grid-template-columns: 1fr 1fr; gap: 28px 24px; } }
 
+  /* ---------- GLOBAL HUB MAP ---------- */
+  .hubmap-block { margin-top: 20px; border: 1px solid var(--line); background: var(--surface); padding: 34px 40px 30px; }
+  .hubmap-head { margin-bottom: 22px; }
+  .hubmap-intro { color: var(--slate); font-size: 1rem; line-height: 1.65; margin-top: 12px; max-width: 62ch; }
+  .hubmap-intro b { color: var(--ink); font-weight: 700; }
+  .hubmap {
+    position: relative; width: 100%; aspect-ratio: 2 / 1;
+    background: var(--blue-tint); border: 1px solid var(--line);
+    border-radius: 2px; overflow: hidden;
+  }
+  .hubmap-canvas, .hubmap-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hubmap-land { fill: #D6DEEC; }
+  .hubmap-dot { fill: var(--blue); opacity: 0.82; transition: opacity .15s var(--ease); cursor: pointer; }
+  .hubmap-dot:hover, .hubmap-dot:focus { opacity: 1; }
+  .hubmap-dot.is-home { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1.2; opacity: 1; }
+  .hubmap-pulse { fill: var(--gold); opacity: 0.35; animation: hubPulse 2.4s ease-out infinite; transform-origin: center; }
+  @keyframes hubPulse { 0% { transform: scale(1); opacity: 0.45; } 70%,100% { transform: scale(3.4); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .hubmap-pulse { animation: none; opacity: 0; } }
+  .hubmap-tip {
+    position: absolute; pointer-events: none; z-index: 3; opacity: 0;
+    transform: translate(-50%, -140%); background: var(--ink); color: #fff;
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em;
+    padding: 5px 9px; border-radius: 3px; white-space: nowrap; transition: opacity .12s;
+  }
+  .hubmap-tip.on { opacity: 1; }
+  .hubmap-legend {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; margin-top: 18px;
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate);
+  }
+  .hml-item { display: inline-flex; align-items: center; gap: 8px; }
+  .hml-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .hml-dot.hml-hub { background: var(--blue); opacity: 0.82; }
+  .hml-dot.hml-home { background: var(--gold); border: 1px solid var(--gold-deep); }
+  .hubmap-legend .arrow { margin-left: auto; font-size: 0.7rem; }
+  @media (max-width: 640px) {
+    .hubmap-block { padding: 24px 18px 22px; }
+    .hubmap-intro { font-size: 0.94rem; }
+    .hubmap-legend .arrow { margin-left: 0; }
+  }
+
   /* ---------- EVENTS (color moment) ---------- */
   .events-block {
     position: relative; overflow: hidden; background: var(--navy); color: #fff;
@@ -476,6 +516,8 @@
     .nav-links a, .nav-cta { padding-left: 22px; padding-right: 22px; }
     .nav-cta { margin-left: 22px; margin-right: 22px; }
     .foot-inner { flex-direction: column; align-items: flex-start; }
+    .hero h1 { font-size: clamp(2.6rem, 12.5vw, 4rem); }
+    .hero p.lead { font-size: 1.08rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
@@ -560,6 +602,23 @@
           <div class="impact-stat"><div class="is-num">2.2M</div><div class="is-lbl">People reached</div></div>
           <div class="impact-stat"><div class="is-num">10,000+</div><div class="is-lbl">Shapers worldwide</div></div>
           <div class="impact-stat"><div class="is-num">150+</div><div class="is-lbl">Countries &amp; territories</div></div>
+        </div>
+      </div>
+
+      <!-- GLOBAL HUB MAP -->
+      <div class="hubmap-block">
+        <div class="hubmap-head">
+          <div class="impact-strip-label">One Global Community</div>
+          <p class="hubmap-intro">Pittsburgh is one of <b>500+ hubs</b> in the Global Shapers Community — a network spanning every inhabited continent. Explore where Shapers are driving change.</p>
+        </div>
+        <div class="hubmap" id="hubmap">
+          <div class="hubmap-canvas" id="hubmap-canvas"></div>
+          <div class="hubmap-tip" id="hubmap-tip" role="status" aria-live="polite"></div>
+        </div>
+        <div class="hubmap-legend">
+          <span class="hml-item"><span class="hml-dot hml-home"></span>Pittsburgh</span>
+          <span class="hml-item"><span class="hml-dot hml-hub"></span>Global Shapers hub</span>
+          <a href="https://www.globalshapers.org/hubs" class="arrow" target="_blank" rel="noopener">See all hubs →</a>
         </div>
       </div>
     </div>
@@ -1023,6 +1082,64 @@
           startHeroBg(list);
         })
         .catch(emptyState);
+    })();
+
+    /* ---------- GLOBAL HUB MAP ---------- */
+    (function () {
+      var canvas = document.getElementById('hubmap-canvas');
+      var tip = document.getElementById('hubmap-tip');
+      if (!canvas) return;
+      var W = 1000, H = 500, SVGNS = 'http://www.w3.org/2000/svg';
+
+      function project(lat, lng) {
+        return { x: (lng + 180) / 360 * W, y: (90 - lat) / 180 * H };
+      }
+
+      Promise.all([
+        fetch('assets/img/world-equirect.svg').then(function (r) { return r.ok ? r.text() : null; }),
+        fetch('assets/data/hubs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : []; })
+      ]).then(function (res) {
+        var svgText = res[0], hubs = Array.isArray(res[1]) ? res[1] : [];
+        if (!svgText) return;
+        canvas.innerHTML = svgText;
+        var svg = canvas.querySelector('svg');
+        var g = canvas.querySelector('.hubmap-dots');
+        if (!svg || !g) return;
+
+        hubs.forEach(function (h) {
+          if (typeof h.lat !== 'number' || typeof h.lng !== 'number') return;
+          var p = project(h.lat, h.lng);
+          var home = /^pittsburgh$/i.test(h.c);
+          if (home) {
+            var pulse = document.createElementNS(SVGNS, 'circle');
+            pulse.setAttribute('cx', p.x); pulse.setAttribute('cy', p.y);
+            pulse.setAttribute('r', 3.4); pulse.setAttribute('class', 'hubmap-pulse');
+            g.appendChild(pulse);
+          }
+          var c = document.createElementNS(SVGNS, 'circle');
+          c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
+          c.setAttribute('r', home ? 4.2 : 2.6);
+          c.setAttribute('class', 'hubmap-dot' + (home ? ' is-home' : ''));
+          c.setAttribute('tabindex', '0');
+          c.setAttribute('role', 'img');
+          c.setAttribute('aria-label', h.c);
+          var t = document.createElementNS(SVGNS, 'title');
+          t.textContent = h.c; c.appendChild(t);
+          function showTip() {
+            var box = canvas.getBoundingClientRect();
+            tip.textContent = h.c;
+            tip.style.left = (p.x / W * box.width) + 'px';
+            tip.style.top = (p.y / H * box.height) + 'px';
+            tip.classList.add('on');
+          }
+          function hideTip() { tip.classList.remove('on'); }
+          c.addEventListener('mouseenter', showTip);
+          c.addEventListener('mouseleave', hideTip);
+          c.addEventListener('focus', showTip);
+          c.addEventListener('blur', hideTip);
+          g.appendChild(c);
+        });
+      }).catch(function () {});
     })();
   </script>
 
