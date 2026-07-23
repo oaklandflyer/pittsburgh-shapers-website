@@ -368,6 +368,7 @@
   .metric .num { font-family: var(--font-display); font-size: 2rem; color: var(--blue); line-height: 1; }
   .metric .lbl { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 4px; }
   .tag.prior { color: var(--slate); background: var(--raise); }
+  .tag.upcoming { color: var(--blue); background: var(--blue-tint); }
   .project.has-photo { grid-template-columns: 6px 260px 1fr; }
   .project .pphoto { object-fit: cover; width: 100%; height: 100%; display: block; background: var(--raise); }
   @media (max-width: 720px) {
@@ -931,8 +932,9 @@
         return '<div class="metric"><div class="num">' + esc(m.num || '') + '</div><div class="lbl">' + esc(m.lbl || '') + '</div></div>';
       }
       function projectCard(p) {
-        var prior = p.status === 'prior';
-        var tag = '<span class="tag' + (prior ? ' prior' : '') + '">' + (prior ? 'Prior Project' : 'Active Project') + '</span>';
+        var status = p.status === 'prior' ? 'prior' : (p.status === 'upcoming' ? 'upcoming' : 'active');
+        var label = status === 'prior' ? 'Prior Project' : (status === 'upcoming' ? 'Upcoming Project' : 'Active Project');
+        var tag = '<span class="tag' + (status !== 'active' ? ' ' + status : '') + '">' + label + '</span>';
         var link = (p.link && p.linkLabel)
           ? '<a href="' + esc(p.link) + '" class="plink"' + (/^https?:/i.test(p.link) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(p.linkLabel) + '</a>'
           : '';
@@ -958,9 +960,8 @@
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (list) {
           if (!Array.isArray(list) || !list.length) return; // keep static fallback
-          var active = list.filter(function (p) { return p.status !== 'prior'; });
-          var prior = list.filter(function (p) { return p.status === 'prior'; });
-          grid.innerHTML = active.concat(prior).map(projectCard).join('');
+          // Render in the order arranged in the Projects Manager (/admin/projects.html).
+          grid.innerHTML = list.map(projectCard).join('');
         })
         .catch(function () {});
     })();
