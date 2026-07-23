@@ -484,7 +484,8 @@
     margin-left: auto; font-family: var(--font-body); font-size: 1.1rem; color: var(--mute);
     transition: transform 0.28s var(--ease); line-height: 1;
   }
-  button.gallery-cat-label[aria-expanded="false"] .chev { transform: rotate(-90deg); }
+  button.gallery-cat-label .chev { transform: rotate(0deg); }
+  button.gallery-cat-label[aria-expanded="true"] .chev { transform: rotate(90deg); }
   .gallery-body { overflow: hidden; transition: height 0.35s var(--ease); }
   .gallery-cat.collapsed .gallery-body { height: 0 !important; }
 
@@ -1015,24 +1016,38 @@
         if (!any) { emptyState(); return; }
         root.innerHTML = html;
 
+        function openCat(cat, btn, body) {
+          if (!cat.classList.contains('collapsed')) return;
+          body.style.height = '0px';
+          cat.classList.remove('collapsed'); btn.setAttribute('aria-expanded', 'true');
+          requestAnimationFrame(function () {
+            body.style.height = body.scrollHeight + 'px';
+            body.addEventListener('transitionend', function te() { body.style.height = 'auto'; body.removeEventListener('transitionend', te); });
+          });
+        }
+        function closeCat(cat, btn, body) {
+          if (cat.classList.contains('collapsed')) return;
+          body.style.height = body.scrollHeight + 'px';
+          requestAnimationFrame(function () {
+            cat.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false'); body.style.height = '0px';
+          });
+        }
+
+        var cats = [];
         Array.prototype.forEach.call(root.querySelectorAll('.gallery-cat'), function (cat) {
           var btn = cat.querySelector('.gallery-cat-label');
           var body = cat.querySelector('.gallery-body');
-          body.style.height = 'auto';
+          // Collapsed by default — visitors click a category (or "Photos" in the nav) to expand.
+          cat.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false'); body.style.height = '0px';
+          cats.push({ cat: cat, btn: btn, body: body });
           btn.addEventListener('click', function () {
-            var collapsed = cat.classList.contains('collapsed');
-            // set an explicit start height so the transition has something to animate from
-            body.style.height = body.scrollHeight + 'px';
-            requestAnimationFrame(function () {
-              if (collapsed) { // opening
-                cat.classList.remove('collapsed'); btn.setAttribute('aria-expanded', 'true');
-                requestAnimationFrame(function () { body.style.height = body.scrollHeight + 'px'; });
-                body.addEventListener('transitionend', function te() { body.style.height = 'auto'; body.removeEventListener('transitionend', te); });
-              } else { // closing
-                requestAnimationFrame(function () { cat.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false'); body.style.height = '0px'; });
-              }
-            });
+            if (cat.classList.contains('collapsed')) openCat(cat, btn, body); else closeCat(cat, btn, body);
           });
+        });
+
+        // Clicking "Photos" in the nav expands every category (and reveals the gallery).
+        Array.prototype.forEach.call(document.querySelectorAll('a[href="#gallery"], a[href="index.html#gallery"]'), function (a) {
+          a.addEventListener('click', function () { cats.forEach(function (c) { openCat(c.cat, c.btn, c.body); }); });
         });
       }
 
