@@ -80,6 +80,186 @@
       "lat": 40.4419,
       "lng": -79.9990,
       "url": ""
+    },
+    {
+      "name": "Nepali Asian Restaurant",
+      "category": "restaurant",
+      "cuisine": "Nepali",
+      "neighborhood": "Carrick",
+      "blurb": "Owner Uttam Tamang's long-standing anchor of the Carrick Nepali community.",
+      "lat": 40.3928,
+      "lng": -79.9853,
+      "url": ""
+    },
+    {
+      "name": "Double Fresh",
+      "category": "restaurant",
+      "cuisine": "Nepali",
+      "neighborhood": "Baldwin Borough",
+      "blurb": "Momo-focused kitchen from owners Kamal & Hema Timsina, inside a grocery.",
+      "lat": 40.3573,
+      "lng": -79.9722,
+      "url": ""
+    },
+    {
+      "name": "Everest Ethnic Restaurant",
+      "category": "restaurant",
+      "cuisine": "Nepali & Bhutanese",
+      "neighborhood": "Brentwood",
+      "blurb": "Home-style Nepali cooking with Bhutanese weekend specials on Saw Mill Run Blvd.",
+      "lat": 40.3720,
+      "lng": -80.0130,
+      "url": ""
+    },
+    {
+      "name": "Himali Kitchen",
+      "category": "restaurant",
+      "cuisine": "Nepali",
+      "neighborhood": "Overbrook",
+      "blurb": "Known for chili momo with adjustable spice, near Saw Mill Run Blvd.",
+      "lat": 40.4010,
+      "lng": -80.0200,
+      "url": ""
+    },
+    {
+      "name": "Subba Asian Restaurant",
+      "category": "restaurant",
+      "cuisine": "Nepali & Bhutanese",
+      "neighborhood": "North Side",
+      "blurb": "Nepali, Bhutanese, Indian, and Chinese dishes on E. Ohio St.",
+      "lat": 40.4530,
+      "lng": -79.9990,
+      "url": ""
+    },
+    {
+      "name": "D's Bubble Tea & Cafe",
+      "category": "cafe",
+      "cuisine": "Nepali",
+      "neighborhood": "Carrick",
+      "blurb": "Café-format spot serving steamed momo and bubble tea.",
+      "lat": 40.3960,
+      "lng": -79.9860,
+      "url": ""
+    },
+    {
+      "name": "Chicken Latino",
+      "category": "restaurant",
+      "cuisine": "Peruvian",
+      "neighborhood": "Beechview",
+      "blurb": "Owner Shelbin Santos's Peruvian rotisserie chicken, relocated from the Strip District.",
+      "lat": 40.4098,
+      "lng": -80.0247,
+      "url": ""
+    },
+    {
+      "name": "Cilantro y Ajo",
+      "category": "restaurant",
+      "cuisine": "Venezuelan",
+      "neighborhood": "South Side Flats",
+      "blurb": "Owner Marlyn Parra's arepas and empanadas — her family ran a restaurant in Venezuela.",
+      "lat": 40.4284,
+      "lng": -79.9720,
+      "url": ""
+    },
+    {
+      "name": "ShadoBeni",
+      "category": "restaurant",
+      "cuisine": "Trinidadian",
+      "neighborhood": "Central North Side",
+      "blurb": "Owner Ulric Joseph's spot — Pittsburgh's first vegan Trinidadian restaurant.",
+      "lat": 40.4560,
+      "lng": -80.0080,
+      "url": ""
+    },
+    {
+      "name": "Chengdu Gourmet",
+      "category": "restaurant",
+      "cuisine": "Sichuan Chinese",
+      "neighborhood": "Squirrel Hill",
+      "blurb": "Chef-owner Wei Zhu, a multiple-time James Beard semifinalist.",
+      "lat": 40.4308,
+      "lng": -79.9226,
+      "url": ""
+    },
+    {
+      "name": "Sakura Teppanyaki & Sushi",
+      "category": "restaurant",
+      "cuisine": "Chinese & Japanese",
+      "neighborhood": "Squirrel Hill",
+      "blurb": "Owners Ping Geng & Feng Gao, with specialties for the northern-Chinese community.",
+      "lat": 40.4325,
+      "lng": -79.9224,
+      "url": ""
+    },
+    {
+      "name": "De Pan y Queso Bocadillos Bar",
+      "category": "restaurant",
+      "cuisine": "Balkan & Iberian",
+      "neighborhood": "Marshall-Shadeland",
+      "blurb": "Owner Tzveti Gintcheva's Balkan, Spanish, and Portuguese small plates.",
+      "lat": 40.4720,
+      "lng": -80.0300,
+      "url": ""
+    },
+    {
+      "name": "Jak's Bakery",
+      "category": "cafe",
+      "cuisine": "Bulgarian",
+      "neighborhood": "Bloomfield",
+      "blurb": "Owner Jak Latinova ran a bakery for 15 years in Bulgaria before opening here.",
+      "lat": 40.4615,
+      "lng": -79.9490,
+      "url": ""
+    },
+    {
+      "name": "Paris 66",
+      "category": "cafe",
+      "cuisine": "French",
+      "neighborhood": "Shadyside",
+      "blurb": "Owner Frederic Rongier's French café, paired with the Gaby et Jules patisserie.",
+      "lat": 40.4570,
+      "lng": -79.9250,
+      "url": ""
+    },
+    {
+      "name": "S&D Polish Deli",
+      "category": "market",
+      "cuisine": "Polish",
+      "neighborhood": "Strip District",
+      "blurb": "Long-running Polish deli and grocer.",
+      "lat": 40.4506,
+      "lng": -79.9880,
+      "url": ""
+    },
+    {
+      "name": "Upstreet Diner",
+      "category": "restaurant",
+      "cuisine": "Turkish",
+      "neighborhood": "Squirrel Hill",
+      "blurb": "Owner Bener Ozen, culinary-trained in Turkey (also behind Cafe Moulin in Shadyside).",
+      "lat": 40.4380,
+      "lng": -79.9230,
+      "url": ""
+    },
+    {
+      "name": "Tana Ethiopian Cuisine",
+      "category": "restaurant",
+      "cuisine": "Ethiopian",
+      "neighborhood": "East Liberty",
+      "blurb": "Well-reviewed Ethiopian with injera and a communal dining format.",
+      "lat": 40.4610,
+      "lng": -79.9250,
+      "url": ""
+    },
+    {
+      "name": "Royal Myanmar",
+      "category": "restaurant",
+      "cuisine": "Burmese",
+      "neighborhood": "West View",
+      "blurb": "Owners Myat Theingi & Aye Yee opened this Burmese kitchen in 2014.",
+      "lat": 40.5230,
+      "lng": -80.0350,
+      "url": ""
     }
   ]
 }
