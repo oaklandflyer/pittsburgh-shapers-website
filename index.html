@@ -988,9 +988,12 @@
         var scrim = document.getElementById('hero-scrim');
         var hero = document.querySelector('header.hero');
         if (!stage || !hero || !list.length) return;
-        // Prefer wide, evocative shots: events + pittsburgh first, then the rest; cap the set.
-        var order = { pittsburgh: 0, events: 1, projects: 2, team: 3 };
-        var pics = list.slice().sort(function (a, b) { return (order[a.category] || 9) - (order[b.category] || 9); }).slice(0, 12);
+        // Rotate only through Events and Pittsburgh shots (the wide, evocative ones).
+        var HERO_CATS = { events: 0, pittsburgh: 1 };
+        var pics = list.filter(function (p) { return (p.category || 'events') in HERO_CATS; });
+        // If neither category has photos, fall back to whatever exists so the hero isn't blank.
+        if (!pics.length) pics = list.slice();
+        pics = pics.slice(0, 14);
         // light shuffle within the capped set so it varies per visit
         for (var i = pics.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pics[i]; pics[i] = pics[j]; pics[j] = t; }
 
