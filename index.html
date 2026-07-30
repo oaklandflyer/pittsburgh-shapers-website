@@ -346,6 +346,10 @@
   .person:hover { background: var(--raise); }
   .person .role { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 8px; }
   .person .name { font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; letter-spacing: 0.03em; color: var(--ink); }
+  .person .name a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: color 0.2s var(--ease); }
+  .person .name a:hover { color: var(--blue); }
+  .person .name a .li-icon { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.55; transition: opacity 0.2s var(--ease); }
+  .person .name a:hover .li-icon { opacity: 1; }
   .person .note { font-size: 0.8rem; color: var(--mute); margin-top: 6px; font-style: italic; }
   .badge-in { display: inline-block; font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--blue); color: #fff; padding: 3px 8px; margin-bottom: 10px; }
   .roster-split { grid-column: 1 / -1; background: var(--paper); padding: 10px 30px; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
@@ -728,11 +732,16 @@
         }
         return '<div class="avatar" aria-hidden="true">' + esc(initials(m.name)) + '</div>';
       }
+      var LI_ICON = '<svg class="li-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8h4.5v14H.24V8zm7.5 0h4.31v1.92h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V22h-4.5v-6.62c0-1.58-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V22h-4.5V8z"/></svg>';
       function person(m) {
+        var nameText = esc(m.name || '');
+        var nameInner = m.linkedin
+          ? '<a href="' + esc(m.linkedin) + '" target="_blank" rel="noopener noreferrer" aria-label="' + nameText + ' on LinkedIn">' + nameText + LI_ICON + '</a>'
+          : nameText;
         return '<div class="person has-photo">' + avatar(m) +
           '<div class="person-text">' +
             '<div class="role">' + esc(m.role || 'Hub Member') + '</div>' +
-            '<div class="name">' + esc(m.name || '') + '</div>' +
+            '<div class="name">' + nameInner + '</div>' +
             (m.note ? '<div class="note">' + esc(m.note) + '</div>' : '') +
           '</div></div>';
       }
