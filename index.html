@@ -224,6 +224,8 @@
   .hubmap-land { fill: #D6DEEC; }
   .hubmap-dot { fill: var(--blue); opacity: 0.82; transition: opacity .15s var(--ease); cursor: pointer; }
   .hubmap-dot:hover, .hubmap-dot:focus { opacity: 1; }
+  .hubmap-dot.is-active { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1; opacity: 1; }
+  .hubmap-hit { fill: transparent; cursor: pointer; outline: none; }
   .hubmap-dot.is-home { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1.2; opacity: 1; }
   .hubmap-pulse { fill: var(--gold); opacity: 0.35; animation: hubPulse 2.4s ease-out infinite; transform-origin: center; }
   @keyframes hubPulse { 0% { transform: scale(1); opacity: 0.45; } 70%,100% { transform: scale(3.4); opacity: 0; } }
@@ -244,9 +246,11 @@
   .hml-dot.hml-hub { background: var(--blue); opacity: 0.82; }
   .hml-dot.hml-home { background: var(--gold); border: 1px solid var(--gold-deep); }
   .hubmap-legend .arrow { margin-left: auto; font-size: 0.7rem; }
+  .hubmap-hint { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); margin-top: 10px; }
   @media (max-width: 640px) {
     .hubmap-block { padding: 24px 18px 22px; }
     .hubmap-intro { font-size: 0.94rem; }
+    .hubmap { aspect-ratio: 3 / 2; }
     .hubmap-legend .arrow { margin-left: 0; }
   }
 
@@ -317,6 +321,7 @@
     width: 100%; height: 100%; object-fit: cover; display: block;
     transition: transform 0.5s var(--ease);
   }
+  .gallery figure { cursor: zoom-in; }
   .gallery figure:hover img { transform: scale(1.05); }
   .gallery figcaption {
     position: absolute; left: 0; right: 0; bottom: 0;
@@ -326,6 +331,44 @@
     opacity: 0; transform: translateY(6px); transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
   }
   .gallery figure:hover figcaption { opacity: 1; transform: translateY(0); }
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 300; display: none;
+    align-items: center; justify-content: center; padding: 4vmin;
+    background: rgba(6,11,28,0.92); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    opacity: 0; transition: opacity 0.22s var(--ease);
+  }
+  .lightbox.open { display: flex; opacity: 1; }
+  .lightbox figure { margin: 0; max-width: 100%; max-height: 100%; display: flex; flex-direction: column; align-items: center; }
+  .lightbox img {
+    max-width: 100%; max-height: 88vh; width: auto; height: auto; display: block;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5); background: var(--raise);
+  }
+  .lightbox figcaption {
+    color: #fff; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 16px; text-align: center; max-width: 70ch;
+  }
+  .lightbox-close {
+    position: absolute; top: 18px; right: 20px; z-index: 2;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff;
+    width: 44px; height: 44px; border-radius: 50%; font-size: 1.4rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: background 0.2s var(--ease);
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.22); }
+  .lightbox-nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff;
+    width: 48px; height: 48px; border-radius: 50%; font-size: 1.6rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: background 0.2s var(--ease);
+  }
+  .lightbox-nav:hover { background: rgba(255,255,255,0.22); }
+  .lightbox-nav.prev { left: 16px; } .lightbox-nav.next { right: 16px; }
+  @media (max-width: 560px) {
+    .lightbox-nav { width: 40px; height: 40px; font-size: 1.3rem; }
+    .lightbox-nav.prev { left: 8px; } .lightbox-nav.next { right: 8px; }
+    .lightbox img { max-height: 78vh; }
+  }
+
   .gallery-empty {
     grid-column: 1 / -1; border: 1px dashed var(--line-2); background: var(--surface);
     padding: 56px 40px; text-align: center; color: var(--mute);
@@ -549,6 +592,7 @@
           <div class="hubmap-canvas" id="hubmap-canvas"></div>
           <div class="hubmap-tip" id="hubmap-tip" role="status" aria-live="polite"></div>
         </div>
+        <div class="hubmap-hint">Tap or hover a dot to see the hub city</div>
         <div class="hubmap-legend">
           <span class="hml-item"><span class="hml-dot hml-home"></span>Pittsburgh</span>
           <span class="hml-item"><span class="hml-dot hml-hub"></span>Global Shapers hub</span>
@@ -690,6 +734,17 @@
       <div class="foot-note">An initiative of the World Economic Forum</div>
     </div>
   </footer>
+
+  <!-- Gallery lightbox overlay -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lightbox-close" type="button" aria-label="Close">✕</button>
+    <button class="lightbox-nav prev" type="button" aria-label="Previous photo">‹</button>
+    <button class="lightbox-nav next" type="button" aria-label="Next photo">›</button>
+    <figure class="lb-figure">
+      <img class="lb-img" src="" alt="">
+      <figcaption class="lb-cap"></figcaption>
+    </figure>
+  </div>
 
   <script>
     // Mobile navigation toggle
@@ -999,6 +1054,14 @@
         var g = canvas.querySelector('.hubmap-dots');
         if (!svg || !g) return;
 
+        var activeDot = null;
+        function clearActive() {
+          tip.classList.remove('on');
+          if (activeDot) { activeDot.classList.remove('is-active'); activeDot = null; }
+        }
+        // Tapping empty map space dismisses any open tooltip.
+        canvas.addEventListener('click', function (e) { if (e.target === canvas || (e.target.tagName === 'svg')) clearActive(); });
+
         hubs.forEach(function (h) {
           if (typeof h.lat !== 'number' || typeof h.lng !== 'number') return;
           var p = project(h.lat, h.lng);
@@ -1013,11 +1076,15 @@
           c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
           c.setAttribute('r', home ? 4.2 : 2.6);
           c.setAttribute('class', 'hubmap-dot' + (home ? ' is-home' : ''));
-          c.setAttribute('tabindex', '0');
-          c.setAttribute('role', 'img');
-          c.setAttribute('aria-label', h.c);
           var t = document.createElementNS(SVGNS, 'title');
           t.textContent = h.c; c.appendChild(t);
+          // Transparent oversized hit target so dots are easy to tap on touch screens.
+          var hit = document.createElementNS(SVGNS, 'circle');
+          hit.setAttribute('cx', p.x); hit.setAttribute('cy', p.y); hit.setAttribute('r', 11);
+          hit.setAttribute('class', 'hubmap-hit');
+          hit.setAttribute('tabindex', '0');
+          hit.setAttribute('role', 'button');
+          hit.setAttribute('aria-label', h.c);
           function showTip() {
             var box = canvas.getBoundingClientRect();
             tip.textContent = h.c;
@@ -1025,14 +1092,83 @@
             tip.style.top = (p.y / H * box.height) + 'px';
             tip.classList.add('on');
           }
-          function hideTip() { tip.classList.remove('on'); }
-          c.addEventListener('mouseenter', showTip);
-          c.addEventListener('mouseleave', hideTip);
-          c.addEventListener('focus', showTip);
-          c.addEventListener('blur', hideTip);
+          function activate(e) {
+            if (e) e.stopPropagation();
+            if (activeDot === c) { clearActive(); return; }
+            if (activeDot) activeDot.classList.remove('is-active');
+            if (!home) c.classList.add('is-active');
+            activeDot = c;
+            showTip();
+          }
+          hit.addEventListener('mouseenter', showTip);
+          hit.addEventListener('mouseleave', function () { if (activeDot !== c) tip.classList.remove('on'); });
+          hit.addEventListener('click', activate);
+          hit.addEventListener('focus', showTip);
+          hit.addEventListener('blur', function () { if (activeDot !== c) tip.classList.remove('on'); });
+          hit.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(e); } });
           g.appendChild(c);
+          g.appendChild(hit);
         });
       }).catch(function () {});
+    })();
+
+    /* ---------- GALLERY LIGHTBOX ---------- */
+    (function () {
+      var box = document.getElementById('lightbox');
+      if (!box) return;
+      var imgEl = box.querySelector('.lb-img');
+      var capEl = box.querySelector('.lb-cap');
+      var figures = [], current = -1;
+
+      function collect() {
+        figures = Array.prototype.slice.call(document.querySelectorAll('.gallery figure'));
+      }
+      function show(i) {
+        if (i < 0 || i >= figures.length) return;
+        current = i;
+        var fig = figures[i];
+        var img = fig.querySelector('img');
+        var cap = fig.querySelector('figcaption');
+        if (!img) return;
+        imgEl.src = img.currentSrc || img.src;
+        imgEl.alt = img.alt || '';
+        var text = cap ? cap.textContent : (img.alt || '');
+        capEl.textContent = text;
+        capEl.style.display = text ? '' : 'none';
+      }
+      function open(i) {
+        collect();
+        show(i);
+        box.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        box.querySelector('.lightbox-close').focus();
+      }
+      function close() {
+        box.classList.remove('open');
+        document.body.style.overflow = '';
+        imgEl.src = '';
+        current = -1;
+      }
+      function step(d) { if (figures.length) show((current + d + figures.length) % figures.length); }
+
+      // Delegated click: open when a gallery figure is clicked.
+      document.addEventListener('click', function (e) {
+        var fig = e.target.closest && e.target.closest('.gallery figure');
+        if (!fig) return;
+        collect();
+        var i = figures.indexOf(fig);
+        if (i > -1) { e.preventDefault(); open(i); }
+      });
+      box.querySelector('.lightbox-close').addEventListener('click', close);
+      box.querySelector('.lightbox-nav.prev').addEventListener('click', function () { step(-1); });
+      box.querySelector('.lightbox-nav.next').addEventListener('click', function () { step(1); });
+      box.addEventListener('click', function (e) { if (e.target === box || e.target.classList.contains('lb-figure')) close(); });
+      document.addEventListener('keydown', function (e) {
+        if (!box.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') step(-1);
+        else if (e.key === 'ArrowRight') step(1);
+      });
     })();
   </script>
 
