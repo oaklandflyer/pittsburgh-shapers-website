@@ -6,5 +6,29 @@
     "link": "https://luma.com/ls94jpgm",
     "linkLabel": "Register Here",
     "photo": "hub-happy-hour"
+  },
+  {
+    "title": "Shred the Debt Planning Meeting",
+    "date": "August 8, 2026 11AM",
+    "description": "Join the Pittsburgh Hub in planning for our Shred the Debt Campaign! ",
+    "link": "",
+    "linkLabel": "",
+    "photo": "shred-the-debt-planning-meeting"
+  },
+  {
+    "title": "Steelers Watch Party",
+    "date": "August 21, 2026 7PM",
+    "description": "Join the Pittsburgh Hub crew to socialize and watch the preseason game! ",
+    "link": "",
+    "linkLabel": "",
+    "photo": "event"
+  },
+  {
+    "title": "Hub Meeting",
+    "date": "August 29, 2026 11AM",
+    "description": "Join the Pittsburgh Hub for the Hub Meeting where we will discuss our projects!",
+    "link": "",
+    "linkLabel": "",
+    "photo": "event-2"
   }
 ]
