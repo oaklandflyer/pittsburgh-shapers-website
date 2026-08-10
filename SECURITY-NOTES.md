@@ -41,6 +41,9 @@ a backend. That's a hosting change, not a code change.
 # add or update a member (prompts for the password, twice)
 python3 tools/make-member.py --user acoutinho --name "Andrew Coutinho" --role Curator
 
+# add an admin, who lands on /admin after signing in
+python3 tools/make-member.py --user acoutinho --name "Andrew Coutinho" --kind admin
+
 # list logins
 python3 tools/make-member.py --list
 
@@ -50,26 +53,35 @@ python3 tools/make-member.py --remove acoutinho
 
 Then commit `data/members.json`. The change is live as soon as Pages redeploys.
 
-## Seeded logins — rotate these
+## Accounts and where they land
 
-Two starter logins ship in `data/members.json` so the page works immediately:
+Each login has a **kind**: `admin` or `member`.
 
-| Username  | Password                  |
-| --------- | ------------------------- |
-| `curator` | `Pittsburgh-Curator-2026`  |
-| `shaper`  | `Pittsburgh-Shapers-2026`  |
+- **`member`** signs in on `/shapers.html` and stays there — the members area.
+- **`admin`** signs in on the same form and is sent straight to `/admin/index.html`,
+  the hub managers. Admin accounts are also what unlocks `/admin/*` directly;
+  a member account that tries gets a "admins only" screen.
 
-**These passwords are published in this file, so treat them as public.** Replace
-them before relying on the gate:
+Two logins ship in `data/members.json`:
+
+| Username | Password       | Kind   | Lands on            |
+| -------- | -------------- | ------ | ------------------- |
+| `admin`  | `AdminShaper!` | admin  | `/admin/index.html` |
+| `shaper` | `Shapers2026`  | member | `/shapers.html`     |
+
+**These passwords are written down here, in a public repo, so treat them as
+public.** Replace them with your own before the gate means anything:
 
 ```bash
-python3 tools/make-member.py --user curator --name "Hub Curator" --role Curator
-python3 tools/make-member.py --remove shaper
+python3 tools/make-member.py --user admin --name "Hub Admin" --role Curator --kind admin
+python3 tools/make-member.py --user shaper --name "Pittsburgh Shaper" --kind member
 ```
 
-## Separately: the admin pages
+## The admin pages
 
-`/admin/*` is still gated by `admin/gate.js`, which contains a **plaintext**
-password in the source. That predates this change and was left alone, but it
-should be rotated onto the same hashed scheme — say the word and it's a small
-change.
+`/admin/*` no longer carries its own plaintext password. `admin/gate.js` now
+loads the same `auth.js` and checks for a signed-in session whose kind is
+`admin`; anyone else is sent to the sign-in form. The same caveat applies as
+above — this is casual gating on static hosting. The real authority for
+editing content is the GitHub token you paste into each manager, which is
+never stored in this repo.

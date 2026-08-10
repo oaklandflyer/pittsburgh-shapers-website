@@ -67,20 +67,20 @@
     var links = document.getElementById('nav-links');
 
     if (toggle && links) {
-      toggle.addEventListener('click', function () {
-        var open = links.classList.toggle('open');
+      var setOpen = function (open) {
+        links.classList.toggle('open', open);
+        if (nav) nav.classList.toggle('menu-open', open);   // solid bar behind the panel
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      toggle.addEventListener('click', function () {
+        setOpen(!links.classList.contains('open'));
       });
       links.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          links.classList.remove('open');
-          toggle.setAttribute('aria-expanded', 'false');
-        });
+        a.addEventListener('click', function () { setOpen(false); });
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && links.classList.contains('open')) {
-          links.classList.remove('open');
-          toggle.setAttribute('aria-expanded', 'false');
+          setOpen(false);
           toggle.focus();
         }
       });

@@ -21,7 +21,19 @@
 
   var STORE_KEY = 'gs_members_session';
   var SESSION_DAYS = 30;          // "keep me signed in" lifetime
-  var MEMBERS_URL = 'data/members.json';
+
+  /* Work out the site root from this script's own URL, so the same file
+     works from /shapers.html and from /admin/*.html without either page
+     having to know how deep it is. */
+  var SITE_ROOT = (function () {
+    var s = document.currentScript;
+    if (s && s.src) {
+      var i = s.src.indexOf('assets/js/auth.js');
+      if (i > -1) return s.src.slice(0, i);
+    }
+    return '';
+  })();
+  var MEMBERS_URL = SITE_ROOT + 'data/members.json';
 
   var subtle = window.crypto && window.crypto.subtle;
 
@@ -95,7 +107,13 @@
       return derive(password, target.salt, target.iter || data.iterations || 210000)
         .then(function (hex) {
           if (rec && constantTimeEqual(hex, rec.hash)) {
-            return { user: rec.u, name: rec.name || rec.u, role: rec.role || '' };
+            return {
+              user: rec.u,
+              name: rec.name || rec.u,
+              role: rec.role || '',
+              // 'admin' accounts land on the admin tools and may open /admin/*.
+              kind: rec.kind === 'admin' ? 'admin' : 'member'
+            };
           }
           return null;
         });
@@ -120,6 +138,7 @@
       user: member.user,
       name: member.name,
       role: member.role,
+      kind: member.kind === 'admin' ? 'admin' : 'member',
       at: Date.now(),
       exp: remember ? Date.now() + SESSION_DAYS * 864e5 : null
     };
@@ -143,11 +162,25 @@
     } catch (e) {}
   }
 
+  function isAdmin(session) {
+    var s = session || readSession();
+    return !!(s && s.kind === 'admin');
+  }
+
+  /* Where a given account belongs after signing in: admins go to the admin
+     tools, everyone else to the members area. */
+  function homeFor(session) {
+    return SITE_ROOT + (isAdmin(session) ? 'admin/index.html' : 'shapers.html');
+  }
+
   window.GSAuth = {
     verify: verify,
     session: readSession,
     signIn: signIn,
     signOut: signOut,
+    isAdmin: isAdmin,
+    homeFor: homeFor,
+    siteRoot: SITE_ROOT,
     available: !!subtle
   };
 })(window, document);

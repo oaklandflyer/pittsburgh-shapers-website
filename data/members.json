@@ -2,20 +2,22 @@
   "iterations": 210000,
   "users": [
     {
-      "u": "curator",
-      "name": "Hub Curator",
+      "u": "admin",
+      "name": "Hub Admin",
       "role": "Curator",
-      "salt": "f27f33d035d0945a4c64b56d1fd98edf",
+      "kind": "admin",
+      "salt": "cc5e35f75ac7c485584e1fa6c4c51a56",
       "iter": 210000,
-      "hash": "c4813899e06ed944a5ecb7a8249455ad4cced0bba84a2bc60b19ea2ff83a3676"
+      "hash": "0fb04575fb4863bf70ba425515f11aaca3c8400008e9492a7fb4a862c22ace3c"
     },
     {
       "u": "shaper",
       "name": "Pittsburgh Shaper",
       "role": "Hub Member",
-      "salt": "e8a0942bce8354497a2774dab79c847e",
+      "kind": "member",
+      "salt": "889113b1a09e9a9dbef0b7932c8bb525",
       "iter": 210000,
-      "hash": "a8d2ca417f176a8064cdfd64896b15e53f041d72e39461d83f1a3852a96aa289"
+      "hash": "f5fb9d01ca821d9357aeef0ea6b5bd48c6fb889e321741366ad90b639fea0ee7"
     }
   ]
 }

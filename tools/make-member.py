@@ -66,6 +66,9 @@ def main():
     ap.add_argument("--user", help="username (lowercase, no spaces)")
     ap.add_argument("--name", help="display name shown after sign-in")
     ap.add_argument("--role", default="", help="optional role label, e.g. Curator")
+    ap.add_argument("--kind", choices=["member", "admin"], default="member",
+                    help="'admin' lands on the admin tools after sign-in and can "
+                         "open /admin/*; 'member' lands on the members area")
     ap.add_argument("--password", help="password (omit to be prompted)")
     ap.add_argument("--iterations", type=int, default=ITERATIONS)
     ap.add_argument("--remove", metavar="USER", help="delete a login")
@@ -78,8 +81,8 @@ def main():
         if not data["users"]:
             print("no logins yet")
         for u in data["users"]:
-            print("%-16s %s%s" % (u["u"], u.get("name", ""),
-                                  (" · " + u["role"]) if u.get("role") else ""))
+            print("%-16s %-8s %s%s" % (u["u"], u.get("kind", "member"), u.get("name", ""),
+                                       (" · " + u["role"]) if u.get("role") else ""))
         return 0
 
     if args.remove:
@@ -109,6 +112,7 @@ def main():
         "u": user,
         "name": args.name or user,
         "role": args.role,
+        "kind": args.kind,
         "salt": salt,
         "iter": args.iterations,
         "hash": derive(password, salt, args.iterations),

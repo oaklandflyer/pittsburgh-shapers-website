@@ -83,6 +83,10 @@
     transition: border-color 0.18s var(--ease), color 0.18s var(--ease);
   }
   .who button:hover { border-color: var(--red); color: var(--red); }
+  /* Light treatment while the header is transparent over the dark hero */
+  nav.site-nav.overlay:not(.scrolled):not(.menu-open) .who-name { color: rgba(255,255,255,0.7); }
+  nav.site-nav.overlay:not(.scrolled):not(.menu-open) .who button { color: #fff; border-color: rgba(255,255,255,0.45); }
+  nav.site-nav.overlay:not(.scrolled):not(.menu-open) .who button:hover { border-color: var(--gold); color: var(--gold); }
   @media (max-width: 960px) {
     .who { margin: 12px var(--gutter) 0; justify-content: space-between; }
   }
@@ -90,7 +94,8 @@
   /* ---------- PAGE HEADER ---------- */
   .page-hero {
     background: linear-gradient(150deg, var(--navy) 0%, var(--navy-2) 100%);
-    color: #fff; padding: 74px 0 66px; position: relative; overflow: hidden;
+    /* Top padding clears the fixed overlay header. */
+    color: #fff; padding: 132px 0 66px; position: relative; overflow: hidden;
   }
   .page-hero::before {
     content: ''; position: absolute; inset: 0;
@@ -305,7 +310,7 @@
 
     <div class="scroll-progress" aria-hidden="true"></div>
 
-    <nav class="site-nav" id="top">
+    <nav class="site-nav overlay" id="top">
       <div class="nav-inner">
         <a href="index.html" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
           <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo" width="180" height="48">
@@ -319,6 +324,7 @@
           <a href="#visiting">Visiting Shapers</a>
           <a href="#groups">Communities</a>
           <a href="index.html">Public Site</a>
+          <a href="admin/index.html" class="nav-cta" id="admin-link" hidden>Admin</a>
           <span class="who">
             <span class="who-name" id="who-name"></span>
             <button type="button" id="sign-out">Sign out</button>
@@ -490,6 +496,8 @@
       $('members').hidden = false;
       var who = $('who-name');
       if (who) who.textContent = 'Signed in · ' + (session.name || session.user);
+      // Admins keep a shortcut to the managers when they come back here.
+      if (session.kind === 'admin') $('admin-link').hidden = false;
       if (!contentReady) { contentReady = true; initContent(); }
       // Sections exist now, so let the shared boot pass wire nav/reveals/spy.
       if (window.GS && window.GS.boot) window.GS.boot();
@@ -519,7 +527,15 @@
               pass.value = ''; pass.focus();
               return;
             }
-            reveal(window.GSAuth.signIn(member, remember.checked));
+            var session = window.GSAuth.signIn(member, remember.checked);
+            // Admins go straight to the hub managers; members stay here.
+            // ?next=admin means the admin gate sent them here to sign in.
+            var wantsAdmin = /(^|[?&])next=admin(&|$)/.test(window.location.search);
+            if (session.kind === 'admin' || (wantsAdmin && window.GSAuth.isAdmin(session))) {
+              window.location.href = 'admin/index.html';
+              return;
+            }
+            reveal(session);
           })
           .catch(function () {
             err.textContent = 'Sign-in is unavailable right now. Try again, or ask a curator.';
