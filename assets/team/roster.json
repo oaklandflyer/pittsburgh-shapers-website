@@ -4,6 +4,8 @@
     "role": "Curator",
     "group": "leadership",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/andrew-coutinho/",
+    "bio": "Andrew is the Curator of the Pittsburgh Hub. He works in operations, process, and program management, and founded the non-profit NCBO. He studied at the University of Pittsburgh and is based in Pittsburgh.",
     "photo": "andrew-coutinho"
   },
   {
@@ -11,6 +13,8 @@
     "role": "Vice Curator",
     "group": "leadership",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/ian-chang3013/",
+    "bio": "Ian is the Hub's Vice Curator. He works in global payments and trade at BNY and is a University of Pittsburgh graduate based in the greater Pittsburgh region.",
     "photo": "ian-chang"
   },
   {
@@ -18,6 +22,8 @@
     "role": "Impact Officer",
     "group": "leadership",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/seong-kim38/",
+    "bio": "Seong serves as the Hub's Impact Officer. She is a biochemistry student at the University of Pittsburgh, based in Pittsburgh.",
     "photo": "seong-kim"
   },
   {
@@ -25,6 +31,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "Outgoing Curator",
+    "linkedin": "https://www.linkedin.com/in/steven-c-guo/",
+    "bio": "Steven is a startup ecosystem builder and storyteller focused on social impact. He works with the Swartz Center for Entrepreneurship and is part of Carnegie Mellon's Technology & Entrepreneurship community in Pittsburgh.",
     "photo": "steven-guo"
   },
   {
@@ -32,6 +40,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "Founding Curator",
+    "linkedin": "https://www.linkedin.com/in/s-yeager/",
+    "bio": "Sarah is a climate, sustainability, and resiliency professional with the International City/County Management Association (ICMA). A Lehigh University graduate, she is based in Pittsburgh.",
     "photo": "sarah-yeager"
   },
   {
@@ -39,6 +49,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "Former Curator",
+    "linkedin": "https://www.linkedin.com/in/mcoutinho1/",
+    "bio": "Michael works in nature aquariums with the Aqua Design Collective and is a Carnegie Mellon University graduate.",
     "photo": "michael-coutinho"
   },
   {
@@ -46,6 +58,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/gisele-dewitt-55b75a210/",
+    "bio": "Gisele is an analyst at BNY and a UC Berkeley Class of 2025 graduate, based in Pittsburgh.",
     "photo": "gisele-dewitt"
   },
   {
@@ -53,6 +67,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/tehyalim/",
+    "bio": "Tehya studies behavioral economics, statistics, and politics at Carnegie Mellon University, with interests in social impact, data analysis, and consulting. She interns in economic policy at RIDC and supports events at Ascender in Pittsburgh.",
     "photo": "tehya-lim"
   },
   {
@@ -60,6 +76,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/julia-kline3105/",
+    "bio": "Julia is a Politics and Philosophy honors student at the University of Pittsburgh and has worked with MidPenn Legal Services. She is based in Pittsburgh.",
     "photo": "julia-kline"
   },
   {
@@ -67,6 +85,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/patrick-ciaran-gormley-b67bb8204/",
+    "bio": "Patrick is a J.D. from the University of Pittsburgh School of Law and is involved with the Allegheny County Bar Association in Pittsburgh.",
     "photo": "patrick-gormley"
   },
   {
@@ -74,6 +94,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/ramiya-shelton/",
+    "bio": "Ramiya is pursuing an MS in Biomedical Engineering at Carnegie Mellon University and is a Rales Fellow (Cohort II).",
     "photo": "ramiya-shelton"
   },
   {
@@ -81,6 +103,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/raya-sweigart/",
+    "bio": "Raya is a research associate at Meta focused on XR research and QA. A University of Pittsburgh graduate, she is based in Pittsburgh.",
     "photo": "raya-sweigart"
   },
   {
@@ -88,6 +112,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/mustafa-abdalla-577a62271/",
+    "bio": "Mustafa is a supply chain specialist at UPMC, based in Pittsburgh.",
     "photo": "mustafa-abdalla"
   },
   {
@@ -95,6 +121,8 @@
     "role": "Hub Member",
     "group": "members",
     "note": "",
+    "linkedin": "https://www.linkedin.com/in/egshiglen/",
+    "bio": "Egshiglen focuses on public policy and data analytics at Carnegie Mellon University, applying strategy and data-driven decision making for social good.",
     "photo": "egshiglen-batjargal"
   }
 ]
