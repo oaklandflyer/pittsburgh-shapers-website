@@ -142,6 +142,10 @@
     border: none; border-radius: 4px; background: var(--ink); color: #fff; box-shadow: none;
   }
   .hubmap .leaflet-tooltip-top::before { border-top-color: var(--ink); }
+  .hubmap .leaflet-tooltip.hub-tip-home {
+    background: var(--gold); color: var(--navy); font-weight: 700;
+  }
+  .hubmap .leaflet-tooltip.hub-tip-home.leaflet-tooltip-right::before { border-right-color: var(--gold); }
   .hubmap-foot {
     display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; margin-top: 18px;
     font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em;
@@ -503,7 +507,7 @@
         <div class="hubmap" id="hubmap">
           <div class="hubmap-loading" id="hubmap-loading">Loading map…</div>
         </div>
-        <div class="hubmap-hint">Drag to pan · click the map, then scroll to zoom · click a dot for the hub city</div>
+        <div class="hubmap-hint"><span id="hubmap-count"></span> · Drag to pan · click the map, then scroll to zoom · click a dot for the hub city</div>
         <div class="hubmap-foot">
           <span class="hml-item"><span class="hml-dot home"></span>Pittsburgh</span>
           <span class="hml-item"><span class="hml-dot hub"></span>Global Shapers hub</span>
@@ -1058,8 +1062,16 @@
           loadOnce('link', { rel: 'stylesheet', href: 'assets/vendor/leaflet/leaflet.css' }),
           loadOnce('script', { src: 'assets/vendor/leaflet/leaflet.js' })
         ]).then(function () {
-          return fetch('assets/data/hubs.json', { cache: 'force-cache' })
-            .then(function (r) { return r.ok ? r.json() : []; });
+          /* data/hubs.json is the real Global Shapers hub directory.
+             (assets/data/hubs.json, which this used to read, is a gazetteer
+             of major world cities used for labels on the members-page globe —
+             it is not a hub list, so the map was dotting cities that aren't
+             hubs.) Only name/lat/lng are used below: the file also holds each
+             hub's Visiting Shapers WhatsApp link, which is members-only and
+             must not be rendered on the public site. */
+          return fetch('data/hubs.json', { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) { return (d && Array.isArray(d.hubs)) ? d.hubs : []; });
         }).then(function (hubs) {
           if (!window.L) { fail('Map unavailable'); return; }
           var loading = document.getElementById('hubmap-loading');
@@ -1084,29 +1096,52 @@
             maxZoom: 12
           }).addTo(map);
 
-          var home = null;
+          var home = null, plotted = 0;
           (Array.isArray(hubs) ? hubs : []).forEach(function (h) {
             if (typeof h.lat !== 'number' || typeof h.lng !== 'number') return;
-            var isHome = /^pittsburgh$/i.test(h.c);
+            var isHome = !!h.home || /^pittsburgh\b/i.test(h.name || '');
+            var name = h.name || '';
+            plotted++;
+
+            // The home hub gets a soft halo so it reads at world zoom.
+            if (isHome) {
+              L.circleMarker([h.lat, h.lng], {
+                radius: 13, stroke: false, fillColor: '#FFCB05', fillOpacity: 0.25, interactive: false
+              }).addTo(map);
+            }
+
             var dot = L.circleMarker([h.lat, h.lng], {
-              radius: isHome ? 8 : 4.5,
+              radius: isHome ? 8 : 5,
               color: isHome ? '#A9760A' : '#ffffff',
-              weight: isHome ? 2 : 1,
+              weight: isHome ? 2 : 1.2,
               fillColor: isHome ? '#FFCB05' : '#1A4FFF',
-              fillOpacity: isHome ? 1 : 0.78,
+              fillOpacity: isHome ? 1 : 0.85,
               interactive: true
             }).addTo(map);
 
-            dot.bindTooltip(h.c, { direction: 'top', offset: [0, -6] });
+            // The home hub keeps a small standing label; everyone else labels
+            // on hover. (An auto-opened popup covered half the US hubs.)
+            dot.bindTooltip(name, isHome
+              ? { permanent: true, direction: 'right', offset: [8, 0], className: 'hub-tip-home' }
+              : { direction: 'top', offset: [0, -6] });
             dot.bindPopup(
               '<div class="hub-pop-kicker' + (isHome ? ' home' : '') + '">' +
                 (isHome ? '★ Our home hub' : 'Global Shapers hub') + '</div>' +
-              '<div class="hub-pop-name">' + esc(h.c) + '</div>'
+              '<div class="hub-pop-name">' + esc(name) + '</div>'
             );
             if (isHome) home = dot;
           });
 
-          if (home) home.openPopup();
+          var count = document.getElementById('hubmap-count');
+          if (count) {
+            count.textContent = plotted
+              ? plotted + ' hubs plotted — every hub we hold coordinates for'
+              : 'Hub list unavailable';
+          }
+
+          // The opening view (set above) already frames the whole network;
+          // `home` is kept only so the standing label is bound to it.
+          void home;
 
           // Leaflet needs a nudge if the container was resized while hidden.
           setTimeout(function () { map.invalidateSize(); }, 60);
