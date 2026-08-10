@@ -127,6 +127,9 @@
   .m-fields .m-name { flex:2; min-width:160px; font-weight:600; }
   .m-fields .m-role { flex:1; min-width:130px; }
   .m-fields .m-note { flex:1; min-width:160px; }
+  .m-fields .m-linkedin { flex:2; min-width:200px; }
+  .m-fields .m-bio { width:100%; min-height:54px; resize:vertical; padding:8px 10px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.88rem; color:var(--ink); }
+  .m-fields .m-bio:focus { outline:none; border-color:var(--blue); }
   .m-fields .m-sel { font-family:var(--font-mono); font-size:0.66rem; }
   .m-fields .m-hint { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.05em; color:var(--mute); }
   .member .actions { align-self:start; display:flex; flex-direction:column; gap:4px; }
@@ -218,7 +221,7 @@
 
     <!-- STEP 4: ROSTER -->
     <div class="sec-label"><span class="step-n">4</span> Team-Hub member roster &amp; headshots</div>
-    <p class="note" style="margin-top:0;">Add or remove members, edit names and roles, and click a headshot circle to upload a photo. Changes go live with the same <b>Publish</b> button below.</p>
+    <p class="note" style="margin-top:0;">Add or remove members, edit names and roles, and click a headshot circle to upload a photo. The LinkedIn URL and bio show up when a visitor clicks that person on the home page. Changes go live with the same <b>Publish</b> button below.</p>
     <div id="roster-mgr">
       <div class="cat-empty">Connect above to load the member roster.</div>
     </div>
@@ -257,7 +260,7 @@
   var manifestSha = null; // sha of manifest.json when loaded (for update)
   var connected = false;
 
-  // Roster: members model. { id, name, role, group, note, photo(base or ''),
+  // Roster: members model. { id, name, role, group, note, linkedin, bio, photo(base or ''),
   //   fromRepo, blobJpg, blobWebp, thumbUrl, origSize, outSize, busy, error,
   //   photoChanged }
   var members = [];
@@ -551,7 +554,7 @@
 
   function newMember(group) {
     return { id: ++uid, name: '', role: group === 'leadership' ? '' : 'Hub Member', group: group,
-      note: '', photo: '', fromRepo: false, blobJpg: null, blobWebp: null, thumbUrl: '',
+      note: '', linkedin: '', bio: '', photo: '', fromRepo: false, blobJpg: null, blobWebp: null, thumbUrl: '',
       origSize: 0, outSize: 0, busy: false, error: false, photoChanged: false };
   }
   function addMember(group) { members.push(newMember(group)); rosterDirty = true; renderRoster(); updatePublish(); }
@@ -645,6 +648,10 @@
           '<input class="m-note" type="text" placeholder="Note (optional)" value="' + escapeAttr(m.note) + '">' +
           '<select class="m-sel">' + groupOpts + '</select>' +
         '</div>' +
+        '<div class="frow">' +
+          '<input class="m-linkedin" type="text" placeholder="LinkedIn URL (optional)" value="' + escapeAttr(m.linkedin || '') + '">' +
+        '</div>' +
+        '<textarea class="m-bio" placeholder="Short bio — shown when a visitor clicks this member on the site (optional)">' + escapeHtml(m.bio || '') + '</textarea>' +
         '<div class="m-hint">' + (m.busy ? 'optimizing photo…' : m.error ? 'photo failed' : m.photo ? escapeHtml(m.photo) + '.jpg' : 'no photo — initials shown') + '</div>' +
       '</div>' +
       '<div class="actions">' +
@@ -660,6 +667,8 @@
     row.querySelector('.m-name').addEventListener('input', function (e) { m.name = e.target.value; rosterDirty = true; updatePublish(); });
     row.querySelector('.m-role').addEventListener('input', function (e) { m.role = e.target.value; rosterDirty = true; updatePublish(); });
     row.querySelector('.m-note').addEventListener('input', function (e) { m.note = e.target.value; rosterDirty = true; updatePublish(); });
+    row.querySelector('.m-linkedin').addEventListener('input', function (e) { m.linkedin = e.target.value.trim(); rosterDirty = true; updatePublish(); });
+    row.querySelector('.m-bio').addEventListener('input', function (e) { m.bio = e.target.value; rosterDirty = true; updatePublish(); });
     row.querySelector('.m-sel').addEventListener('change', function (e) { m.group = e.target.value; rosterDirty = true; renderRoster(); updatePublish(); });
     row.querySelector('.up').addEventListener('click', function () { nudgeMember(m, -1); });
     row.querySelector('.down').addEventListener('click', function () { nudgeMember(m, 1); });
@@ -676,6 +685,7 @@
       list.forEach(function (m) {
         members.push({ id: ++uid, name: m.name || '', role: m.role || '',
           group: m.group === 'leadership' ? 'leadership' : 'members', note: m.note || '',
+          linkedin: m.linkedin || '', bio: m.bio || '',
           photo: m.photo || '', fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '',
           origSize: 0, outSize: 0, busy: false, error: false, photoChanged: false });
       });
@@ -767,7 +777,8 @@
       chain = chain.then(function () {
         log('↻ updating member roster …');
         var out = members.map(function (m) {
-          return { name: m.name, role: m.role, group: m.group, note: m.note || '', photo: m.photo || '' };
+          return { name: m.name, role: m.role, group: m.group, note: m.note || '',
+                   linkedin: m.linkedin || '', bio: m.bio || '', photo: m.photo || '' };
         });
         var json = JSON.stringify(out, null, 2) + '\n';
         return ghGet('assets/team/roster.json').then(function (r) {

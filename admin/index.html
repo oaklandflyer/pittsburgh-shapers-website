@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="gate.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin · Global Shapers Pittsburgh</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+  .admin-hero {
+    background: linear-gradient(150deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff; padding: 56px 0 52px; position: relative; overflow: hidden;
+  }
+  .admin-hero::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 45% 60% at 85% 20%, rgba(26,79,255,0.45), transparent 65%);
+  }
+  .admin-hero .wrap { position: relative; z-index: 1; }
+  .admin-hero .eyebrow { color: var(--gold); }
+  .admin-hero h1 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(2.4rem, 5.5vw, 3.8rem); line-height: 0.95; letter-spacing: 0.02em;
+  }
+  .admin-hero p { color: rgba(255,255,255,0.78); margin-top: 14px; max-width: 56ch; }
+  .admin-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; flex-wrap: wrap; margin-top: 26px;
+  }
+  .admin-who {
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.66);
+  }
+  .tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .tool {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 28px; display: flex; flex-direction: column;
+    transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
+  }
+  .tool:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); color: inherit; }
+  .tool .t-icon { font-size: 1.6rem; margin-bottom: 14px; }
+  .tool h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; letter-spacing: 0.03em; color: var(--ink); margin-bottom: 8px; }
+  .tool p { color: var(--slate); font-size: 0.93rem; line-height: 1.6; margin-bottom: 18px; flex: 1; }
+  .tool .go { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--blue); }
+  @media (max-width: 960px) { .tools { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px) { .tools { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+  <header class="admin-hero">
+    <div class="wrap">
+      <span class="eyebrow">Global Shapers · Admin</span>
+      <h1>HUB MANAGERS</h1>
+      <p>Everything on the public site is driven by JSON files in this repo. These tools edit them for you and commit the change with your GitHub token.</p>
+      <div class="admin-bar">
+        <span class="admin-who" id="admin-who"></span>
+        <span style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="../index.html" class="btn btn-outline-light">Public site</a>
+          <a href="../shapers.html" class="btn btn-outline-light">Members area</a>
+          <button type="button" class="btn btn-gold" id="admin-signout">Sign out</button>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="tools">
+        <a class="tool" href="photos.html">
+          <span class="t-icon" aria-hidden="true">🖼️</span>
+          <h2>Photos &amp; Team</h2>
+          <p>Upload gallery photos, sort them into categories, and manage the hub roster with headshots and LinkedIn links.</p>
+          <span class="go">Open manager →</span>
+        </a>
+        <a class="tool" href="events.html">
+          <span class="t-icon" aria-hidden="true">📅</span>
+          <h2>Events</h2>
+          <p>Add, reorder, and retire the events shown in the "What's happening" block on the home page.</p>
+          <span class="go">Open manager →</span>
+        </a>
+        <a class="tool" href="projects.html">
+          <span class="t-icon" aria-hidden="true">🚀</span>
+          <h2>Projects</h2>
+          <p>Edit project cards, their metrics, status, and photos, and arrange the order they appear in.</p>
+          <span class="go">Open manager →</span>
+        </a>
+        <a class="tool" href="calendar.html">
+          <span class="t-icon" aria-hidden="true">🗓️</span>
+          <h2>Calendar</h2>
+          <p>The twelve-month roadmap on the members page — months, titles, highlight, and background image.</p>
+          <span class="go">Open manager →</span>
+        </a>
+        <a class="tool" href="shapers.html">
+          <span class="t-icon" aria-hidden="true">🔗</span>
+          <h2>Member resources</h2>
+          <p>The toolkit cards in the members area: governance, onboarding, finance, and their links.</p>
+          <span class="go">Open manager →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="foot-bottom" style="margin-top:0;border-top:none;">
+      <span>© <span id="foot-year">2026</span> Global Shapers Pittsburgh Hub · Admin</span>
+      <span>Logins are managed with tools/make-member.py</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('foot-year').textContent = new Date().getFullYear();
+    window.addEventListener('DOMContentLoaded', function () {
+      // gate.js loads auth.js for us; it is present by the time the page shows.
+      var s = window.GSAuth && window.GSAuth.session();
+      if (s) document.getElementById('admin-who').textContent = 'Signed in · ' + (s.name || s.user);
+      document.getElementById('admin-signout').addEventListener('click', function () {
+        window.GSAuth.signOut();
+        window.location.href = '../shapers.html';
+      });
+    });
+  </script>
+</body>
+</html>

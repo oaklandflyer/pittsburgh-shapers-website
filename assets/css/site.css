@@ -115,10 +115,44 @@ nav.site-nav.scrolled {
   border-bottom-color: var(--line);
   box-shadow: 0 4px 18px rgba(11,31,91,0.05);
 }
+/* Overlay header: sits on top of a dark hero, transparent until you scroll,
+   then drops into the solid light bar. Pages opt in with class "overlay" and
+   must leave room for it at the top of their first section. */
+nav.site-nav.overlay {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+nav.site-nav.overlay:not(.scrolled):not(.menu-open) .nav-links > a { color: rgba(255,255,255,0.82); }
+nav.site-nav.overlay:not(.scrolled):not(.menu-open) .nav-links > a:hover,
+nav.site-nav.overlay:not(.scrolled):not(.menu-open) .nav-links > a.active { color: #fff; background: rgba(255,255,255,0.12); }
+nav.site-nav.overlay:not(.scrolled):not(.menu-open) .nav-login { color: #fff; border-color: rgba(255,255,255,0.5); }
+nav.site-nav.overlay:not(.scrolled):not(.menu-open) .nav-login:hover { background: #fff; color: var(--navy); border-color: #fff; }
+nav.site-nav.overlay:not(.scrolled):not(.menu-open) .nav-toggle span { background: #fff; }
+/* The logo artwork is dark navy — knock it out to white while the header
+   is transparent over the hero, or it disappears into the background. */
+nav.site-nav.overlay:not(.scrolled):not(.menu-open) .wordmark .mark { filter: brightness(0) invert(1); }
+nav.site-nav.overlay.scrolled, nav.site-nav.overlay.menu-open {
+  background: rgba(250,250,247,0.94);
+  backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
 .nav-inner {
   max-width: var(--container); margin: 0 auto; padding: 14px var(--gutter);
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
+
+/* Right-hand action cluster: a quiet "Log in" next to the loud "Apply". */
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.nav-login {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em;
+  text-transform: uppercase; font-weight: 700; color: var(--ink);
+  border: 1.5px solid var(--line-2); border-radius: var(--radius-pill);
+  padding: 10px 18px; white-space: nowrap;
+  transition: border-color 0.18s var(--ease), color 0.18s var(--ease), background 0.18s var(--ease);
+}
+.nav-login:hover { border-color: var(--blue); color: var(--blue); background: transparent; }
+.nav-login svg { width: 13px; height: 13px; flex-shrink: 0; }
 .wordmark { display: flex; align-items: center; gap: 12px; color: var(--ink); }
 .wordmark:hover { color: var(--ink); }
 .wordmark .mark {
@@ -297,7 +331,8 @@ footer.site-footer { background: var(--navy); color: #fff; padding: 64px 0 32px;
   max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter);
   display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 44px;
 }
-.foot-grid .mark { height: 52px; width: auto; display: block; margin-bottom: 18px; }
+/* Dark navy artwork on a navy footer — knock it out to white. */
+.foot-grid .mark { height: 52px; width: auto; display: block; margin-bottom: 18px; filter: brightness(0) invert(1); }
 .foot-about { color: rgba(255,255,255,0.68); font-size: 0.95rem; line-height: 1.7; max-width: 40ch; }
 .foot-col h4 {
   font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em;
@@ -331,6 +366,111 @@ footer.site-footer { background: var(--navy); color: #fff; padding: 64px 0 32px;
 html:not(.js-ready) .reveal { opacity: 1; transform: none; }
 
 /* ---------------------------------------------------------------
+   OPENING SEQUENCE
+   A short branded curtain over the hero on first visit. Added by JS only,
+   so a failed script can never leave the page hidden; it also self-destructs
+   after a hard timeout, skips entirely on reduced-motion, and runs once per
+   browser session rather than on every navigation.
+   --------------------------------------------------------------- */
+.intro {
+  position: fixed; inset: 0; z-index: 500;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(150deg, var(--navy) 0%, var(--navy-2) 55%, #0a2a86 100%);
+  transition: opacity 0.5s var(--ease), visibility 0.5s var(--ease);
+}
+.intro::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 45% 45% at 25% 22%, rgba(26,79,255,0.5), transparent 65%),
+              radial-gradient(ellipse 40% 40% at 80% 82%, rgba(255,203,5,0.18), transparent 60%);
+}
+.intro-inner { position: relative; text-align: center; padding: 0 24px; }
+.intro-mark {
+  height: 84px; width: auto; display: block; margin: 0 auto 26px;
+  filter: brightness(0) invert(1);   /* dark artwork on a dark curtain */
+  opacity: 0; transform: translateY(14px) scale(0.94);
+  animation: introMark 0.9s var(--ease) 0.1s forwards;
+}
+.intro-line {
+  overflow: hidden; display: block;
+  font-family: var(--font-display); font-weight: 400; color: #fff;
+  font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1.02; letter-spacing: 0.03em;
+}
+.intro-line span {
+  display: block; transform: translateY(105%);
+  animation: introRise 0.85s var(--ease) forwards;
+}
+.intro-line:nth-of-type(1) span { animation-delay: 0.35s; }
+.intro-line:nth-of-type(2) span { animation-delay: 0.5s; }
+.intro-line .accent { color: var(--gold); display: inline; }
+.intro-tag {
+  margin-top: 18px; font-family: var(--font-mono); font-size: 0.66rem;
+  letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.6);
+  opacity: 0; animation: introFade 0.7s var(--ease) 0.8s forwards;
+}
+.intro-bar {
+  margin: 34px auto 0; width: min(240px, 60vw); height: 2px;
+  background: rgba(255,255,255,0.18); overflow: hidden; border-radius: 2px;
+}
+.intro-bar i {
+  display: block; height: 100%; width: 100%; background: var(--gold);
+  transform: scaleX(0); transform-origin: 0 50%;
+  animation: introBar 1.5s var(--ease) 0.25s forwards;
+}
+@keyframes introMark { to { opacity: 1; transform: none; } }
+@keyframes introRise { to { transform: none; } }
+@keyframes introFade { to { opacity: 1; } }
+@keyframes introBar  { to { transform: scaleX(1); } }
+
+/* Curtain lift */
+.intro.done { opacity: 0; visibility: hidden; }
+
+/* While the curtain is up, the page underneath must not scroll. */
+html.intro-lock, html.intro-lock body { overflow: hidden; }
+
+/* Hero content enters after the curtain lifts. */
+.intro-stagger > * { opacity: 0; transform: translateY(20px); }
+html.intro-played .intro-stagger > * {
+  animation: introUp 0.75s var(--ease) forwards;
+}
+html.intro-played .intro-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+html.intro-played .intro-stagger > *:nth-child(2) { animation-delay: 0.15s; }
+html.intro-played .intro-stagger > *:nth-child(3) { animation-delay: 0.25s; }
+html.intro-played .intro-stagger > *:nth-child(4) { animation-delay: 0.35s; }
+html.intro-played .intro-stagger > *:nth-child(5) { animation-delay: 0.45s; }
+@keyframes introUp { to { opacity: 1; transform: none; } }
+/* No JS, or motion reduced: show hero content immediately. */
+html:not(.js-ready) .intro-stagger > *,
+html.intro-skip .intro-stagger > * { opacity: 1; transform: none; animation: none; }
+
+/* ---------------------------------------------------------------
+   MODAL (team profiles)
+   --------------------------------------------------------------- */
+.modal {
+  position: fixed; inset: 0; z-index: 350; display: none;
+  align-items: center; justify-content: center; padding: 5vmin 22px;
+  background: rgba(6,11,28,0.78);
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  opacity: 0; transition: opacity 0.22s var(--ease);
+}
+.modal.open { display: flex; opacity: 1; }
+.modal-card {
+  position: relative; width: 100%; max-width: 520px; max-height: 88vh; overflow-y: auto;
+  background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  padding: 40px 40px 34px; text-align: center;
+  transform: translateY(14px) scale(0.98); transition: transform 0.28s var(--ease);
+}
+.modal.open .modal-card { transform: none; }
+.modal-close {
+  position: absolute; top: 14px; right: 16px; width: 36px; height: 36px;
+  border: 1px solid var(--line-2); background: var(--surface); color: var(--slate);
+  border-radius: 50%; font-size: 1rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease);
+}
+.modal-close:hover { background: var(--raise); color: var(--ink); }
+@media (max-width: 560px) { .modal-card { padding: 34px 24px 28px; } }
+
+/* ---------------------------------------------------------------
    CURSOR — deliberately plain.
    No custom cursor image, no cursor-following blob. Buttons and links
    use the normal system hand; text uses the normal I-beam.
@@ -359,6 +499,12 @@ button[disabled], .btn[aria-disabled="true"] { cursor: not-allowed; }
   .nav-links a::after { display: none; }
   .nav-links a.active { background: var(--blue-tint); color: var(--blue-deep); }
   .nav-cta { margin: 12px var(--gutter) 0; }
+  .nav-actions {
+    flex-direction: column; align-items: stretch; gap: 10px;
+    margin: 12px var(--gutter) 4px; padding-top: 14px; border-top: 1px solid var(--line);
+  }
+  .nav-actions .nav-cta { margin: 0; }
+  .nav-login { justify-content: center; padding: 13px 18px; }
   .foot-grid { grid-template-columns: 1fr 1fr; }
   .cta-band { padding: 48px 30px; }
 }

@@ -12,6 +12,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
+<!-- Opening sequence. Loaded here, synchronously, so the curtain is painted
+     before the hero appears; it self-removes on a timeout no matter what. -->
+<script src="assets/js/intro.js"></script>
 <style>
   /* ---------------------------------------------------------------
      HOME PAGE ONLY — everything shared lives in assets/css/site.css
@@ -62,7 +65,8 @@
   .hero-stats .stat-num { color: #fff; font-size: clamp(2rem, 3.6vw, 2.9rem); }
   .hero-stats .stat-lbl { color: rgba(255,255,255,0.62); }
   .hero-cue {
-    position: absolute; left: 50%; bottom: 22px; z-index: 2; transform: translateX(-50%);
+    /* Right edge, not centred — centred it collides with the stat row. */
+    position: absolute; right: var(--gutter); bottom: 26px; z-index: 2;
     font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em;
     text-transform: uppercase; color: rgba(255,255,255,0.55);
     display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -111,22 +115,33 @@
     /* Skip layout/paint work for the map while it's off screen. */
     contain: layout paint;
   }
-  .hubmap-canvas { position: absolute; inset: 0; }
-  .hubmap-canvas svg { width: 100%; height: 100%; display: block; }
-  .hubmap-land { fill: #D5DDEC; }
-  .hubmap-dot { fill: var(--blue); opacity: 0.8; }
-  .hubmap-dot.is-active { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1; opacity: 1; }
-  .hubmap-dot.is-home { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1.2; opacity: 1; }
-  .hubmap-hit { fill: transparent; outline: none; cursor: pointer; }
-  .hubmap-pulse { fill: var(--gold); opacity: 0.35; animation: hubPulse 2.6s ease-out infinite; transform-origin: center; transform-box: fill-box; }
-  @keyframes hubPulse { 0% { transform: scale(1); opacity: 0.45; } 70%, 100% { transform: scale(3.2); opacity: 0; } }
-  .hubmap-tip {
-    position: absolute; pointer-events: none; z-index: 3; opacity: 0;
-    transform: translate(-50%, -150%); background: var(--ink); color: #fff;
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.05em;
-    padding: 5px 10px; border-radius: 4px; white-space: nowrap; transition: opacity 0.12s var(--ease);
+  .hubmap-loading {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--mute);
   }
-  .hubmap-tip.on { opacity: 1; }
+  /* Leaflet chrome, restyled to match the site */
+  .hubmap .leaflet-container { background: #E9EEF9; font-family: var(--font-body); }
+  .hubmap .leaflet-control-zoom a {
+    border-radius: 8px !important; color: var(--ink); border-color: var(--line-2);
+  }
+  .hubmap .leaflet-control-zoom a:hover { color: var(--blue); }
+  .hubmap .leaflet-control-attribution {
+    background: rgba(255,255,255,0.82); font-size: 10px; color: var(--mute);
+  }
+  .hubmap .leaflet-popup-content-wrapper { border-radius: var(--radius-sm); box-shadow: var(--shadow-md); }
+  .hubmap .leaflet-popup-content { margin: 12px 16px; }
+  .hub-pop-name { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.03em; line-height: 1.1; color: var(--ink); }
+  .hub-pop-kicker {
+    font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 3px;
+  }
+  .hub-pop-kicker.home { color: var(--gold-deep); }
+  .hubmap .leaflet-tooltip {
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.04em;
+    border: none; border-radius: 4px; background: var(--ink); color: #fff; box-shadow: none;
+  }
+  .hubmap .leaflet-tooltip-top::before { border-top-color: var(--ink); }
   .hubmap-foot {
     display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; margin-top: 18px;
     font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em;
@@ -293,9 +308,48 @@
   .person {
     background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
     padding: 22px 24px; display: flex; align-items: center; gap: 16px;
+    width: 100%; text-align: left; font: inherit; color: inherit; position: relative;
     transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
   }
   .person:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+  /* Clickable cards get a quiet "+" affordance that fills in on hover. */
+  button.person::after {
+    content: '+'; position: absolute; top: 14px; right: 16px;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--raise); color: var(--slate);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem; line-height: 1;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  button.person:hover::after { background: var(--blue); color: #fff; transform: rotate(90deg); }
+  button.person:hover .name { color: var(--blue); }
+  .person .avatar { transition: transform 0.25s var(--ease); }
+  button.person:hover .avatar { transform: scale(1.05); }
+
+  /* ---------- TEAM PROFILE MODAL ---------- */
+  .profile-avatar {
+    width: 128px; height: 128px; border-radius: 50%; margin: 0 auto 20px;
+    background: var(--blue-tint); border: 1px solid var(--line-2); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700; color: var(--blue);
+  }
+  .profile-avatar picture, .profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .profile-role {
+    font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-deep); margin-bottom: 8px;
+  }
+  .profile-name {
+    font-family: var(--font-display); font-weight: 400; font-size: 2.4rem;
+    letter-spacing: 0.03em; line-height: 1; margin-bottom: 12px;
+  }
+  .profile-note {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate);
+    background: var(--raise); border-radius: var(--radius-pill); padding: 6px 14px; margin-bottom: 16px;
+  }
+  .profile-bio { color: var(--slate); font-size: 0.98rem; line-height: 1.75; margin-bottom: 22px; text-align: left; }
+  .profile-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .profile-actions .btn svg { width: 15px; height: 15px; }
+  .profile-empty { color: var(--mute); font-size: 0.9rem; font-style: italic; margin-bottom: 20px; }
   .person-text { min-width: 0; }
   .person .role {
     font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em;
@@ -333,7 +387,7 @@
   <a class="skip-link" href="#overview">Skip to content</a>
 
   <!-- NAV -->
-  <nav class="site-nav" id="top">
+  <nav class="site-nav overlay" id="top">
     <div class="nav-inner">
       <a href="#top" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
         <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo" width="180" height="48">
@@ -348,8 +402,16 @@
         <a href="#projects">Projects</a>
         <a href="#gallery">Photos</a>
         <a href="#roster">Team</a>
-        <a href="shapers.html">Members</a>
-        <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="nav-cta" target="_blank" rel="noopener">Apply Now</a>
+        <div class="nav-actions">
+          <a href="shapers.html" class="nav-login">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            Log In
+          </a>
+          <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="nav-cta" target="_blank" rel="noopener">Apply Now</a>
+        </div>
       </div>
     </div>
   </nav>
@@ -358,7 +420,7 @@
   <header class="hero">
     <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
     <div class="hero-scrim" aria-hidden="true"></div>
-    <div class="hero-inner">
+    <div class="hero-inner intro-stagger">
       <span class="eyebrow">A World Economic Forum Initiative</span>
       <h1>SHAPING PITTSBURGH'S <span class="accent">FUTURE</span></h1>
       <p class="lead">Young leaders building community, driving innovation, and making real impact — proudly representing the City of Bridges.</p>
@@ -439,10 +501,9 @@
         <div class="sec-label">One Global Community</div>
         <p class="hubmap-intro">Pittsburgh is one of <b>500+ hubs</b> in the Global Shapers Community — a network spanning every inhabited continent. Explore where Shapers are driving change.</p>
         <div class="hubmap" id="hubmap">
-          <div class="hubmap-canvas" id="hubmap-canvas"></div>
-          <div class="hubmap-tip" id="hubmap-tip" role="status" aria-live="polite"></div>
+          <div class="hubmap-loading" id="hubmap-loading">Loading map…</div>
         </div>
-        <div class="hubmap-hint">Tap or hover a dot to see the hub city</div>
+        <div class="hubmap-hint">Drag to pan · click the map, then scroll to zoom · click a dot for the hub city</div>
         <div class="hubmap-foot">
           <span class="hml-item"><span class="hml-dot home"></span>Pittsburgh</span>
           <span class="hml-item"><span class="hml-dot hub"></span>Global Shapers hub</span>
@@ -585,7 +646,7 @@
         <ul>
           <li><a href="https://www.globalshapers.org/" target="_blank" rel="noopener">Global Shapers</a></li>
           <li><a href="https://www.weforum.org/" target="_blank" rel="noopener">World Economic Forum</a></li>
-          <li><a href="shapers.html">Members area</a></li>
+          <li><a href="shapers.html">Member log-in</a></li>
         </ul>
         <div class="foot-social">
           <a href="https://www.instagram.com/globalshaperspgh/" target="_blank" rel="noopener noreferrer" aria-label="Follow Global Shapers Pittsburgh on Instagram">
@@ -604,6 +665,14 @@
       <span>An initiative of the World Economic Forum</span>
     </div>
   </footer>
+
+  <!-- Team profile modal -->
+  <div class="modal" id="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-name">
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Close profile">✕</button>
+      <div id="profile-body"></div>
+    </div>
+  </div>
 
   <!-- Gallery lightbox overlay -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
@@ -628,48 +697,109 @@
 
     document.getElementById('foot-year').textContent = new Date().getFullYear();
 
-    /* ---------- ROSTER ----------
+    /* ---------- ROSTER + PROFILE MODAL ----------
        Driven by assets/team/roster.json (manage at /admin/photos.html).
-       Falls back to the static markup already in the page. */
+       Each card is a button: clicking one opens that Shaper's profile with
+       their role, note/bio and a LinkedIn link. Falls back to the static
+       markup already in the page if the manifest is missing. */
     (function () {
       var grid = document.getElementById('roster-grid');
-      if (!grid) return;
+      var modal = document.getElementById('profile-modal');
+      if (!grid || !modal) return;
+      var body = document.getElementById('profile-body');
+      var roster = [];
+      var lastFocus = null;
+
       function initials(name) {
         var parts = String(name || '').trim().split(/\s+/).filter(Boolean);
         if (!parts.length) return '?';
         return (parts[0].charAt(0) + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : '')).toUpperCase();
       }
-      function avatar(m) {
-        if (m.photo) {
-          return '<div class="avatar"><picture>' +
-            '<source type="image/webp" srcset="assets/team/' + esc(m.photo) + '.webp">' +
-            '<img src="assets/team/' + esc(m.photo) + '.jpg" alt="' + esc(m.name) + '" loading="lazy" decoding="async" width="78" height="78">' +
-            '</picture></div>';
-        }
-        return '<div class="avatar" aria-hidden="true">' + esc(initials(m.name)) + '</div>';
+      function photoMarkup(m, size) {
+        return '<picture>' +
+          '<source type="image/webp" srcset="assets/team/' + esc(m.photo) + '.webp">' +
+          '<img src="assets/team/' + esc(m.photo) + '.jpg" alt="' + esc(m.name) + '" loading="lazy" decoding="async" width="' + size + '" height="' + size + '">' +
+          '</picture>';
       }
-      var LI_ICON = '<svg class="li-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8h4.5v14H.24V8zm7.5 0h4.31v1.92h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V22h-4.5v-6.62c0-1.58-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V22h-4.5V8z"/></svg>';
-      function person(m) {
-        var nameText = esc(m.name || '');
-        var nameInner = m.linkedin
-          ? '<a href="' + esc(m.linkedin) + '" target="_blank" rel="noopener noreferrer" aria-label="' + nameText + ' on LinkedIn">' + nameText + LI_ICON + '</a>'
-          : nameText;
-        return '<div class="person">' + avatar(m) +
+      function avatar(m) {
+        return m.photo
+          ? '<div class="avatar">' + photoMarkup(m, 78) + '</div>'
+          : '<div class="avatar" aria-hidden="true">' + esc(initials(m.name)) + '</div>';
+      }
+      function card(m, i) {
+        return '<button type="button" class="person" data-i="' + i + '" aria-haspopup="dialog">' + avatar(m) +
           '<div class="person-text">' +
             '<div class="role">' + esc(m.role || 'Hub Member') + '</div>' +
-            '<div class="name">' + nameInner + '</div>' +
+            '<div class="name">' + esc(m.name || '') + '</div>' +
             (m.note ? '<div class="note">' + esc(m.note) + '</div>' : '') +
-          '</div></div>';
+          '</div></button>';
       }
+
+      var LI_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8h4.5v14H.24V8zm7.5 0h4.31v1.92h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V22h-4.5v-6.62c0-1.58-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V22h-4.5V8z"/></svg>';
+
+      function openProfile(i) {
+        var m = roster[i];
+        if (!m) return;
+        var bio = m.bio || '';
+        body.innerHTML =
+          '<div class="profile-avatar">' +
+            (m.photo ? photoMarkup(m, 128) : esc(initials(m.name))) +
+          '</div>' +
+          '<div class="profile-role">' + esc(m.role || 'Hub Member') + '</div>' +
+          '<h3 class="profile-name" id="profile-name">' + esc(m.name || '') + '</h3>' +
+          (m.note ? '<div class="profile-note">' + esc(m.note) + '</div>' : '') +
+          (bio
+            ? '<p class="profile-bio">' + esc(bio) + '</p>'
+            : '<p class="profile-empty">' + esc(m.name ? m.name.split(' ')[0] : 'This Shaper') + ' hasn\'t added a bio yet.</p>') +
+          '<div class="profile-actions">' +
+            (m.linkedin
+              ? '<a class="btn btn-primary" href="' + esc(m.linkedin) + '" target="_blank" rel="noopener noreferrer">' + LI_ICON + ' LinkedIn</a>'
+              : '') +
+            (m.email
+              ? '<a class="btn btn-ghost" href="mailto:' + esc(m.email) + '">Email</a>'
+              : '') +
+          '</div>';
+        lastFocus = document.activeElement;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        modal.querySelector('.modal-close').focus();
+      }
+
+      function closeProfile() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      grid.addEventListener('click', function (e) {
+        var btn = e.target.closest && e.target.closest('button.person');
+        if (!btn) return;
+        openProfile(parseInt(btn.getAttribute('data-i'), 10));
+      });
+      modal.querySelector('.modal-close').addEventListener('click', closeProfile);
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeProfile(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeProfile();
+      });
+
       fetch('assets/team/roster.json', { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (list) {
           if (!Array.isArray(list) || !list.length) return; // keep static fallback
-          var lead = list.filter(function (m) { return m.group === 'leadership'; });
-          var members = list.filter(function (m) { return m.group !== 'leadership'; });
+          roster = list;
           var html = '';
-          if (lead.length) html += '<div class="roster-split">Leadership · July 2026 – June 2027</div>' + lead.map(person).join('');
-          if (members.length) html += '<div class="roster-split">Hub Members</div>' + members.map(person).join('');
+          var lead = [], members = [];
+          list.forEach(function (m, i) {
+            (m.group === 'leadership' ? lead : members).push(i);
+          });
+          if (lead.length) {
+            html += '<div class="roster-split">Leadership · July 2026 – June 2027</div>';
+            html += lead.map(function (i) { return card(list[i], i); }).join('');
+          }
+          if (members.length) {
+            html += '<div class="roster-split">Hub Members</div>';
+            html += members.map(function (i) { return card(list[i], i); }).join('');
+          }
           grid.innerHTML = html;
         })
         .catch(function () {});
@@ -895,121 +1025,95 @@
     })();
 
     /* ---------- GLOBAL HUB MAP ----------
-       ~440 city dots on an equirectangular SVG. Two things keep it cheap:
-       the whole thing is built only once it scrolls into view, and all
-       interaction runs through four delegated listeners on the <svg>
-       instead of five listeners per dot. */
+       A real slippy map (Leaflet 1.9, vendored locally — no API key, no
+       third-party script host, no billing account). Every Global Shapers
+       city is a dot you can pan, zoom, hover and click.
+
+       Cost control: Leaflet's CSS and JS are injected only when the map
+       scrolls into view, so the home page loads nothing for it up front,
+       and the 437 dots are drawn into a single <canvas> layer rather than
+       437 DOM nodes. Scroll-wheel zoom stays off until you click the map,
+       so scrolling the page never gets hijacked. */
     (function () {
       var host = document.getElementById('hubmap');
-      var canvas = document.getElementById('hubmap-canvas');
-      var tip = document.getElementById('hubmap-tip');
-      if (!host || !canvas) return;
-      var W = 1000, H = 500, SVGNS = 'http://www.w3.org/2000/svg';
+      if (!host) return;
 
-      function project(lat, lng) {
-        return { x: (lng + 180) / 360 * W, y: (90 - lat) / 180 * H };
+      function loadOnce(tag, attrs) {
+        return new Promise(function (resolve, reject) {
+          var el = document.createElement(tag);
+          Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+          el.onload = resolve;
+          el.onerror = reject;
+          document.head.appendChild(el);
+        });
+      }
+
+      function fail(msg) {
+        var box = document.getElementById('hubmap-loading');
+        if (box) box.textContent = msg;
       }
 
       function build() {
         Promise.all([
-          fetch('assets/img/world-equirect.svg', { cache: 'force-cache' }).then(function (r) { return r.ok ? r.text() : null; }),
-          fetch('assets/data/hubs.json', { cache: 'force-cache' }).then(function (r) { return r.ok ? r.json() : []; })
-        ]).then(function (res) {
-          var svgText = res[0], hubs = Array.isArray(res[1]) ? res[1] : [];
-          if (!svgText) return;
-          canvas.innerHTML = svgText;
-          var svg = canvas.querySelector('svg');
-          var g = canvas.querySelector('.hubmap-dots');
-          if (!svg || !g) return;
+          loadOnce('link', { rel: 'stylesheet', href: 'assets/vendor/leaflet/leaflet.css' }),
+          loadOnce('script', { src: 'assets/vendor/leaflet/leaflet.js' })
+        ]).then(function () {
+          return fetch('assets/data/hubs.json', { cache: 'force-cache' })
+            .then(function (r) { return r.ok ? r.json() : []; });
+        }).then(function (hubs) {
+          if (!window.L) { fail('Map unavailable'); return; }
+          var loading = document.getElementById('hubmap-loading');
+          if (loading) loading.remove();
 
-          // Build every dot off-document, then attach once.
-          var frag = document.createDocumentFragment();
-          var byIndex = [];
-          hubs.forEach(function (h) {
+          var map = L.map(host, {
+            scrollWheelZoom: false,        // enabled on click, see below
+            worldCopyJump: true,
+            minZoom: 1,
+            maxZoom: 12,
+            zoomControl: true,
+            attributionControl: true,
+            // One canvas for all the dots instead of hundreds of DOM nodes.
+            preferCanvas: true
+          }).setView([25, 5], 2);
+
+          map.on('click', function () { map.scrollWheelZoom.enable(); });
+          map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
+
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            maxZoom: 12
+          }).addTo(map);
+
+          var home = null;
+          (Array.isArray(hubs) ? hubs : []).forEach(function (h) {
             if (typeof h.lat !== 'number' || typeof h.lng !== 'number') return;
-            var p = project(h.lat, h.lng);
-            var home = /^pittsburgh$/i.test(h.c);
-            if (home) {
-              var pulse = document.createElementNS(SVGNS, 'circle');
-              pulse.setAttribute('cx', p.x); pulse.setAttribute('cy', p.y);
-              pulse.setAttribute('r', 3.4); pulse.setAttribute('class', 'hubmap-pulse');
-              frag.appendChild(pulse);
-            }
-            var i = byIndex.length;
-            byIndex.push({ name: h.c, x: p.x, y: p.y, home: home });
+            var isHome = /^pittsburgh$/i.test(h.c);
+            var dot = L.circleMarker([h.lat, h.lng], {
+              radius: isHome ? 8 : 4.5,
+              color: isHome ? '#A9760A' : '#ffffff',
+              weight: isHome ? 2 : 1,
+              fillColor: isHome ? '#FFCB05' : '#1A4FFF',
+              fillOpacity: isHome ? 1 : 0.78,
+              interactive: true
+            }).addTo(map);
 
-            var c = document.createElementNS(SVGNS, 'circle');
-            c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
-            c.setAttribute('r', home ? 4.2 : 2.6);
-            c.setAttribute('class', 'hubmap-dot' + (home ? ' is-home' : ''));
-            c.setAttribute('data-i', i);
-            frag.appendChild(c);
+            dot.bindTooltip(h.c, { direction: 'top', offset: [0, -6] });
+            dot.bindPopup(
+              '<div class="hub-pop-kicker' + (isHome ? ' home' : '') + '">' +
+                (isHome ? '★ Our home hub' : 'Global Shapers hub') + '</div>' +
+              '<div class="hub-pop-name">' + esc(h.c) + '</div>'
+            );
+            if (isHome) home = dot;
+          });
 
-            // Transparent oversized hit target — easy to tap on a phone.
-            var hit = document.createElementNS(SVGNS, 'circle');
-            hit.setAttribute('cx', p.x); hit.setAttribute('cy', p.y); hit.setAttribute('r', 11);
-            hit.setAttribute('class', 'hubmap-hit');
-            hit.setAttribute('data-i', i);
-            hit.setAttribute('tabindex', '0');
-            hit.setAttribute('role', 'button');
-            hit.setAttribute('aria-label', h.c);
-            frag.appendChild(hit);
-          });
-          g.appendChild(frag);
+          if (home) home.openPopup();
 
-          var dots = g.querySelectorAll('.hubmap-dot');
-          var activeIndex = -1;
-
-          function showTip(i) {
-            var d = byIndex[i];
-            if (!d) return;
-            var box = canvas.getBoundingClientRect();
-            tip.textContent = d.name;
-            tip.style.left = (d.x / W * box.width) + 'px';
-            tip.style.top = (d.y / H * box.height) + 'px';
-            tip.classList.add('on');
-          }
-          function clearActive() {
-            tip.classList.remove('on');
-            if (activeIndex > -1) { dots[activeIndex].classList.remove('is-active'); activeIndex = -1; }
-          }
-          function indexOf(target) {
-            var attr = target && target.getAttribute && target.getAttribute('data-i');
-            return attr == null ? -1 : parseInt(attr, 10);
-          }
-
-          svg.addEventListener('mouseover', function (e) {
-            var i = indexOf(e.target);
-            if (i > -1) showTip(i);
-          });
-          svg.addEventListener('mouseout', function (e) {
-            var i = indexOf(e.target);
-            if (i > -1 && i !== activeIndex) tip.classList.remove('on');
-          });
-          svg.addEventListener('focusin', function (e) {
-            var i = indexOf(e.target);
-            if (i > -1) showTip(i);
-          });
-          svg.addEventListener('focusout', function () {
-            if (activeIndex === -1) tip.classList.remove('on');
-          });
-          svg.addEventListener('click', function (e) {
-            var i = indexOf(e.target);
-            if (i === -1) { clearActive(); return; }          // tapping the map dismisses
-            if (i === activeIndex) { clearActive(); return; } // tapping the same dot toggles off
-            if (activeIndex > -1) dots[activeIndex].classList.remove('is-active');
-            if (!byIndex[i].home) dots[i].classList.add('is-active');
-            activeIndex = i;
-            showTip(i);
-          });
-          svg.addEventListener('keydown', function (e) {
-            if (e.key !== 'Enter' && e.key !== ' ') return;
-            var i = indexOf(e.target);
-            if (i === -1) return;
-            e.preventDefault();
-            e.target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-          });
-        }).catch(function () {});
+          // Leaflet needs a nudge if the container was resized while hidden.
+          setTimeout(function () { map.invalidateSize(); }, 60);
+          window.addEventListener('resize', function () { map.invalidateSize(); }, { passive: true });
+        }).catch(function () {
+          fail('Map could not be loaded');
+        });
       }
 
       whenVisible(host, build);

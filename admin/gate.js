@@ -1,19 +1,41 @@
-/* Simple client-side password gate for the admin pages.
-   Note: this is casual gating only — the real edit auth is the GitHub token.
-   Anyone determined can read this file; treat it as a "keep the door shut"
-   layer, not a security control. */
+/* Access gate for the admin pages.
+
+   These pages now share the site's member login instead of carrying their own
+   password: sign in at /shapers.html with an account whose kind is "admin"
+   (see tools/make-member.py --kind admin) and the session unlocks /admin/*.
+
+   As with the members area, this is client-side gating on static hosting — the
+   real write authority is the GitHub token you paste into the manager. Treat
+   this as "keep the door shut", not as a security control. See
+   SECURITY-NOTES.md. */
 (function () {
-  var KEY = 'gs_admin_ok';
-  var PASSWORD = 'Coutinho10';
-  try {
-    if (sessionStorage.getItem(KEY) === '1' || localStorage.getItem(KEY) === '1') return;
-  } catch (e) {}
-  // Hide the page until we approve.
+  'use strict';
+
+  var LOGIN_URL = '../shapers.html?next=admin';
+
+  // Hide the page until we know who this is.
   var style = document.createElement('style');
   style.id = 'gs-gate-hide';
   style.textContent = 'body>*:not(#gs-gate){display:none!important;}body{background:#0B1F5B!important;}';
   document.documentElement.appendChild(style);
-  function build() {
+
+  function unlock() {
+    var s = document.getElementById('gs-gate-hide');
+    if (s) s.remove();
+    var o = document.getElementById('gs-gate');
+    if (o) o.remove();
+  }
+
+  function whenBody(fn) {
+    if (document.body) fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  function blocked(title, message, actionLabel, actionHref) {
+    whenBody(function () { renderBlocked(title, message, actionLabel, actionHref); });
+  }
+
+  function renderBlocked(title, message, actionLabel, actionHref) {
     if (document.getElementById('gs-gate')) return;
     var overlay = document.createElement('div');
     overlay.id = 'gs-gate';
@@ -22,44 +44,43 @@
       'background:#0B1F5B', 'color:#fff',
       'display:flex', 'align-items:center', 'justify-content:center',
       'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif',
-      'padding:24px'
+      'padding:24px', 'text-align:center'
     ].join(';'));
     overlay.innerHTML =
-      '<form id="gs-gate-form" style="width:100%;max-width:340px;text-align:center;">' +
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.8rem;letter-spacing:0.06em;margin-bottom:6px;">ADMIN ACCESS</div>' +
-        '<div style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:#FFCB05;margin-bottom:22px;">Global Shapers Pittsburgh</div>' +
-        '<input id="gs-gate-pw" type="password" autocomplete="current-password" autofocus placeholder="Password" ' +
-          'style="width:100%;padding:14px 16px;font-size:1rem;background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.35);outline:none;margin-bottom:12px;">' +
-        '<label style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:rgba(255,255,255,0.75);margin-bottom:16px;justify-content:center;">' +
-          '<input id="gs-gate-remember" type="checkbox"> Remember on this device' +
-        '</label>' +
-        '<button type="submit" style="width:100%;padding:13px 16px;background:#FFCB05;color:#0B1F5B;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;font-size:0.85rem;">Enter</button>' +
-        '<div id="gs-gate-err" style="margin-top:12px;color:#ff9d9d;font-size:0.8rem;min-height:1em;"></div>' +
-      '</form>';
+      '<div style="max-width:380px;">' +
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.9rem;letter-spacing:0.06em;margin-bottom:8px;">' + title + '</div>' +
+        '<div style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:#FFCB05;margin-bottom:20px;">Global Shapers Pittsburgh</div>' +
+        '<p style="font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.8);margin-bottom:24px;">' + message + '</p>' +
+        '<a href="' + actionHref + '" style="display:inline-block;padding:13px 26px;background:#FFCB05;color:#0B1F5B;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;font-size:0.8rem;text-decoration:none;border-radius:999px;">' + actionLabel + '</a>' +
+      '</div>';
     document.body.appendChild(overlay);
-    var form = document.getElementById('gs-gate-form');
-    var pw = document.getElementById('gs-gate-pw');
-    var remember = document.getElementById('gs-gate-remember');
-    var err = document.getElementById('gs-gate-err');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (pw.value === PASSWORD) {
-        try {
-          sessionStorage.setItem(KEY, '1');
-          if (remember.checked) localStorage.setItem(KEY, '1');
-        } catch (ex) {}
-        var s = document.getElementById('gs-gate-hide'); if (s) s.remove();
-        overlay.remove();
-      } else {
-        err.textContent = 'Incorrect password.';
-        pw.select();
-      }
-    });
-    pw.focus();
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', build);
-  } else {
-    build();
+
+  function check() {
+    if (!window.GSAuth) {
+      blocked('ADMIN ACCESS', 'The sign-in module could not load. Reload the page, or sign in from the members area.', 'Go to sign-in', LOGIN_URL);
+      return;
+    }
+    var session = window.GSAuth.session();
+    if (!session) {
+      blocked('ADMIN ACCESS', 'Sign in with an admin account to open the hub managers.', 'Sign in', LOGIN_URL);
+      return;
+    }
+    if (!window.GSAuth.isAdmin(session)) {
+      blocked('ADMINS ONLY',
+        'You are signed in as ' + (session.name || session.user) + ', which is a member account. Ask a curator for admin access.',
+        'Back to the members area', '../shapers.html');
+      return;
+    }
+    unlock();
   }
+
+  // auth.js is loaded by this script so each admin page only needs gate.js.
+  var s = document.createElement('script');
+  s.src = '../assets/js/auth.js';
+  s.onload = check;
+  s.onerror = function () {
+    blocked('ADMIN ACCESS', 'The sign-in module could not load. Check your connection and reload.', 'Go to sign-in', LOGIN_URL);
+  };
+  (document.head || document.documentElement).appendChild(s);
 })();
