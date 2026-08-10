@@ -4,517 +4,346 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Shapers Pittsburgh Hub</title>
+<meta name="description" content="Global Shapers Pittsburgh — young leaders building community, driving innovation, and making real impact in the City of Bridges. An initiative of the World Economic Forum.">
+<link rel="canonical" href="https://pittsburghshapers.org/">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/gs-pittsburgh-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
 <style>
-  :root {
-    /* Light canvas — WEF-clean, Pittsburgh-warm */
-    --paper:  #FAFAF6;   /* page background */
-    --surface:#FFFFFF;   /* cards */
-    --raise:  #F3F2EC;   /* tinted panel */
-    --ink:    #16181D;   /* headlines / primary text */
-    --slate:  #5B6170;   /* secondary text */
-    --mute:   #8A8F9C;   /* tertiary / meta */
-    --line:   #E7E6DF;   /* hairlines */
-    --line-2: #DEDDD3;
-
-    --blue:   #1A4FFF;   /* Global Shapers electric blue — primary action */
-    --navy:   #0B1F5B;   /* deep WEF navy */
-    --blue-tint:#EEF2FF; /* pale blue wash */
-    --gold:   #FFCB05;   /* Pittsburgh gold — highlight */
-    --gold-deep:#B8860B; /* gold text-on-light */
-
-    --font-display: 'Bebas Neue', sans-serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
-    --font-mono: 'Space Mono', monospace;
-
-    --shadow-sm: 0 1px 2px rgba(11,31,91,0.04), 0 1px 3px rgba(11,31,91,0.06);
-    --shadow-md: 0 12px 32px rgba(11,31,91,0.10);
-    --ease: cubic-bezier(0.4,0,0.2,1);
-    --container: 1180px;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--font-body);
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--blue); text-decoration: none; }
-  a:hover { color: var(--navy); }
-
-  .wrap { max-width: var(--container); margin: 0 auto; padding: 0 40px; }
-
-  /* ---------- NAV ---------- */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(250,250,246,0.85);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav-inner {
-    max-width: var(--container); margin: 0 auto; padding: 16px 40px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .wordmark { display: flex; align-items: center; gap: 13px; color: var(--ink); text-decoration: none; }
-  .wordmark:hover { color: var(--ink); }
-  .wordmark .mark { transition: transform 0.25s var(--ease); }
-  .wordmark:hover .mark { transform: rotate(-8deg); }
-  .wordmark .mark { height: 50px; width: auto; display: block; flex-shrink: 0; }
-  .wordmark .lockup {
-    font-family: var(--font-display); font-size: 1.45rem; letter-spacing: 0.09em;
-    line-height: 1; display: flex; align-items: baseline; gap: 8px;
-  }
-  .wordmark .dot { width: 8px; height: 8px; background: var(--gold); display: inline-block; }
-  .nav-links { display: flex; align-items: center; gap: 4px; }
-  /* Hamburger toggle — hidden on desktop, shown on mobile */
-  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; margin: -8px; }
-  .nav-toggle span {
-    display: block; width: 24px; height: 2px; background: var(--ink);
-    transition: transform 0.25s var(--ease), opacity 0.2s var(--ease);
-  }
-  .nav-toggle span + span { margin-top: 5px; }
-  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .nav-links a {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--slate); padding: 10px 16px;
-    border-radius: 2px; transition: color 0.2s var(--ease), background 0.2s var(--ease);
-  }
-  .nav-links a:hover { color: var(--ink); background: var(--raise); }
-  .nav-cta {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em;
-    text-transform: uppercase; font-weight: 700; color: #fff !important;
-    background: var(--blue); padding: 11px 22px; margin-left: 12px; white-space: nowrap;
-    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
-    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  }
-  .nav-cta:hover { color: #fff !important; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,79,255,0.28); }
+  /* ---------------------------------------------------------------
+     HOME PAGE ONLY — everything shared lives in assets/css/site.css
+     --------------------------------------------------------------- */
 
   /* ---------- HERO ---------- */
-  header.hero { position: relative; overflow: hidden; }
-  .hero-grid {
-    max-width: var(--container); margin: 0 auto; padding: 96px 40px 80px;
-    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center;
+  header.hero {
+    position: relative; overflow: hidden;
+    min-height: min(88vh, 860px); display: flex; align-items: center;
+    background: linear-gradient(150deg, var(--navy) 0%, #0a2a86 100%);
+    color: #fff;
   }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 12px;
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--blue); margin-bottom: 24px;
-  }
-  .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--gold); }
-  .hero h1 {
-    font-family: var(--font-display); font-weight: 400;
-    font-size: clamp(3.5rem, 6.5vw, 6rem); line-height: 0.92; letter-spacing: 0.02em;
-    color: var(--ink); margin-bottom: 24px;
-  }
-  .hero h1 .blue { color: var(--blue); }
-  .hero p.lead {
-    font-size: 1.2rem; line-height: 1.65; color: var(--slate);
-    max-width: 34ch; margin-bottom: 36px; font-weight: 400;
-  }
-  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn {
-    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em;
-    text-transform: uppercase; font-weight: 700; padding: 15px 30px;
-    cursor: pointer; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
-    display: inline-block; border: none;
-  }
-  .btn-primary {
-    background: var(--blue); color: #fff;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  }
-  .btn-primary:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(26,79,255,0.28); }
-  .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line-2); }
-  .btn-ghost:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
-
-  /* Hero visual — global network stats card */
-  .hero-visual {
-    position: relative; background: var(--navy);
-    aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
-  }
-  .hero-visual::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(26,79,255,0.45) 0%, transparent 70%);
-  }
-  .hero-visual img { position: relative; width: 82%; opacity: 0.96; }
-  .hero-stats {
-    position: relative; z-index: 2; width: 100%; padding: 44px 40px;
-    display: flex; flex-direction: column; gap: 22px;
-  }
-  .hero-stats-label {
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
-  }
-  .hero-stat { display: flex; flex-direction: column; gap: 4px; }
-  .hero-stat .hs-num { font-family: var(--font-display); font-weight: 400; font-size: 3rem; line-height: 0.9; letter-spacing: 0.02em; color: #fff; }
-  .hero-stat .hs-lbl { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.62); }
-  .hero-visual .tagline {
-    position: absolute; left: 28px; bottom: 26px;
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em;
-    text-transform: uppercase; color: rgba(255,255,255,0.7);
-  }
-  .hero-visual .tagline b { color: var(--gold); font-weight: 700; }
-
-  /* ---------- SECTION SHELL ---------- */
-  section { padding: 92px 0; border-top: 1px solid var(--line); }
-  .sec-head { margin-bottom: 52px; max-width: 720px; }
-  .sec-label {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--gold-deep); display: flex; align-items: center; gap: 12px;
-    margin-bottom: 18px;
-  }
-  .sec-label::before { content: ''; width: 24px; height: 2px; background: var(--gold); }
-  .sec-title {
-    font-family: var(--font-display); font-weight: 400;
-    font-size: clamp(2.4rem, 4.5vw, 3.6rem); line-height: 1; letter-spacing: 0.02em; color: var(--ink);
-  }
-  .sec-intro { font-size: 1.05rem; line-height: 1.65; color: var(--slate); margin-top: 16px; }
-
-  /* ---------- OVERVIEW CARDS ---------- */
-  .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .card {
-    background: var(--surface); border: 1px solid var(--line); padding: 40px;
-    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
-    display: flex; flex-direction: column;
-  }
-  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
-  .card .kicker {
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--blue); margin-bottom: 16px;
-  }
-  .card h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.9rem; letter-spacing: 0.03em; margin-bottom: 12px; }
-  .card p { color: var(--slate); line-height: 1.7; font-size: 0.98rem; margin-bottom: 24px; }
-  .card .arrow {
-    margin-top: auto; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--blue); font-weight: 700; display: inline-flex; gap: 8px; align-items: center;
-    transition: gap 0.2s var(--ease);
-  }
-  .card .arrow:hover { gap: 14px; }
-
-  /* ---------- IMPACT STRIP ---------- */
-  .impact-strip { margin-top: 20px; border: 1px solid var(--line); background: var(--surface); padding: 34px 40px; }
-  .impact-strip-label {
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--gold-deep); display: flex; align-items: center; gap: 12px; margin-bottom: 26px;
-  }
-  .impact-strip-label::before { content: ''; width: 24px; height: 2px; background: var(--gold); }
-  .impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-  .impact-stat .is-num { font-family: var(--font-display); font-weight: 400; font-size: 2.6rem; line-height: 1; letter-spacing: 0.02em; color: var(--blue); }
-  .impact-stat .is-lbl { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 6px; }
-  @media (max-width: 700px) { .impact-grid { grid-template-columns: 1fr 1fr; gap: 28px 24px; } }
-
-  /* ---------- GLOBAL HUB MAP ---------- */
-  .hubmap-block { margin-top: 20px; border: 1px solid var(--line); background: var(--surface); padding: 34px 40px 30px; }
-  .hubmap-head { margin-bottom: 22px; }
-  .hubmap-intro { color: var(--slate); font-size: 1rem; line-height: 1.65; margin-top: 12px; max-width: 62ch; }
-  .hubmap-intro b { color: var(--ink); font-weight: 700; }
-  .hubmap {
-    position: relative; width: 100%; aspect-ratio: 2 / 1;
-    background: var(--blue-tint); border: 1px solid var(--line);
-    border-radius: 2px; overflow: hidden;
-  }
-  .hubmap-canvas, .hubmap-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .hubmap-land { fill: #D6DEEC; }
-  .hubmap-dot { fill: var(--blue); opacity: 0.82; transition: opacity .15s var(--ease); cursor: pointer; }
-  .hubmap-dot:hover, .hubmap-dot:focus { opacity: 1; }
-  .hubmap-dot.is-active { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1; opacity: 1; }
-  .hubmap-hit { fill: transparent; cursor: pointer; outline: none; }
-  .hubmap-dot.is-home { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1.2; opacity: 1; }
-  .hubmap-pulse { fill: var(--gold); opacity: 0.35; animation: hubPulse 2.4s ease-out infinite; transform-origin: center; }
-  @keyframes hubPulse { 0% { transform: scale(1); opacity: 0.45; } 70%,100% { transform: scale(3.4); opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .hubmap-pulse { animation: none; opacity: 0; } }
-  .hubmap-tip {
-    position: absolute; pointer-events: none; z-index: 3; opacity: 0;
-    transform: translate(-50%, -140%); background: var(--ink); color: #fff;
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em;
-    padding: 5px 9px; border-radius: 3px; white-space: nowrap; transition: opacity .12s;
-  }
-  .hubmap-tip.on { opacity: 1; }
-  .hubmap-legend {
-    display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; margin-top: 18px;
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate);
-  }
-  .hml-item { display: inline-flex; align-items: center; gap: 8px; }
-  .hml-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-  .hml-dot.hml-hub { background: var(--blue); opacity: 0.82; }
-  .hml-dot.hml-home { background: var(--gold); border: 1px solid var(--gold-deep); }
-  .hubmap-legend .arrow { margin-left: auto; font-size: 0.7rem; }
-  .hubmap-hint { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); margin-top: 10px; }
-  @media (max-width: 640px) {
-    .hubmap-block { padding: 24px 18px 22px; }
-    .hubmap-intro { font-size: 0.94rem; }
-    .hubmap { aspect-ratio: 3 / 2; }
-    .hubmap-legend .arrow { margin-left: 0; }
-  }
-
-  /* ---------- EVENTS (color moment) ---------- */
-  .events-block {
-    position: relative; overflow: hidden; background: var(--navy); color: #fff;
-    padding: 60px; margin-top: 8px;
-    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
-  }
-  .events-block::after {
-    content: 'EVENTS'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%) rotate(90deg);
-    font-family: var(--font-display); font-size: 7rem; color: rgba(255,255,255,0.06); letter-spacing: 0.1em; pointer-events: none;
-  }
-  .events-block .sec-label { color: var(--gold); }
-  .event-row { display: flex; gap: 24px; align-items: flex-start; position: relative; z-index: 2; }
-  .event-row .dot { width: 12px; height: 12px; background: var(--gold); flex-shrink: 0; margin-top: 8px; }
-  .event-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 8px; }
-  .event-row p { color: rgba(255,255,255,0.72); line-height: 1.6; margin-bottom: 22px; max-width: 60ch; }
-  .event-row .ev-date { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-  .event-row .ev-photo { width: 200px; flex-shrink: 0; aspect-ratio: 4 / 3; object-fit: cover; display: block; border: 1px solid rgba(255,255,255,0.14); margin-top: 4px; }
-  .event-row + .event-row { margin-top: 34px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,0.12); }
-  @media (max-width: 640px) { .event-row .ev-photo { width: 120px; } }
-  .btn-gold { background: var(--gold); color: var(--navy); }
-  .btn-gold:hover { background: #fff; color: var(--navy); transform: translateY(-2px); }
-
-  /* ---------- PROJECTS ---------- */
-  .projects { display: grid; gap: 18px; }
-  .project {
-    display: grid; grid-template-columns: 6px 1fr; background: var(--surface);
-    border: 1px solid var(--line); transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
-  }
-  .project:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-  .project .spine { background: linear-gradient(to bottom, var(--gold), var(--blue)); }
-  .project .body { padding: 40px 44px; }
-  .tag {
-    display: inline-block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--gold-deep); background: #FBF3D6; padding: 5px 11px; margin-bottom: 18px;
-  }
-  .project h3 { font-family: var(--font-display); font-weight: 400; font-size: 2.4rem; letter-spacing: 0.03em; margin-bottom: 6px; }
-  .project .plink { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; display: inline-block; margin-bottom: 16px; }
-  .project p { color: var(--slate); line-height: 1.8; font-size: 0.97rem; max-width: 68ch; }
-  .metrics { display: flex; gap: 40px; margin-top: 24px; flex-wrap: wrap; }
-  .metric .num { font-family: var(--font-display); font-size: 2rem; color: var(--blue); line-height: 1; }
-  .metric .lbl { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 4px; }
-  .tag.prior { color: var(--slate); background: var(--raise); }
-  .tag.upcoming { color: var(--blue); background: var(--blue-tint); }
-  .project.has-photo { grid-template-columns: 6px 260px 1fr; }
-  .project .pphoto { object-fit: cover; width: 100%; height: 100%; display: block; background: var(--raise); }
-  @media (max-width: 720px) {
-    /* Stack the photo above the body. The card has 3 children (spine, photo,
-       body) but only 2 columns here, so place them explicitly — otherwise the
-       body wraps into the 6px spine track and collapses to one word per line. */
-    .project.has-photo { grid-template-columns: 6px 1fr; grid-template-rows: auto auto; }
-    .project.has-photo .spine { grid-column: 1; grid-row: 1 / 3; }
-    .project.has-photo picture,
-    .project.has-photo .pphoto { grid-column: 2; grid-row: 1; aspect-ratio: 16 / 9; }
-    .project.has-photo .body { grid-column: 2; grid-row: 2; }
-  }
-
-  /* ---------- GALLERY ---------- */
-  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .gallery figure {
-    position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 3;
-    background: var(--raise); border: 1px solid var(--line);
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-  }
-  .gallery figure img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 0.5s var(--ease);
-  }
-  .gallery figure { cursor: zoom-in; }
-  .gallery figure:hover img { transform: scale(1.05); }
-  .gallery figcaption {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
-    color: #fff; padding: 26px 16px 12px;
-    background: linear-gradient(to top, rgba(11,31,91,0.78), transparent);
-    opacity: 0; transform: translateY(6px); transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-  }
-  .gallery figure:hover figcaption { opacity: 1; transform: translateY(0); }
-  /* ---------- LIGHTBOX ---------- */
-  .lightbox {
-    position: fixed; inset: 0; z-index: 300; display: none;
-    align-items: center; justify-content: center; padding: 4vmin;
-    background: rgba(6,11,28,0.92); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-    opacity: 0; transition: opacity 0.22s var(--ease);
-  }
-  .lightbox.open { display: flex; opacity: 1; }
-  .lightbox figure { margin: 0; max-width: 100%; max-height: 100%; display: flex; flex-direction: column; align-items: center; }
-  .lightbox img {
-    max-width: 100%; max-height: 88vh; width: auto; height: auto; display: block;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5); background: var(--raise);
-  }
-  .lightbox figcaption {
-    color: #fff; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
-    text-transform: uppercase; margin-top: 16px; text-align: center; max-width: 70ch;
-  }
-  .lightbox-close {
-    position: absolute; top: 18px; right: 20px; z-index: 2;
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff;
-    width: 44px; height: 44px; border-radius: 50%; font-size: 1.4rem; line-height: 1; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; transition: background 0.2s var(--ease);
-  }
-  .lightbox-close:hover { background: rgba(255,255,255,0.22); }
-  .lightbox-nav {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff;
-    width: 48px; height: 48px; border-radius: 50%; font-size: 1.6rem; line-height: 1; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; transition: background 0.2s var(--ease);
-  }
-  .lightbox-nav:hover { background: rgba(255,255,255,0.22); }
-  .lightbox-nav.prev { left: 16px; } .lightbox-nav.next { right: 16px; }
-  @media (max-width: 560px) {
-    .lightbox-nav { width: 40px; height: 40px; font-size: 1.3rem; }
-    .lightbox-nav.prev { left: 8px; } .lightbox-nav.next { right: 8px; }
-    .lightbox img { max-height: 78vh; }
-  }
-
-  .gallery-empty {
-    grid-column: 1 / -1; border: 1px dashed var(--line-2); background: var(--surface);
-    padding: 56px 40px; text-align: center; color: var(--mute);
-    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em;
-  }
-  .gallery-empty b { color: var(--slate); }
-  .gallery-cat + .gallery-cat { margin-top: 44px; }
-  .gallery-cat-label {
-    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold-deep); display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-  }
-  .gallery-cat-label::before { content: ''; width: 22px; height: 2px; background: var(--gold); }
-  .gallery-cat-label .count { color: var(--mute); }
-
-  /* ---------- ROSTER ---------- */
-  .roster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .person { background: var(--surface); padding: 28px 30px; transition: background 0.2s var(--ease); }
-  .person:hover { background: var(--raise); }
-  .person .role { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 8px; }
-  .person .name { font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; letter-spacing: 0.03em; color: var(--ink); }
-  .person .name a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: color 0.2s var(--ease); }
-  .person .name a:hover { color: var(--blue); }
-  .person .name a .li-icon { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.55; transition: opacity 0.2s var(--ease); }
-  .person .name a:hover .li-icon { opacity: 1; }
-  .person .note { font-size: 0.8rem; color: var(--mute); margin-top: 6px; font-style: italic; }
-  .badge-in { display: inline-block; font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--blue); color: #fff; padding: 3px 8px; margin-bottom: 10px; }
-  .roster-split { grid-column: 1 / -1; background: var(--paper); padding: 10px 30px; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
-  /* Member card with a profile-photo slot to the left of the name */
-  .person.has-photo { display: flex; align-items: center; gap: 16px; }
-  .person.has-photo .person-text { min-width: 0; }
-  .avatar {
-    flex-shrink: 0; width: 88px; height: 88px; border-radius: 50%;
-    background: var(--blue-tint); border: 1px solid var(--line-2);
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
-    color: var(--blue); font-weight: 700;
-  }
-  /* To add a photo: replace the initials with <img src="assets/team/name.jpg" alt=""> */
-  .avatar picture { width: 100%; height: 100%; display: block; }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  /* ---------- FOOTER ---------- */
-  footer { border-top: 1px solid var(--line); padding: 48px 0; }
-  .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-  .foot-inner .wordmark .lockup { font-size: 1.2rem; }
-  .foot-inner .wordmark .mark { height: 40px; }
-  .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
-  .foot-social { display: flex; align-items: center; gap: 10px; }
-  .foot-social a { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); transition: color 0.2s var(--ease); }
-  .foot-social a:hover { color: var(--blue); }
-  .foot-social svg { width: 20px; height: 20px; display: block; }
-
-  /* ---------- HERO ROTATING BACKGROUND ---------- */
   .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: var(--navy); }
   .hero-bg .slide {
     position: absolute; inset: 0; background-size: cover; background-position: center;
-    opacity: 0; transition: opacity 1.6s var(--ease); will-change: opacity;
+    opacity: 0; transition: opacity 1.4s var(--ease);
   }
   .hero-bg .slide.on { opacity: 1; }
   .hero-scrim {
     position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background:
-      linear-gradient(to right, rgba(8,16,44,0.86) 0%, rgba(8,16,44,0.6) 45%, rgba(8,16,44,0.42) 100%),
-      linear-gradient(to top, rgba(8,16,44,0.7) 0%, transparent 55%);
+      linear-gradient(100deg, rgba(6,13,38,0.92) 0%, rgba(6,13,38,0.72) 45%, rgba(6,13,38,0.38) 100%),
+      linear-gradient(to top, rgba(6,13,38,0.86) 0%, transparent 58%);
   }
-  .hero.has-photos .hero-grid { position: relative; z-index: 2; }
-  .hero.has-photos h1 { color: #fff; }
-  .hero.has-photos h1 .blue { color: var(--gold); }
-  .hero.has-photos .eyebrow { color: var(--gold); }
-  .hero.has-photos .eyebrow::before { background: var(--gold); }
-  .hero.has-photos p.lead { color: rgba(255,255,255,0.86); }
-  .hero.has-photos .btn-ghost { color: #fff; border-color: rgba(255,255,255,0.45); }
-  .hero.has-photos .btn-ghost:hover { border-color: #fff; color: var(--navy); background: #fff; }
-  .hero.has-photos .hero-visual { background: rgba(9,19,54,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.12); }
-  .hero.has-photos .hero-visual::before { opacity: 0.5; }
+  .hero-inner {
+    position: relative; z-index: 2; width: 100%;
+    max-width: var(--container); margin: 0 auto; padding: 120px var(--gutter) 84px;
+  }
+  .hero .eyebrow { color: var(--gold); }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(3.2rem, 8.5vw, 6.6rem); line-height: 0.9; letter-spacing: 0.015em;
+    margin-bottom: 22px; max-width: 16ch;
+  }
+  .hero h1 .accent { color: var(--gold); }
+  .hero p.lead {
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.65;
+    color: rgba(255,255,255,0.86); max-width: 46ch; margin-bottom: 34px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 
-  /* ---------- COLLAPSIBLE GALLERY ---------- */
-  button.gallery-cat-label {
-    width: 100%; background: none; border: none; cursor: pointer; text-align: left;
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold-deep); display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-    padding: 6px 0; transition: color 0.2s var(--ease);
+  /* Stats sit on the hero's lower edge — the "one of 500+ hubs" moment. */
+  .hero-stats {
+    position: relative; z-index: 2; margin-top: 68px;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px;
+    padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); max-width: 780px;
   }
-  button.gallery-cat-label::before { content: ''; width: 22px; height: 2px; background: var(--gold); flex-shrink: 0; }
-  button.gallery-cat-label:hover { color: var(--ink); }
+  .hero-stats .stat-num { color: #fff; font-size: clamp(2rem, 3.6vw, 2.9rem); }
+  .hero-stats .stat-lbl { color: rgba(255,255,255,0.62); }
+  .hero-cue {
+    position: absolute; left: 50%; bottom: 22px; z-index: 2; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(255,255,255,0.55);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .hero-cue::after {
+    content: ''; width: 1px; height: 26px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+  }
+  @media (max-width: 900px) {
+    header.hero { min-height: 0; }
+    .hero-inner { padding: 92px var(--gutter) 72px; }
+    .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 46px; }
+    .hero-cue { display: none; }
+  }
+  @media (max-width: 560px) { .hero-stats { grid-template-columns: 1fr 1fr; } }
+
+  /* ---------- OVERVIEW ---------- */
+  .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 860px) { .cards-2 { grid-template-columns: 1fr; } }
+
+  /* ---------- IMPACT ---------- */
+  .impact-grid {
+    /* minmax(0,…) so a long number like "10,000+" can't push the grid wider
+       than the page on narrow screens. */
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px;
+  }
+  .impact-stat {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 28px;
+  }
+  .impact-stat .stat-num { color: var(--blue); }
+  @media (max-width: 860px) { .impact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .impact-stat { padding: 22px 18px; } .impact-grid { gap: 14px; } }
+
+  /* ---------- GLOBAL HUB MAP ---------- */
+  .hubmap-block {
+    margin-top: 24px; border: 1px solid var(--line); background: var(--surface);
+    border-radius: var(--radius); padding: 34px 36px 30px;
+  }
+  .hubmap-intro { color: var(--slate); font-size: 1rem; line-height: 1.7; margin-top: 10px; max-width: 62ch; }
+  .hubmap-intro b { color: var(--ink); font-weight: 700; }
+  .hubmap {
+    position: relative; width: 100%; aspect-ratio: 2 / 1; margin-top: 22px;
+    background: var(--blue-tint); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); overflow: hidden;
+    /* Skip layout/paint work for the map while it's off screen. */
+    contain: layout paint;
+  }
+  .hubmap-canvas { position: absolute; inset: 0; }
+  .hubmap-canvas svg { width: 100%; height: 100%; display: block; }
+  .hubmap-land { fill: #D5DDEC; }
+  .hubmap-dot { fill: var(--blue); opacity: 0.8; }
+  .hubmap-dot.is-active { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1; opacity: 1; }
+  .hubmap-dot.is-home { fill: var(--gold); stroke: var(--gold-deep); stroke-width: 1.2; opacity: 1; }
+  .hubmap-hit { fill: transparent; outline: none; cursor: pointer; }
+  .hubmap-pulse { fill: var(--gold); opacity: 0.35; animation: hubPulse 2.6s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+  @keyframes hubPulse { 0% { transform: scale(1); opacity: 0.45; } 70%, 100% { transform: scale(3.2); opacity: 0; } }
+  .hubmap-tip {
+    position: absolute; pointer-events: none; z-index: 3; opacity: 0;
+    transform: translate(-50%, -150%); background: var(--ink); color: #fff;
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.05em;
+    padding: 5px 10px; border-radius: 4px; white-space: nowrap; transition: opacity 0.12s var(--ease);
+  }
+  .hubmap-tip.on { opacity: 1; }
+  .hubmap-foot {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; margin-top: 18px;
+    font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--slate);
+  }
+  .hml-item { display: inline-flex; align-items: center; gap: 8px; }
+  .hml-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .hml-dot.hub { background: var(--blue); opacity: 0.8; }
+  .hml-dot.home { background: var(--gold); border: 1px solid var(--gold-deep); }
+  .hubmap-foot .arrow-link { margin-left: auto; }
+  .hubmap-hint { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); margin-top: 12px; }
+  @media (max-width: 640px) {
+    .hubmap-block { padding: 24px 18px 22px; }
+    .hubmap { aspect-ratio: 3 / 2; }
+    .hubmap-foot .arrow-link { margin-left: 0; }
+  }
+
+  /* ---------- EVENTS ---------- */
+  .events-block {
+    position: relative; overflow: hidden; border-radius: var(--radius);
+    background: linear-gradient(150deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff; padding: 54px 56px;
+  }
+  .events-block::after {
+    content: 'EVENTS'; position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%) rotate(90deg); font-family: var(--font-display);
+    font-size: 7rem; color: rgba(255,255,255,0.05); letter-spacing: 0.1em; pointer-events: none;
+  }
+  .events-block .sec-label { color: var(--gold); margin-bottom: 26px; }
+  .event-row { display: flex; gap: 28px; align-items: flex-start; position: relative; z-index: 2; }
+  .event-row .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 10px; }
+  .event-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 10px; }
+  .event-row p { color: rgba(255,255,255,0.74); line-height: 1.7; margin-bottom: 22px; max-width: 60ch; }
+  .event-row .ev-date {
+    font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+  }
+  .event-row .ev-photo {
+    width: 220px; flex-shrink: 0; aspect-ratio: 4 / 3; object-fit: cover; display: block;
+    border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.14);
+  }
+  .event-row + .event-row { margin-top: 34px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,0.12); }
+  @media (max-width: 760px) {
+    .events-block { padding: 34px 26px; }
+    .event-row { flex-wrap: wrap; gap: 18px; }
+    .event-row .ev-photo { width: 100%; aspect-ratio: 16 / 9; }
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .projects { display: grid; gap: 20px; }
+  .project {
+    display: grid; grid-template-columns: 6px 1fr; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    transition: box-shadow 0.28s var(--ease), transform 0.28s var(--ease), border-color 0.28s var(--ease);
+  }
+  .project:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: var(--line-2); }
+  .project .spine { background: linear-gradient(to bottom, var(--gold), var(--blue)); }
+  .project .body { padding: 38px 42px; }
+  .project h3 { font-family: var(--font-display); font-weight: 400; font-size: 2.3rem; letter-spacing: 0.03em; margin: 14px 0 6px; }
+  .project .plink { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; display: inline-block; margin-bottom: 14px; }
+  .project p { color: var(--slate); line-height: 1.8; font-size: 0.98rem; max-width: 68ch; }
+  .metrics { display: flex; gap: 44px; margin-top: 26px; flex-wrap: wrap; }
+  .metric .num { font-family: var(--font-display); font-size: 2rem; color: var(--blue); line-height: 1; }
+  .metric .lbl { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 5px; }
+  .project.has-photo { grid-template-columns: 6px 280px 1fr; }
+  .project .pphoto { object-fit: cover; width: 100%; height: 100%; display: block; background: var(--raise); }
+  @media (max-width: 760px) {
+    /* Stack the photo above the body. Three children, two columns — place
+       them explicitly so the body doesn't wrap into the 6px spine track. */
+    .project.has-photo { grid-template-columns: 6px 1fr; grid-template-rows: auto auto; }
+    .project.has-photo .spine { grid-column: 1; grid-row: 1 / 3; }
+    .project.has-photo picture,
+    .project.has-photo .pphoto { grid-column: 2; grid-row: 1; aspect-ratio: 16 / 9; }
+    .project.has-photo .body { grid-column: 2; grid-row: 2; padding: 28px 24px; }
+    .project .body { padding: 28px 24px; }
+  }
+
+  /* ---------- GALLERY ---------- */
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .gallery figure {
+    position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 3;
+    background: var(--raise); border-radius: var(--radius-sm); cursor: zoom-in;
+    contain: layout paint;
+  }
+  .gallery figure img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.5s var(--ease);
+  }
+  .gallery figure:hover img { transform: scale(1.05); }
+  .gallery figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #fff; padding: 30px 16px 13px;
+    background: linear-gradient(to top, rgba(6,13,38,0.85), transparent);
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .gallery figure:hover figcaption, .gallery figure:focus-within figcaption { opacity: 1; transform: none; }
+  @media (max-width: 860px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .gallery { grid-template-columns: 1fr; } }
+
+  .gallery-empty {
+    grid-column: 1 / -1; border: 1px dashed var(--line-2); background: var(--surface);
+    border-radius: var(--radius); padding: 52px 40px; text-align: center; color: var(--mute);
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.05em;
+  }
+  .gallery-cat + .gallery-cat { margin-top: 20px; }
+  button.gallery-cat-label {
+    width: 100%; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); text-align: left; padding: 15px 20px;
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  button.gallery-cat-label::before { content: ''; width: 20px; height: 2px; background: var(--gold); flex-shrink: 0; }
+  button.gallery-cat-label:hover { color: var(--ink); border-color: var(--line-2); background: var(--raise); }
   button.gallery-cat-label .count { color: var(--mute); }
   button.gallery-cat-label .chev {
     margin-left: auto; font-family: var(--font-body); font-size: 1.1rem; color: var(--mute);
     transition: transform 0.28s var(--ease); line-height: 1;
   }
-  button.gallery-cat-label .chev { transform: rotate(0deg); }
   button.gallery-cat-label[aria-expanded="true"] .chev { transform: rotate(90deg); }
   .gallery-body { overflow: hidden; transition: height 0.35s var(--ease); }
   .gallery-cat.collapsed .gallery-body { height: 0 !important; }
 
-  /* ---------- RESPONSIVE ---------- */
-  @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .hero-visual { aspect-ratio: auto; max-height: none; flex-direction: column; align-items: stretch; justify-content: flex-start; }
-    .hero-visual .tagline { position: static; left: auto; bottom: auto; margin: 2px 40px 34px; }
-    .cards-2, .roster { grid-template-columns: 1fr; }
-    .roster { grid-template-columns: 1fr 1fr; }
-    .gallery { grid-template-columns: repeat(2, 1fr); }
-    /* Mobile nav: collapse links into a hamburger dropdown */
-    .nav-toggle { display: block; }
-    .nav-links {
-      display: none; position: absolute; top: 100%; left: 0; right: 0;
-      flex-direction: column; align-items: stretch; gap: 0;
-      background: rgba(250,250,246,0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); padding: 8px 0;
-    }
-    .nav-links.open { display: flex; }
-    .nav-links a { padding: 15px 40px; border-radius: 0; }
-    .nav-cta {
-      margin: 12px 40px 6px; text-align: center; clip-path: none;
-    }
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 300; display: none;
+    align-items: center; justify-content: center; padding: 4vmin;
+    background: rgba(6,11,28,0.94);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    opacity: 0; transition: opacity 0.22s var(--ease);
   }
+  .lightbox.open { display: flex; opacity: 1; }
+  .lightbox figure { margin: 0; max-width: 100%; max-height: 100%; display: flex; flex-direction: column; align-items: center; }
+  .lightbox img {
+    max-width: 100%; max-height: 86vh; width: auto; height: auto; display: block;
+    border-radius: var(--radius-sm); box-shadow: 0 24px 70px rgba(0,0,0,0.55); background: var(--raise);
+  }
+  .lightbox figcaption {
+    color: #fff; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 16px; text-align: center; max-width: 70ch;
+  }
+  .lightbox-close, .lightbox-nav {
+    position: absolute; z-index: 2; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s var(--ease);
+  }
+  .lightbox-close:hover, .lightbox-nav:hover { background: rgba(255,255,255,0.24); }
+  .lightbox-close { top: 18px; right: 20px; width: 44px; height: 44px; font-size: 1.3rem; line-height: 1; }
+  .lightbox-nav { top: 50%; transform: translateY(-50%); width: 48px; height: 48px; font-size: 1.6rem; line-height: 1; }
+  .lightbox-nav.prev { left: 16px; }
+  .lightbox-nav.next { right: 16px; }
   @media (max-width: 560px) {
-    .wrap, .nav-inner, .hero-grid, .foot-inner { padding-left: 22px; padding-right: 22px; }
-    .roster { grid-template-columns: 1fr; }
-    .events-block, .project .body, .card { padding: 32px 26px; }
-    .nav-inner .wordmark .mark { height: 38px; }
-    .nav-links a, .nav-cta { padding-left: 22px; padding-right: 22px; }
-    .nav-cta { margin-left: 22px; margin-right: 22px; }
-    .foot-inner { flex-direction: column; align-items: flex-start; }
-    .hero h1 { font-size: clamp(2.6rem, 12.5vw, 4rem); }
-    .hero p.lead { font-size: 1.08rem; }
+    .lightbox-nav { width: 40px; height: 40px; font-size: 1.3rem; }
+    .lightbox-nav.prev { left: 8px; }
+    .lightbox-nav.next { right: 8px; }
+    .lightbox img { max-height: 76vh; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+
+  /* ---------- ROSTER ---------- */
+  .roster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .person {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 24px; display: flex; align-items: center; gap: 16px;
+    transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
   }
+  .person:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
+  .person-text { min-width: 0; }
+  .person .role {
+    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .person .name { font-family: var(--font-display); font-weight: 400; font-size: 1.5rem; letter-spacing: 0.03em; color: var(--ink); line-height: 1.1; }
+  .person .name a { color: inherit; display: inline-flex; align-items: center; gap: 7px; }
+  .person .name a:hover { color: var(--blue); }
+  .person .name a .li-icon { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.5; transition: opacity 0.2s var(--ease); }
+  .person .name a:hover .li-icon { opacity: 1; }
+  .person .note { font-size: 0.78rem; color: var(--mute); margin-top: 5px; font-style: italic; }
+  .avatar {
+    flex-shrink: 0; width: 78px; height: 78px; border-radius: 50%;
+    background: var(--blue-tint); border: 1px solid var(--line-2);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    font-family: var(--font-mono); font-size: 0.8rem; color: var(--blue); font-weight: 700;
+  }
+  .avatar picture { width: 100%; height: 100%; display: block; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .roster-split {
+    grid-column: 1 / -1; margin: 12px 0 2px;
+    font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--mute);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .roster-split::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .roster-split:first-child { margin-top: 0; }
+  @media (max-width: 900px) { .roster { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .roster { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <a class="skip-link" href="#overview">Skip to content</a>
+
   <!-- NAV -->
-  <nav id="top">
+  <nav class="site-nav" id="top">
     <div class="nav-inner">
       <a href="#top" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
-        <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
+        <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo" width="180" height="48">
       </a>
-      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links" id="nav-links">
         <a href="#overview">Overview</a>
+        <a href="#impact">Impact</a>
         <a href="#events">Events</a>
         <a href="#projects">Projects</a>
         <a href="#gallery">Photos</a>
@@ -528,96 +357,116 @@
   <!-- HERO -->
   <header class="hero">
     <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
-    <div class="hero-scrim" id="hero-scrim" aria-hidden="true" hidden></div>
-    <div class="hero-grid">
-      <div>
-        <span class="eyebrow">A World Economic Forum Initiative</span>
-        <h1>SHAPING<br>PITTSBURGH'S<br><span class="blue">FUTURE</span></h1>
-        <p class="lead">Young leaders building community, driving innovation, and making real impact — proudly representing the City of Bridges.</p>
-        <div class="hero-actions">
-          <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="btn btn-primary" target="_blank" rel="noopener">Apply Now</a>
-          <a href="#overview" class="btn btn-ghost">Learn More</a>
-        </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <span class="eyebrow">A World Economic Forum Initiative</span>
+      <h1>SHAPING PITTSBURGH'S <span class="accent">FUTURE</span></h1>
+      <p class="lead">Young leaders building community, driving innovation, and making real impact — proudly representing the City of Bridges.</p>
+      <div class="hero-actions">
+        <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="btn btn-gold" target="_blank" rel="noopener">Apply Now</a>
+        <a href="#overview" class="btn btn-outline-light">Learn More</a>
       </div>
-      <div class="hero-visual">
-        <div class="hero-stats">
-          <div class="hero-stats-label">The Global Network</div>
-          <div class="hero-stat"><span class="hs-num">10,000+</span><span class="hs-lbl">Shapers worldwide</span></div>
-          <div class="hero-stat"><span class="hs-num">500+</span><span class="hs-lbl">City hubs</span></div>
-          <div class="hero-stat"><span class="hs-num">150+</span><span class="hs-lbl">Countries &amp; territories</span></div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num" data-count="10000" data-suffix="+">10,000+</div>
+          <div class="stat-lbl">Shapers worldwide</div>
         </div>
-        <div class="tagline">One of <b>500+ hubs</b> shaping change</div>
+        <div>
+          <div class="stat-num" data-count="500" data-suffix="+">500+</div>
+          <div class="stat-lbl">City hubs</div>
+        </div>
+        <div>
+          <div class="stat-num" data-count="150" data-suffix="+">150+</div>
+          <div class="stat-lbl">Countries &amp; territories</div>
+        </div>
       </div>
     </div>
+    <div class="hero-cue" aria-hidden="true">Scroll</div>
   </header>
 
   <!-- OVERVIEW -->
-  <section id="overview">
+  <section class="band" id="overview">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <div class="sec-label">Overview</div>
-        <h2 class="sec-title">WHO WE ARE</h2>
+        <h2 class="sec-title">WHO <span class="accent">WE ARE</span></h2>
+        <p class="sec-intro">One hub in a worldwide community of young people who put youth at the heart of solution-building.</p>
       </div>
       <div class="cards-2">
-        <div class="card">
+        <div class="card reveal">
           <div class="kicker">The Network</div>
           <h3>Global Shapers</h3>
           <p>Born out of the World Economic Forum, the Global Shapers Community is a network of young people under 30 who believe in a world where youth are at the heart of solution-building, policy-making, and lasting change. In 2024–25, Shapers delivered 800+ projects reaching 2.2 million people.</p>
-          <a href="https://www.globalshapers.org/" class="arrow" target="_blank" rel="noopener">Explore the Network →</a>
+          <a href="https://www.globalshapers.org/" class="arrow-link" target="_blank" rel="noopener">Explore the Network →</a>
         </div>
-        <div class="card">
+        <div class="card reveal" data-reveal-delay="90">
           <div class="kicker">Get Involved</div>
           <h3>Join Our Hub</h3>
           <p>We're looking for passionate individuals ages 18–27 based in Pittsburgh who want to drive meaningful change here and beyond. Ready to apply?</p>
-          <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="arrow" target="_blank" rel="noopener">Apply Now →</a>
+          <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="arrow-link" target="_blank" rel="noopener">Apply Now →</a>
         </div>
       </div>
-      <div class="impact-strip">
-        <div class="impact-strip-label">Global Community Impact · 2024–25</div>
-        <div class="impact-grid">
-          <div class="impact-stat"><div class="is-num">800+</div><div class="is-lbl">Projects delivered</div></div>
-          <div class="impact-stat"><div class="is-num">2.2M</div><div class="is-lbl">People reached</div></div>
-          <div class="impact-stat"><div class="is-num">10,000+</div><div class="is-lbl">Shapers worldwide</div></div>
-          <div class="impact-stat"><div class="is-num">150+</div><div class="is-lbl">Countries &amp; territories</div></div>
+    </div>
+  </section>
+
+  <!-- IMPACT + GLOBAL MAP -->
+  <section class="band tint" id="impact">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-label">Global Community Impact · 2024–25</div>
+        <h2 class="sec-title">BY THE <span class="accent">NUMBERS</span></h2>
+      </div>
+      <div class="impact-grid reveal">
+        <div class="impact-stat">
+          <div class="stat-num" data-count="800" data-suffix="+">800+</div>
+          <div class="stat-lbl">Projects delivered</div>
+        </div>
+        <div class="impact-stat">
+          <div class="stat-num" data-count="2.2" data-decimals="1" data-suffix="M">2.2M</div>
+          <div class="stat-lbl">People reached</div>
+        </div>
+        <div class="impact-stat">
+          <div class="stat-num" data-count="10000" data-suffix="+">10,000+</div>
+          <div class="stat-lbl">Shapers worldwide</div>
+        </div>
+        <div class="impact-stat">
+          <div class="stat-num" data-count="150" data-suffix="+">150+</div>
+          <div class="stat-lbl">Countries &amp; territories</div>
         </div>
       </div>
 
-      <!-- GLOBAL HUB MAP -->
-      <div class="hubmap-block">
-        <div class="hubmap-head">
-          <div class="impact-strip-label">One Global Community</div>
-          <p class="hubmap-intro">Pittsburgh is one of <b>500+ hubs</b> in the Global Shapers Community — a network spanning every inhabited continent. Explore where Shapers are driving change.</p>
-        </div>
+      <div class="hubmap-block reveal">
+        <div class="sec-label">One Global Community</div>
+        <p class="hubmap-intro">Pittsburgh is one of <b>500+ hubs</b> in the Global Shapers Community — a network spanning every inhabited continent. Explore where Shapers are driving change.</p>
         <div class="hubmap" id="hubmap">
           <div class="hubmap-canvas" id="hubmap-canvas"></div>
           <div class="hubmap-tip" id="hubmap-tip" role="status" aria-live="polite"></div>
         </div>
         <div class="hubmap-hint">Tap or hover a dot to see the hub city</div>
-        <div class="hubmap-legend">
-          <span class="hml-item"><span class="hml-dot hml-home"></span>Pittsburgh</span>
-          <span class="hml-item"><span class="hml-dot hml-hub"></span>Global Shapers hub</span>
-          <a href="https://www.globalshapers.org/hubs" class="arrow" target="_blank" rel="noopener">See all hubs →</a>
+        <div class="hubmap-foot">
+          <span class="hml-item"><span class="hml-dot home"></span>Pittsburgh</span>
+          <span class="hml-item"><span class="hml-dot hub"></span>Global Shapers hub</span>
+          <a href="https://www.globalshapers.org/hubs" class="arrow-link" target="_blank" rel="noopener">See all hubs →</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- EVENTS -->
-  <section id="events">
+  <section class="band" id="events">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <div class="sec-label">Events</div>
-        <h2 class="sec-title">WHAT'S HAPPENING</h2>
+        <h2 class="sec-title">WHAT'S <span class="accent">HAPPENING</span></h2>
       </div>
       <!-- Rendered from assets/events/events.json — manage at /admin/events.html -->
-      <div class="events-block" id="events-block">
+      <div class="events-block reveal" id="events-block">
         <div class="sec-label">Featured</div>
         <div class="event-row">
           <div class="dot"></div>
           <div>
             <h3>2026 Northeast Hubs Retreat</h3>
             <p>Pittsburgh is proud to host the 2026 Northeast Hubs retreat, May 15–17 — three days of connection across hubs, ideas, and differences.</p>
-            <a href="#" class="btn btn-gold">Visit Retreat Site</a>
           </div>
         </div>
       </div>
@@ -625,19 +474,19 @@
   </section>
 
   <!-- PROJECTS -->
-  <section id="projects">
+  <section class="band tint" id="projects">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <div class="sec-label">Projects</div>
-        <h2 class="sec-title">OUR WORK</h2>
+        <h2 class="sec-title">OUR <span class="accent">WORK</span></h2>
         <p class="sec-intro">Community-driven initiatives with measurable local impact.</p>
       </div>
       <!-- Rendered from assets/projects/projects.json — manage at /admin/projects.html -->
       <div class="projects" id="projects-grid">
-        <div class="project">
+        <div class="project reveal">
           <div class="spine"></div>
           <div class="body">
-            <span class="tag">Active Project</span>
+            <span class="pill">Active Project</span>
             <h3>Table to Farm</h3>
             <a href="https://involvemint.io/" class="plink" target="_blank" rel="noopener">involveMINT's Website →</a>
             <p>In partnership with involveMINT, we're building a community-based circular economy where residents earn "Impact Credits" through social and environmental activities — engaging Pittsburgh youth as climate changemakers.</p>
@@ -647,10 +496,10 @@
             </div>
           </div>
         </div>
-        <div class="project">
+        <div class="project reveal">
           <div class="spine"></div>
           <div class="body">
-            <span class="tag">Active Project</span>
+            <span class="pill">Active Project</span>
             <h3>Shred the Debt</h3>
             <a href="https://unduemedicaldebt.org/campaign/globalshaperspittsburgh-69824/" class="plink" target="_blank" rel="noopener">Donate to Our Campaign →</a>
             <p>Pittsburgh joins 25+ hubs in the U.S. Shred the Debt campaign with Undue Medical Debt — every dollar donated erases $100 of medical debt.</p>
@@ -665,11 +514,11 @@
   </section>
 
   <!-- GALLERY -->
-  <section id="gallery">
+  <section class="band" id="gallery">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <div class="sec-label">Gallery</div>
-        <h2 class="sec-title">THE HUB IN ACTION</h2>
+        <h2 class="sec-title">THE HUB <span class="accent">IN ACTION</span></h2>
         <p class="sec-intro">Moments from our projects, gatherings, and the city we call home.</p>
       </div>
       <!-- Rendered from assets/photos/manifest.json — manage photos at /admin/photos.html -->
@@ -684,54 +533,75 @@
   </section>
 
   <!-- ROSTER -->
-  <section id="roster">
+  <section class="band tint" id="roster">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <div class="sec-label">Hub Member Roster</div>
-        <h2 class="sec-title">THE TEAM</h2>
+        <h2 class="sec-title">THE <span class="accent">TEAM</span></h2>
       </div>
       <!-- Rendered from assets/team/roster.json — manage members at /admin/photos.html -->
       <div class="roster" id="roster-grid">
         <div class="roster-split">Leadership · July 2026 – June 2027</div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">AC</div><div class="person-text"><div class="role">Curator</div><div class="name">Andrew Coutinho</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">IC</div><div class="person-text"><div class="role">Vice Curator</div><div class="name">Ian Chang</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">SK</div><div class="person-text"><div class="role">Impact Officer</div><div class="name">Seong Kim</div></div></div>
-        <div class="roster-split">Hub Members</div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">AC</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Andrew Coutinho</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">IC</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Ian Chang</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">SK</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Seong Kim</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">SY</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Sarah Yeager</div><div class="note">Founding Curator</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">MC</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Michael Coutinho</div><div class="note">Former Curator</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">TL</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Tehya Lim</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">AY</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Angie Yang</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">JK</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Julia Kline</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">PG</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Patrick Gormley</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">RS</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Ramiya Shelton</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">GD</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Gisele DeWitt</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">RS</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Raya Sweigart</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">MA</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Mustafa Abdalla</div></div></div>
-        <div class="person has-photo"><div class="avatar" aria-hidden="true">EB</div><div class="person-text"><div class="role">Hub Member</div><div class="name">Egshiglen Batjargal</div></div></div>
+        <div class="person"><div class="avatar" aria-hidden="true">AC</div><div class="person-text"><div class="role">Curator</div><div class="name">Andrew Coutinho</div></div></div>
+        <div class="person"><div class="avatar" aria-hidden="true">IC</div><div class="person-text"><div class="role">Vice Curator</div><div class="name">Ian Chang</div></div></div>
+        <div class="person"><div class="avatar" aria-hidden="true">SK</div><div class="person-text"><div class="role">Impact Officer</div><div class="name">Seong Kim</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="band">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>READY TO SHAPE PITTSBURGH?</h2>
+        <p>Applications are open to anyone aged 18–27 in the Pittsburgh region. Bring an idea, bring your energy — we'll bring the network.</p>
+        <div class="cta-actions">
+          <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="btn btn-light" target="_blank" rel="noopener">Apply Now</a>
+          <a href="https://www.instagram.com/globalshaperspgh/" class="btn btn-outline-light" target="_blank" rel="noopener noreferrer">Follow the Hub</a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <div class="foot-inner">
-      <div class="wordmark">
-        <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div>
+        <img class="mark" src="assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo" width="195" height="52">
+        <p class="foot-about">Young leaders building community, driving innovation, and making real impact in the City of Bridges. One of 500+ hubs in the Global Shapers Community.</p>
       </div>
-      <div class="foot-social">
-        <a href="https://www.instagram.com/globalshaperspgh/" target="_blank" rel="noopener noreferrer" aria-label="Follow Global Shapers Pittsburgh on Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-          </svg>
-          <span>@globalshaperspgh</span>
-        </a>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#overview">Who we are</a></li>
+          <li><a href="#projects">Our work</a></li>
+          <li><a href="#gallery">Photos</a></li>
+          <li><a href="#roster">The team</a></li>
+          <li><a href="culturepgh/">CulturePGH</a></li>
+        </ul>
       </div>
-      <div class="foot-note">An initiative of the World Economic Forum</div>
+      <div class="foot-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://www.globalshapers.org/" target="_blank" rel="noopener">Global Shapers</a></li>
+          <li><a href="https://www.weforum.org/" target="_blank" rel="noopener">World Economic Forum</a></li>
+          <li><a href="shapers.html">Members area</a></li>
+        </ul>
+        <div class="foot-social">
+          <a href="https://www.instagram.com/globalshaperspgh/" target="_blank" rel="noopener noreferrer" aria-label="Follow Global Shapers Pittsburgh on Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>@globalshaperspgh</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="foot-year">2026</span> Global Shapers Pittsburgh Hub</span>
+      <span>An initiative of the World Economic Forum</span>
     </div>
   </footer>
 
@@ -746,43 +616,34 @@
     </figure>
   </div>
 
+  <script src="assets/js/site.js" defer></script>
   <script>
-    // Mobile navigation toggle
-    (function () {
-      var toggle = document.querySelector('.nav-toggle');
-      var links = document.getElementById('nav-links');
-      if (!toggle || !links) return;
-      toggle.addEventListener('click', function () {
-        var open = links.classList.toggle('open');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-      // Close the menu after tapping a link
-      links.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          links.classList.remove('open');
-          toggle.setAttribute('aria-expanded', 'false');
-        });
-      });
-    })();
+  // site.js is deferred, so it has already defined window.GS by the time
+  // DOMContentLoaded fires.
+  window.addEventListener('DOMContentLoaded', function () {
+    var esc = window.GS.esc;
+    var extAttrs = window.GS.extAttrs;
+    var whenVisible = window.GS.whenVisible;
+    var reduceMotion = window.GS.reduceMotion;
 
-    // Roster — driven by assets/team/roster.json. Manage members at /admin/photos.html.
-    // Falls back to the static markup already in the page if the manifest is missing.
+    document.getElementById('foot-year').textContent = new Date().getFullYear();
+
+    /* ---------- ROSTER ----------
+       Driven by assets/team/roster.json (manage at /admin/photos.html).
+       Falls back to the static markup already in the page. */
     (function () {
       var grid = document.getElementById('roster-grid');
       if (!grid) return;
-      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
       function initials(name) {
         var parts = String(name || '').trim().split(/\s+/).filter(Boolean);
         if (!parts.length) return '?';
-        var a = parts[0].charAt(0);
-        var b = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
-        return (a + b).toUpperCase();
+        return (parts[0].charAt(0) + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : '')).toUpperCase();
       }
       function avatar(m) {
         if (m.photo) {
           return '<div class="avatar"><picture>' +
             '<source type="image/webp" srcset="assets/team/' + esc(m.photo) + '.webp">' +
-            '<img src="assets/team/' + esc(m.photo) + '.jpg" alt="' + esc(m.name) + '" loading="lazy" decoding="async">' +
+            '<img src="assets/team/' + esc(m.photo) + '.jpg" alt="' + esc(m.name) + '" loading="lazy" decoding="async" width="78" height="78">' +
             '</picture></div>';
         }
         return '<div class="avatar" aria-hidden="true">' + esc(initials(m.name)) + '</div>';
@@ -793,7 +654,7 @@
         var nameInner = m.linkedin
           ? '<a href="' + esc(m.linkedin) + '" target="_blank" rel="noopener noreferrer" aria-label="' + nameText + ' on LinkedIn">' + nameText + LI_ICON + '</a>'
           : nameText;
-        return '<div class="person has-photo">' + avatar(m) +
+        return '<div class="person">' + avatar(m) +
           '<div class="person-text">' +
             '<div class="role">' + esc(m.role || 'Hub Member') + '</div>' +
             '<div class="name">' + nameInner + '</div>' +
@@ -807,32 +668,25 @@
           var lead = list.filter(function (m) { return m.group === 'leadership'; });
           var members = list.filter(function (m) { return m.group !== 'leadership'; });
           var html = '';
-          if (lead.length) {
-            html += '<div class="roster-split">Leadership · July 2026 – June 2027</div>';
-            html += lead.map(person).join('');
-          }
-          if (members.length) {
-            html += '<div class="roster-split">Hub Members</div>';
-            html += members.map(person).join('');
-          }
+          if (lead.length) html += '<div class="roster-split">Leadership · July 2026 – June 2027</div>' + lead.map(person).join('');
+          if (members.length) html += '<div class="roster-split">Hub Members</div>' + members.map(person).join('');
           grid.innerHTML = html;
         })
         .catch(function () {});
     })();
 
-    // Events — driven by assets/events/events.json. Manage at /admin/events.html.
-    // Falls back to the static markup already in the page if the manifest is missing.
+    /* ---------- EVENTS ----------
+       Driven by assets/events/events.json (manage at /admin/events.html). */
     (function () {
       var block = document.getElementById('events-block');
       if (!block) return;
-      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
       function eventRow(e) {
         var photo = e.photo
           ? '<picture><source type="image/webp" srcset="assets/events/' + esc(e.photo) + '.webp">' +
             '<img class="ev-photo" src="assets/events/' + esc(e.photo) + '.jpg" alt="' + esc(e.title) + '" loading="lazy" decoding="async"></picture>'
           : '';
         var link = (e.link && e.linkLabel)
-          ? '<a href="' + esc(e.link) + '" class="btn btn-gold"' + (/^https?:/i.test(e.link) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(e.linkLabel) + '</a>'
+          ? '<a href="' + esc(e.link) + '" class="btn btn-gold"' + extAttrs(e.link) + '>' + esc(e.linkLabel) + '</a>'
           : '';
         return '<div class="event-row">' +
           '<div class="dot"></div>' +
@@ -854,21 +708,20 @@
         .catch(function () {});
     })();
 
-    // Projects — driven by assets/projects/projects.json. Manage at /admin/projects.html.
-    // Falls back to the static markup already in the page if the manifest is missing.
+    /* ---------- PROJECTS ----------
+       Driven by assets/projects/projects.json (manage at /admin/projects.html). */
     (function () {
       var grid = document.getElementById('projects-grid');
       if (!grid) return;
-      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
       function metric(m) {
         return '<div class="metric"><div class="num">' + esc(m.num || '') + '</div><div class="lbl">' + esc(m.lbl || '') + '</div></div>';
       }
       function projectCard(p) {
         var status = p.status === 'prior' ? 'prior' : (p.status === 'upcoming' ? 'upcoming' : 'active');
         var label = status === 'prior' ? 'Prior Project' : (status === 'upcoming' ? 'Upcoming Project' : 'Active Project');
-        var tag = '<span class="tag' + (status !== 'active' ? ' ' + status : '') + '">' + label + '</span>';
+        var pillClass = status === 'prior' ? 'pill muted' : (status === 'upcoming' ? 'pill gold' : 'pill');
         var link = (p.link && p.linkLabel)
-          ? '<a href="' + esc(p.link) + '" class="plink"' + (/^https?:/i.test(p.link) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(p.linkLabel) + '</a>'
+          ? '<a href="' + esc(p.link) + '" class="plink"' + extAttrs(p.link) + '>' + esc(p.linkLabel) + '</a>'
           : '';
         var metrics = (Array.isArray(p.metrics) && p.metrics.length)
           ? '<div class="metrics">' + p.metrics.map(metric).join('') + '</div>' : '';
@@ -876,13 +729,11 @@
           ? '<picture><source type="image/webp" srcset="assets/projects/' + esc(p.photo) + '.webp">' +
             '<img class="pphoto" src="assets/projects/' + esc(p.photo) + '.jpg" alt="' + esc(p.title) + '" loading="lazy" decoding="async"></picture>'
           : '';
-        return '<div class="project' + (p.photo ? ' has-photo' : '') + '">' +
-          '<div class="spine"></div>' +
-          photo +
+        return '<div class="project reveal' + (p.photo ? ' has-photo' : '') + '">' +
+          '<div class="spine"></div>' + photo +
           '<div class="body">' +
-            tag +
-            '<h3>' + esc(p.title || '') + '</h3>' +
-            link +
+            '<span class="' + pillClass + '">' + label + '</span>' +
+            '<h3>' + esc(p.title || '') + '</h3>' + link +
             (p.description ? '<p>' + esc(p.description) + '</p>' : '') +
             metrics +
           '</div>' +
@@ -894,12 +745,14 @@
           if (!Array.isArray(list) || !list.length) return; // keep static fallback
           // Render in the order arranged in the Projects Manager (/admin/projects.html).
           grid.innerHTML = list.map(projectCard).join('');
+          // Cards created after boot need the reveal state applied by hand.
+          grid.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
         })
         .catch(function () {});
     })();
 
-    // Gallery + hero background — both driven by assets/photos/manifest.json.
-    // Manage photos with the Photo Manager at /admin/photos.html.
+    /* ---------- GALLERY + HERO BACKGROUND ----------
+       Both driven by assets/photos/manifest.json (manage at /admin/photos.html). */
     (function () {
       var root = document.getElementById('gallery-root');
       var CATS = [
@@ -908,8 +761,6 @@
         { key: 'team',       label: 'Team' },
         { key: 'pittsburgh', label: 'Pittsburgh' }
       ];
-      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
       function url(file) { return 'assets/photos/' + file + '.jpg'; }
       function figure(p) {
         var cap = esc(p.caption || '');
@@ -928,7 +779,6 @@
           '</div></div>';
       }
 
-      // ---- collapsible gallery ----
       function renderGallery(list) {
         if (!root) return;
         var html = '', any = false;
@@ -937,7 +787,7 @@
           if (!items.length) return;
           any = true;
           html += '<div class="gallery-cat">' +
-            '<button class="gallery-cat-label" type="button" aria-expanded="true">' +
+            '<button class="gallery-cat-label" type="button" aria-expanded="false">' +
               esc(c.label) + ' <span class="count">· ' + items.length + '</span>' +
               '<span class="chev" aria-hidden="true">›</span>' +
             '</button>' +
@@ -953,7 +803,9 @@
           cat.classList.remove('collapsed'); btn.setAttribute('aria-expanded', 'true');
           requestAnimationFrame(function () {
             body.style.height = body.scrollHeight + 'px';
-            body.addEventListener('transitionend', function te() { body.style.height = 'auto'; body.removeEventListener('transitionend', te); });
+            body.addEventListener('transitionend', function te() {
+              body.style.height = 'auto'; body.removeEventListener('transitionend', te);
+            });
           });
         }
         function closeCat(cat, btn, body) {
@@ -965,55 +817,58 @@
         }
 
         var cats = [];
-        Array.prototype.forEach.call(root.querySelectorAll('.gallery-cat'), function (cat) {
+        root.querySelectorAll('.gallery-cat').forEach(function (cat) {
           var btn = cat.querySelector('.gallery-cat-label');
           var body = cat.querySelector('.gallery-body');
-          // Collapsed by default — visitors click a category (or "Photos" in the nav) to expand.
-          cat.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false'); body.style.height = '0px';
+          // Collapsed by default — visitors open a category (or click "Photos").
+          cat.classList.add('collapsed'); body.style.height = '0px';
           cats.push({ cat: cat, btn: btn, body: body });
           btn.addEventListener('click', function () {
             if (cat.classList.contains('collapsed')) openCat(cat, btn, body); else closeCat(cat, btn, body);
           });
         });
 
-        // Clicking "Photos" in the nav expands every category (and reveals the gallery).
-        Array.prototype.forEach.call(document.querySelectorAll('a[href="#gallery"], a[href="index.html#gallery"]'), function (a) {
-          a.addEventListener('click', function () { cats.forEach(function (c) { openCat(c.cat, c.btn, c.body); }); });
+        // Clicking "Photos" in the nav opens every category.
+        document.querySelectorAll('a[href="#gallery"]').forEach(function (a) {
+          a.addEventListener('click', function () {
+            cats.forEach(function (c) { openCat(c.cat, c.btn, c.body); });
+          });
         });
       }
 
-      // ---- rotating hero background ----
+      /* Rotating hero background. The timer only runs while the hero is on
+         screen and the tab is in the foreground — a background tab costs
+         nothing, and neither does scrolling past. */
       function startHeroBg(list) {
         var stage = document.getElementById('hero-bg');
-        var scrim = document.getElementById('hero-scrim');
         var hero = document.querySelector('header.hero');
         if (!stage || !hero || !list.length) return;
         // Rotate only through Events and Pittsburgh shots (the wide, evocative ones).
-        var HERO_CATS = { events: 0, pittsburgh: 1 };
+        var HERO_CATS = { events: 1, pittsburgh: 1 };
         var pics = list.filter(function (p) { return (p.category || 'events') in HERO_CATS; });
-        // If neither category has photos, fall back to whatever exists so the hero isn't blank.
         if (!pics.length) pics = list.slice();
-        pics = pics.slice(0, 14);
-        // light shuffle within the capped set so it varies per visit
-        for (var i = pics.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pics[i]; pics[i] = pics[j]; pics[j] = t; }
-
-        hero.classList.add('has-photos');
-        if (scrim) scrim.hidden = false;
+        pics = pics.slice(0, 10);
+        for (var i = pics.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1)), t = pics[i]; pics[i] = pics[j]; pics[j] = t;
+        }
 
         var a = document.createElement('div'); a.className = 'slide';
         var b = document.createElement('div'); b.className = 'slide';
         stage.appendChild(a); stage.appendChild(b);
-        var layers = [a, b], cur = 0, idx = 0;
+        var layers = [a, b], cur = 0, idx = 0, timer = null;
 
         function show(el, file, cb) {
           var img = new Image();
-          img.onload = img.onerror = function () { el.style.backgroundImage = "url('" + url(file) + "')"; if (cb) cb(); };
+          img.onload = img.onerror = function () {
+            el.style.backgroundImage = "url('" + url(file) + "')";
+            if (cb) cb();
+          };
           img.src = url(file);
         }
         show(layers[0], pics[0].file, function () { layers[0].classList.add('on'); });
         if (reduceMotion || pics.length < 2) return;
 
-        setInterval(function () {
+        function advance() {
           idx = (idx + 1) % pics.length;
           var next = layers[1 - cur];
           show(next, pics[idx].file, function () {
@@ -1021,7 +876,11 @@
             layers[cur].classList.remove('on');
             cur = 1 - cur;
           });
-        }, 6000);
+        }
+        window.GS.visibilityGate(hero, function (visible) {
+          if (visible && !timer) timer = setInterval(advance, 6500);
+          else if (!visible && timer) { clearInterval(timer); timer = null; }
+        });
       }
 
       fetch('assets/photos/manifest.json', { cache: 'no-store' })
@@ -1035,84 +894,125 @@
         .catch(emptyState);
     })();
 
-    /* ---------- GLOBAL HUB MAP ---------- */
+    /* ---------- GLOBAL HUB MAP ----------
+       ~440 city dots on an equirectangular SVG. Two things keep it cheap:
+       the whole thing is built only once it scrolls into view, and all
+       interaction runs through four delegated listeners on the <svg>
+       instead of five listeners per dot. */
     (function () {
+      var host = document.getElementById('hubmap');
       var canvas = document.getElementById('hubmap-canvas');
       var tip = document.getElementById('hubmap-tip');
-      if (!canvas) return;
+      if (!host || !canvas) return;
       var W = 1000, H = 500, SVGNS = 'http://www.w3.org/2000/svg';
 
       function project(lat, lng) {
         return { x: (lng + 180) / 360 * W, y: (90 - lat) / 180 * H };
       }
 
-      Promise.all([
-        fetch('assets/img/world-equirect.svg').then(function (r) { return r.ok ? r.text() : null; }),
-        fetch('assets/data/hubs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : []; })
-      ]).then(function (res) {
-        var svgText = res[0], hubs = Array.isArray(res[1]) ? res[1] : [];
-        if (!svgText) return;
-        canvas.innerHTML = svgText;
-        var svg = canvas.querySelector('svg');
-        var g = canvas.querySelector('.hubmap-dots');
-        if (!svg || !g) return;
+      function build() {
+        Promise.all([
+          fetch('assets/img/world-equirect.svg', { cache: 'force-cache' }).then(function (r) { return r.ok ? r.text() : null; }),
+          fetch('assets/data/hubs.json', { cache: 'force-cache' }).then(function (r) { return r.ok ? r.json() : []; })
+        ]).then(function (res) {
+          var svgText = res[0], hubs = Array.isArray(res[1]) ? res[1] : [];
+          if (!svgText) return;
+          canvas.innerHTML = svgText;
+          var svg = canvas.querySelector('svg');
+          var g = canvas.querySelector('.hubmap-dots');
+          if (!svg || !g) return;
 
-        var activeDot = null;
-        function clearActive() {
-          tip.classList.remove('on');
-          if (activeDot) { activeDot.classList.remove('is-active'); activeDot = null; }
-        }
-        // Tapping empty map space dismisses any open tooltip.
-        canvas.addEventListener('click', function (e) { if (e.target === canvas || (e.target.tagName === 'svg')) clearActive(); });
+          // Build every dot off-document, then attach once.
+          var frag = document.createDocumentFragment();
+          var byIndex = [];
+          hubs.forEach(function (h) {
+            if (typeof h.lat !== 'number' || typeof h.lng !== 'number') return;
+            var p = project(h.lat, h.lng);
+            var home = /^pittsburgh$/i.test(h.c);
+            if (home) {
+              var pulse = document.createElementNS(SVGNS, 'circle');
+              pulse.setAttribute('cx', p.x); pulse.setAttribute('cy', p.y);
+              pulse.setAttribute('r', 3.4); pulse.setAttribute('class', 'hubmap-pulse');
+              frag.appendChild(pulse);
+            }
+            var i = byIndex.length;
+            byIndex.push({ name: h.c, x: p.x, y: p.y, home: home });
 
-        hubs.forEach(function (h) {
-          if (typeof h.lat !== 'number' || typeof h.lng !== 'number') return;
-          var p = project(h.lat, h.lng);
-          var home = /^pittsburgh$/i.test(h.c);
-          if (home) {
-            var pulse = document.createElementNS(SVGNS, 'circle');
-            pulse.setAttribute('cx', p.x); pulse.setAttribute('cy', p.y);
-            pulse.setAttribute('r', 3.4); pulse.setAttribute('class', 'hubmap-pulse');
-            g.appendChild(pulse);
-          }
-          var c = document.createElementNS(SVGNS, 'circle');
-          c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
-          c.setAttribute('r', home ? 4.2 : 2.6);
-          c.setAttribute('class', 'hubmap-dot' + (home ? ' is-home' : ''));
-          var t = document.createElementNS(SVGNS, 'title');
-          t.textContent = h.c; c.appendChild(t);
-          // Transparent oversized hit target so dots are easy to tap on touch screens.
-          var hit = document.createElementNS(SVGNS, 'circle');
-          hit.setAttribute('cx', p.x); hit.setAttribute('cy', p.y); hit.setAttribute('r', 11);
-          hit.setAttribute('class', 'hubmap-hit');
-          hit.setAttribute('tabindex', '0');
-          hit.setAttribute('role', 'button');
-          hit.setAttribute('aria-label', h.c);
-          function showTip() {
+            var c = document.createElementNS(SVGNS, 'circle');
+            c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
+            c.setAttribute('r', home ? 4.2 : 2.6);
+            c.setAttribute('class', 'hubmap-dot' + (home ? ' is-home' : ''));
+            c.setAttribute('data-i', i);
+            frag.appendChild(c);
+
+            // Transparent oversized hit target — easy to tap on a phone.
+            var hit = document.createElementNS(SVGNS, 'circle');
+            hit.setAttribute('cx', p.x); hit.setAttribute('cy', p.y); hit.setAttribute('r', 11);
+            hit.setAttribute('class', 'hubmap-hit');
+            hit.setAttribute('data-i', i);
+            hit.setAttribute('tabindex', '0');
+            hit.setAttribute('role', 'button');
+            hit.setAttribute('aria-label', h.c);
+            frag.appendChild(hit);
+          });
+          g.appendChild(frag);
+
+          var dots = g.querySelectorAll('.hubmap-dot');
+          var activeIndex = -1;
+
+          function showTip(i) {
+            var d = byIndex[i];
+            if (!d) return;
             var box = canvas.getBoundingClientRect();
-            tip.textContent = h.c;
-            tip.style.left = (p.x / W * box.width) + 'px';
-            tip.style.top = (p.y / H * box.height) + 'px';
+            tip.textContent = d.name;
+            tip.style.left = (d.x / W * box.width) + 'px';
+            tip.style.top = (d.y / H * box.height) + 'px';
             tip.classList.add('on');
           }
-          function activate(e) {
-            if (e) e.stopPropagation();
-            if (activeDot === c) { clearActive(); return; }
-            if (activeDot) activeDot.classList.remove('is-active');
-            if (!home) c.classList.add('is-active');
-            activeDot = c;
-            showTip();
+          function clearActive() {
+            tip.classList.remove('on');
+            if (activeIndex > -1) { dots[activeIndex].classList.remove('is-active'); activeIndex = -1; }
           }
-          hit.addEventListener('mouseenter', showTip);
-          hit.addEventListener('mouseleave', function () { if (activeDot !== c) tip.classList.remove('on'); });
-          hit.addEventListener('click', activate);
-          hit.addEventListener('focus', showTip);
-          hit.addEventListener('blur', function () { if (activeDot !== c) tip.classList.remove('on'); });
-          hit.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(e); } });
-          g.appendChild(c);
-          g.appendChild(hit);
-        });
-      }).catch(function () {});
+          function indexOf(target) {
+            var attr = target && target.getAttribute && target.getAttribute('data-i');
+            return attr == null ? -1 : parseInt(attr, 10);
+          }
+
+          svg.addEventListener('mouseover', function (e) {
+            var i = indexOf(e.target);
+            if (i > -1) showTip(i);
+          });
+          svg.addEventListener('mouseout', function (e) {
+            var i = indexOf(e.target);
+            if (i > -1 && i !== activeIndex) tip.classList.remove('on');
+          });
+          svg.addEventListener('focusin', function (e) {
+            var i = indexOf(e.target);
+            if (i > -1) showTip(i);
+          });
+          svg.addEventListener('focusout', function () {
+            if (activeIndex === -1) tip.classList.remove('on');
+          });
+          svg.addEventListener('click', function (e) {
+            var i = indexOf(e.target);
+            if (i === -1) { clearActive(); return; }          // tapping the map dismisses
+            if (i === activeIndex) { clearActive(); return; } // tapping the same dot toggles off
+            if (activeIndex > -1) dots[activeIndex].classList.remove('is-active');
+            if (!byIndex[i].home) dots[i].classList.add('is-active');
+            activeIndex = i;
+            showTip(i);
+          });
+          svg.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            var i = indexOf(e.target);
+            if (i === -1) return;
+            e.preventDefault();
+            e.target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+          });
+        }).catch(function () {});
+      }
+
+      whenVisible(host, build);
     })();
 
     /* ---------- GALLERY LIGHTBOX ---------- */
@@ -1121,11 +1021,9 @@
       if (!box) return;
       var imgEl = box.querySelector('.lb-img');
       var capEl = box.querySelector('.lb-cap');
-      var figures = [], current = -1;
+      var figures = [], current = -1, lastFocus = null;
 
-      function collect() {
-        figures = Array.prototype.slice.call(document.querySelectorAll('.gallery figure'));
-      }
+      function collect() { figures = Array.prototype.slice.call(document.querySelectorAll('.gallery figure')); }
       function show(i) {
         if (i < 0 || i >= figures.length) return;
         current = i;
@@ -1140,8 +1038,8 @@
         capEl.style.display = text ? '' : 'none';
       }
       function open(i) {
-        collect();
-        show(i);
+        lastFocus = document.activeElement;
+        collect(); show(i);
         box.classList.add('open');
         document.body.style.overflow = 'hidden';
         box.querySelector('.lightbox-close').focus();
@@ -1149,12 +1047,11 @@
       function close() {
         box.classList.remove('open');
         document.body.style.overflow = '';
-        imgEl.src = '';
-        current = -1;
+        imgEl.src = ''; current = -1;
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
       }
       function step(d) { if (figures.length) show((current + d + figures.length) % figures.length); }
 
-      // Delegated click: open when a gallery figure is clicked.
       document.addEventListener('click', function (e) {
         var fig = e.target.closest && e.target.closest('.gallery figure');
         if (!fig) return;
@@ -1165,7 +1062,9 @@
       box.querySelector('.lightbox-close').addEventListener('click', close);
       box.querySelector('.lightbox-nav.prev').addEventListener('click', function () { step(-1); });
       box.querySelector('.lightbox-nav.next').addEventListener('click', function () { step(1); });
-      box.addEventListener('click', function (e) { if (e.target === box || e.target.classList.contains('lb-figure')) close(); });
+      box.addEventListener('click', function (e) {
+        if (e.target === box || e.target.classList.contains('lb-figure')) close();
+      });
       document.addEventListener('keydown', function (e) {
         if (!box.classList.contains('open')) return;
         if (e.key === 'Escape') close();
@@ -1173,6 +1072,7 @@
         else if (e.key === 'ArrowRight') step(1);
       });
     })();
+  });
   </script>
 
 </body>
