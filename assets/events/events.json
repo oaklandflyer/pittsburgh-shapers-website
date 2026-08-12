@@ -8,11 +8,19 @@
     "photo": "event"
   },
   {
+    "title": "Shaper Dinner",
+    "date": "August 22, 2026 ",
+    "description": "Shapers Dinner at Tana Ethiopian Cuisine!",
+    "link": "",
+    "linkLabel": "",
+    "photo": "event-2"
+  },
+  {
     "title": "Hub Meeting",
     "date": "August 29, 2026 11AM",
     "description": "Join the Pittsburgh Hub for the Hub Meeting where we will discuss our projects!",
     "link": "",
     "linkLabel": "",
-    "photo": "event-2"
+    "photo": "hub-meeting"
   }
 ]
