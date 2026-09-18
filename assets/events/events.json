@@ -1,10 +1,42 @@
 [
   {
-    "title": "Shapers Happy Hour",
-    "date": "Wednesday, September 16th at 6:30pm",
-    "description": "Join the Pittsburgh Hub for Happy Hour during StartUP week! More details to come!",
-    "link": "",
-    "linkLabel": "",
+    "title": "Shapers 101",
+    "date": "Wednesday, September 23rd at 7 pm",
+    "description": "Shapers 101 is an introduction to the ideas, goals, and work behind Shapers, hosted by Andrew Coutinho. If you are curious about what Shapers is, how it works, and what it is building toward, this session will give you a clear starting point. It is designed to be approachable, informative, and useful whether you are hearing about Shapers for the first time or want a more structured overview.",
+    "link": "https://luma.com/ftpcybrq",
+    "linkLabel": "Register Here",
     "photo": "shapers-happy-hour"
+  },
+  {
+    "title": "Shapers Brunch at Margaux",
+    "date": "Saturday, September 26 at 11:30 AM - 12:30 PM",
+    "description": "​Join Pittsburgh Shapers for a casual brunch at Margaux, a relaxed midday get-together to catch up, share ideas, and enjoy good food in a lively setting. Hosted by the Pittsburgh Hub it’s a simple chance to connect over brunch and spend a little time with fellow Shapers in the city.",
+    "link": "https://luma.com/a083hdz8",
+    "linkLabel": "Register Here",
+    "photo": "event"
+  },
+  {
+    "title": "Projects Meeting",
+    "date": "Monday, Sep 28 6:00 PM - 7:00 PM",
+    "description": "​Join us for a Projects Meeting to hear what the Pittsburgh Hub will be working on in the months ahead and where you can plug in. Ian Chang will lead the conversation, with space to walk through current priorities, answer questions, and share what is taking shape across upcoming initiatives.",
+    "link": "https://luma.com/j2pgibbu",
+    "linkLabel": "Register Here",
+    "photo": "event-2"
+  },
+  {
+    "title": "Shapers Happy Hour",
+    "date": "Friday, October 2 5:30 PM - 7:00 PM",
+    "description": "​Happy hour followed by PSO concert for those interested in buying tickets https://pittsburghsymphony.org/production/104551/gerstein-plays-brahms",
+    "link": "https://luma.com/6bld4fm0",
+    "linkLabel": "Register Here",
+    "photo": "shapers-happy-hour-2"
+  },
+  {
+    "title": "Burnout Discussion",
+    "date": "Thursday, October 8 6:30 PM - 7:30 PM",
+    "description": "​Burnout can creep in quietly, making even simple tasks feel heavier than they should. In this discussion, Andrew Coutinho will open up a practical conversation about what burnout looks like, how it shows up at work and in everyday life, and what can help when you start to feel stretched too thin.",
+    "link": "https://luma.com/j7347hgc",
+    "linkLabel": "Register Here",
+    "photo": "event-3"
   }
 ]
