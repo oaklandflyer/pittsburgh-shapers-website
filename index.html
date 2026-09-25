@@ -87,6 +87,15 @@
   .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   @media (max-width: 860px) { .cards-2 { grid-template-columns: 1fr; } }
 
+  /* ---------- WHY JOIN ---------- */
+  .why-icon {
+    width: 44px; height: 44px; border-radius: 12px; margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--blue-tint); color: var(--blue);
+  }
+  .why-icon svg { width: 22px; height: 22px; }
+  .why-foot { margin-top: 32px; text-align: center; }
+
   /* ---------- IMPACT ---------- */
   .impact-grid {
     /* minmax(0,…) so a long number like "10,000+" can't push the grid wider
@@ -404,6 +413,7 @@
         <a href="#impact">Impact</a>
         <a href="#events">Events</a>
         <a href="#projects">Projects</a>
+        <a href="#why-join">Why Join</a>
         <a href="#gallery">Photos</a>
         <a href="#roster">Team</a>
         <div class="nav-actions">
@@ -578,8 +588,56 @@
     </div>
   </section>
 
+  <!-- WHY JOIN -->
+  <section class="band" id="why-join">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-label">Membership</div>
+        <h2 class="sec-title">WHY <span class="accent">JOIN</span></h2>
+        <p class="sec-intro">What you get as a Pittsburgh Shaper.</p>
+      </div>
+      <div class="cards-2">
+        <div class="card reveal">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg>
+          </div>
+          <div class="kicker">Impact</div>
+          <h3>Lead Real Projects</h3>
+          <p>Run projects with measurable results, like Table to Farm's 73,000 lbs of food waste diverted. You start as a leader, not an intern.</p>
+        </div>
+        <div class="card reveal" data-reveal-delay="90">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"></path></svg>
+          </div>
+          <div class="kicker">Network</div>
+          <h3>A Global Network</h3>
+          <p>A direct line to 10,000+ Shapers in 500+ hubs across 150+ countries, through Forum Spaces.</p>
+        </div>
+        <div class="card reveal">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V10l7-5 7 5v11"></path><path d="M10 21v-6h4v6"></path></svg>
+          </div>
+          <div class="kicker">Community</div>
+          <h3>Invest in Pittsburgh</h3>
+          <p>Work with local nonprofits, funders and city partners (10+ on Table to Farm alone).</p>
+        </div>
+        <div class="card reveal" data-reveal-delay="90">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"></path><path d="M14 7h7v7"></path></svg>
+          </div>
+          <div class="kicker">Growth</div>
+          <h3>Grow as a Leader</h3>
+          <p>Hub roles like Curator, Vice Curator and Impact Officer, with a global network behind you.</p>
+        </div>
+      </div>
+      <div class="why-foot reveal">
+        <a href="https://wefglobal.eu.qualtrics.com/jfe/form/SV_6F4bAg3fL2x1eXb?fbclid=PAQ0xDSwMCONdleHRuA2FlbQIxMQABp6lSNoShcx7AEB9r896XtR1tMwrZiRL-MidbT45nWKzRbRXDtqgcng6BWGYI_aem_fFX53n1exgnbmPUun7e1Iw" class="arrow-link" target="_blank" rel="noopener">Apply Now →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- GALLERY -->
-  <section class="band" id="gallery">
+  <section class="band tint" id="gallery">
     <div class="wrap">
       <div class="sec-head reveal">
         <div class="sec-label">Gallery</div>
@@ -598,7 +656,7 @@
   </section>
 
   <!-- ROSTER -->
-  <section class="band tint" id="roster">
+  <section class="band" id="roster">
     <div class="wrap">
       <div class="sec-head reveal">
         <div class="sec-label">Hub Member Roster</div>
@@ -640,6 +698,7 @@
         <ul>
           <li><a href="#overview">Who we are</a></li>
           <li><a href="#projects">Our work</a></li>
+          <li><a href="#why-join">Why join</a></li>
           <li><a href="#gallery">Photos</a></li>
           <li><a href="#roster">The team</a></li>
           <li><a href="culturepgh/">CulturePGH</a></li>
