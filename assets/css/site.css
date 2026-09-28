@@ -78,6 +78,11 @@ img, picture, svg, canvas { max-width: 100%; }
 .leaflet-container canvas,
 .leaflet-container img,
 .leaflet-container svg { max-width: none; max-height: none; }
+
+/* OpenStreetMap tiles are keyless (CARTO's basemaps started returning
+   "API KEY REQUIRED" tiles). Tone them down toward the old light basemap;
+   the filter sits on the tile layer only, so markers keep their colours. */
+.map-tiles-muted { filter: saturate(0.35) brightness(1.06) contrast(0.92); }
 a { color: var(--blue); text-decoration: none; transition: color 0.18s var(--ease); }
 a:hover { color: var(--blue-deep); }
 
