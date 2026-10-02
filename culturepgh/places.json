@@ -1,14 +1,15 @@
 {
-  "note": "CulturePGH map data. Add local and immigrant-owned businesses here. lat/lng are approximate — correct them by right-clicking the spot in Google Maps and copying the coordinates. category drives the marker color: 'restaurant', 'market', or 'cafe'.",
+  "note": "CulturePGH map data. Add local and immigrant-owned businesses here. lat/lng are geocoded from each business's street address (address field) — to correct a pin, right-click the spot in Google Maps and copy the coordinates. category drives the marker color: 'restaurant', 'market', or 'cafe'.",
   "places": [
     {
       "name": "Gaucho Parrilla Argentina",
       "category": "restaurant",
       "cuisine": "Argentine",
-      "neighborhood": "Strip District",
+      "neighborhood": "Downtown",
       "blurb": "Wood-fired Argentine grill from an Argentine-American family.",
-      "lat": 40.4506,
-      "lng": -79.9853,
+      "address": "146 Sixth St, Pittsburgh, PA 15222",
+      "lat": 40.44278,
+      "lng": -80.00251,
       "url": "https://www.eatgaucho.com/"
     },
     {
@@ -17,8 +18,9 @@
       "cuisine": "Central & Eastern European",
       "neighborhood": "Bloomfield",
       "blurb": "Plant-based Central & Eastern European cooking.",
-      "lat": 40.4623,
-      "lng": -79.9486,
+      "address": "4606 Penn Ave, Pittsburgh, PA 15224",
+      "lat": 40.46576,
+      "lng": -79.9493,
       "url": "https://www.aptekapgh.com/"
     },
     {
@@ -27,8 +29,9 @@
       "cuisine": "Thai",
       "neighborhood": "Lawrenceville",
       "blurb": "Family-run Thai kitchen with a garden dining room.",
-      "lat": 40.4708,
-      "lng": -79.9606,
+      "address": "5319 Butler St, Pittsburgh, PA 15201",
+      "lat": 40.48264,
+      "lng": -79.95197,
       "url": "https://www.pusadeesgarden.com/"
     },
     {
@@ -37,8 +40,9 @@
       "cuisine": "Taiwanese",
       "neighborhood": "Squirrel Hill",
       "blurb": "Hand-pulled noodles and soup dumplings made in-house.",
-      "lat": 40.4381,
-      "lng": -79.9229,
+      "address": "5875 Forbes Ave, Pittsburgh, PA 15217",
+      "lat": 40.43825,
+      "lng": -79.9201,
       "url": ""
     },
     {
@@ -47,8 +51,9 @@
       "cuisine": "Middle Eastern",
       "neighborhood": "Strip District",
       "blurb": "Halal grocery and grill — a Middle Eastern and South Asian staple.",
-      "lat": 40.4514,
-      "lng": -79.9819,
+      "address": "2923 Penn Ave, Pittsburgh, PA 15201",
+      "lat": 40.45844,
+      "lng": -79.97377,
       "url": "https://www.salemsmarket.com/"
     },
     {
@@ -57,28 +62,31 @@
       "cuisine": "Mexican",
       "neighborhood": "Strip District",
       "blurb": "Family-owned Mexican grocer and taqueria since 1998.",
-      "lat": 40.4509,
-      "lng": -79.9793,
+      "address": "2031 Penn Ave, Pittsburgh, PA 15222",
+      "lat": 40.45174,
+      "lng": -79.98349,
       "url": "https://www.reynafoods.com/"
     },
     {
       "name": "Kaibur Coffee",
       "category": "cafe",
       "cuisine": "Ethiopian",
-      "neighborhood": "East Liberty",
+      "neighborhood": "Polish Hill",
       "blurb": "Ethiopian-owned coffee house and community space.",
-      "lat": 40.4611,
-      "lng": -79.9250,
+      "address": "3138 Dobson St, Pittsburgh, PA 15219",
+      "lat": 40.45759,
+      "lng": -79.96586,
       "url": ""
     },
     {
       "name": "Banh Mi & Ti",
       "category": "cafe",
       "cuisine": "Vietnamese",
-      "neighborhood": "Downtown",
+      "neighborhood": "Lawrenceville",
       "blurb": "Vietnamese sandwiches, spring rolls, and iced coffee.",
-      "lat": 40.4419,
-      "lng": -79.9990,
+      "address": "4502 Butler St, Pittsburgh, PA 15201",
+      "lat": 40.47223,
+      "lng": -79.95908,
       "url": ""
     },
     {
@@ -87,8 +95,9 @@
       "cuisine": "Nepali",
       "neighborhood": "Carrick",
       "blurb": "Owner Uttam Tamang's long-standing anchor of the Carrick Nepali community.",
-      "lat": 40.3928,
-      "lng": -79.9853,
+      "address": "2122 Brownsville Rd, Pittsburgh, PA 15210",
+      "lat": 40.39244,
+      "lng": -79.98722,
       "url": ""
     },
     {
@@ -97,8 +106,9 @@
       "cuisine": "Nepali",
       "neighborhood": "Baldwin Borough",
       "blurb": "Momo-focused kitchen from owners Kamal & Hema Timsina, inside a grocery.",
-      "lat": 40.3573,
-      "lng": -79.9722,
+      "address": "5250 Brownsville Rd, Pittsburgh, PA 15236",
+      "lat": 40.3424,
+      "lng": -79.9852,
       "url": ""
     },
     {
@@ -107,18 +117,20 @@
       "cuisine": "Nepali & Bhutanese",
       "neighborhood": "Brentwood",
       "blurb": "Home-style Nepali cooking with Bhutanese weekend specials on Saw Mill Run Blvd.",
-      "lat": 40.3720,
-      "lng": -80.0130,
+      "address": "4042 Saw Mill Run Blvd, Pittsburgh, PA 15227",
+      "lat": 40.36784,
+      "lng": -79.98407,
       "url": ""
     },
     {
       "name": "Himali Kitchen",
       "category": "restaurant",
       "cuisine": "Nepali",
-      "neighborhood": "Overbrook",
+      "neighborhood": "Brentwood",
       "blurb": "Known for chili momo with adjustable spice, near Saw Mill Run Blvd.",
-      "lat": 40.4010,
-      "lng": -80.0200,
+      "address": "3536 Saw Mill Run Blvd, Pittsburgh, PA 15227",
+      "lat": 40.37277,
+      "lng": -79.98209,
       "url": ""
     },
     {
@@ -127,18 +139,20 @@
       "cuisine": "Nepali & Bhutanese",
       "neighborhood": "North Side",
       "blurb": "Nepali, Bhutanese, Indian, and Chinese dishes on E. Ohio St.",
-      "lat": 40.4530,
-      "lng": -79.9990,
+      "address": "422 E Ohio St, Pittsburgh, PA 15212",
+      "lat": 40.45359,
+      "lng": -80.00089,
       "url": ""
     },
     {
       "name": "D's Bubble Tea & Cafe",
       "category": "cafe",
       "cuisine": "Nepali",
-      "neighborhood": "Carrick",
+      "neighborhood": "Brentwood",
       "blurb": "Café-format spot serving steamed momo and bubble tea.",
-      "lat": 40.3960,
-      "lng": -79.9860,
+      "address": "3623 Brownsville Rd, Pittsburgh, PA 15227",
+      "lat": 40.37323,
+      "lng": -79.97522,
       "url": ""
     },
     {
@@ -147,8 +161,9 @@
       "cuisine": "Peruvian",
       "neighborhood": "Beechview",
       "blurb": "Owner Shelbin Santos's Peruvian rotisserie chicken, relocated from the Strip District.",
-      "lat": 40.4098,
-      "lng": -80.0247,
+      "address": "2100 Broadway Ave, Pittsburgh, PA 15216",
+      "lat": 40.40515,
+      "lng": -80.03021,
       "url": ""
     },
     {
@@ -157,8 +172,9 @@
       "cuisine": "Venezuelan",
       "neighborhood": "South Side Flats",
       "blurb": "Owner Marlyn Parra's arepas and empanadas — her family ran a restaurant in Venezuela.",
-      "lat": 40.4284,
-      "lng": -79.9720,
+      "address": "901 E Carson St, Pittsburgh, PA 15203",
+      "lat": 40.42878,
+      "lng": -79.98969,
       "url": ""
     },
     {
@@ -167,8 +183,9 @@
       "cuisine": "Trinidadian",
       "neighborhood": "Central North Side",
       "blurb": "Owner Ulric Joseph's spot — Pittsburgh's first vegan Trinidadian restaurant.",
-      "lat": 40.4560,
-      "lng": -80.0080,
+      "address": "1534 Brighton Rd, Pittsburgh, PA 15212",
+      "lat": 40.45783,
+      "lng": -80.01569,
       "url": ""
     },
     {
@@ -177,8 +194,9 @@
       "cuisine": "Sichuan Chinese",
       "neighborhood": "Squirrel Hill",
       "blurb": "Chef-owner Wei Zhu, a multiple-time James Beard semifinalist.",
-      "lat": 40.4308,
-      "lng": -79.9226,
+      "address": "5840 Forward Ave, Pittsburgh, PA 15217",
+      "lat": 40.42934,
+      "lng": -79.92237,
       "url": ""
     },
     {
@@ -187,18 +205,20 @@
       "cuisine": "Chinese & Japanese",
       "neighborhood": "Squirrel Hill",
       "blurb": "Owners Ping Geng & Feng Gao, with specialties for the northern-Chinese community.",
-      "lat": 40.4325,
-      "lng": -79.9224,
+      "address": "5882 Forbes Ave, Pittsburgh, PA 15217",
+      "lat": 40.43784,
+      "lng": -79.91968,
       "url": ""
     },
     {
       "name": "De Pan y Queso Bocadillos Bar",
       "category": "restaurant",
       "cuisine": "Balkan & Iberian",
-      "neighborhood": "Marshall-Shadeland",
+      "neighborhood": "Brighton Heights",
       "blurb": "Owner Tzveti Gintcheva's Balkan, Spanish, and Portuguese small plates.",
-      "lat": 40.4720,
-      "lng": -80.0300,
+      "address": "2827 California Ave, Pittsburgh, PA 15212",
+      "lat": 40.46953,
+      "lng": -80.0361,
       "url": ""
     },
     {
@@ -207,18 +227,20 @@
       "cuisine": "Bulgarian",
       "neighborhood": "Bloomfield",
       "blurb": "Owner Jak Latinova ran a bakery for 15 years in Bulgaria before opening here.",
-      "lat": 40.4615,
-      "lng": -79.9490,
+      "address": "4310 Main St, Pittsburgh, PA 15224",
+      "lat": 40.46413,
+      "lng": -79.95382,
       "url": ""
     },
     {
       "name": "Paris 66",
       "category": "cafe",
       "cuisine": "French",
-      "neighborhood": "Shadyside",
+      "neighborhood": "East Liberty",
       "blurb": "Owner Frederic Rongier's French café, paired with the Gaby et Jules patisserie.",
-      "lat": 40.4570,
-      "lng": -79.9250,
+      "address": "6018 Centre Ave, Pittsburgh, PA 15206",
+      "lat": 40.45999,
+      "lng": -79.92418,
       "url": ""
     },
     {
@@ -227,8 +249,9 @@
       "cuisine": "Polish",
       "neighborhood": "Strip District",
       "blurb": "Long-running Polish deli and grocer.",
-      "lat": 40.4506,
-      "lng": -79.9880,
+      "address": "2204 Penn Ave, Pittsburgh, PA 15222",
+      "lat": 40.4525,
+      "lng": -79.9822,
       "url": ""
     },
     {
@@ -237,8 +260,9 @@
       "cuisine": "Turkish",
       "neighborhood": "Squirrel Hill",
       "blurb": "Owner Bener Ozen, culinary-trained in Turkey (also behind Cafe Moulin in Shadyside).",
-      "lat": 40.4380,
-      "lng": -79.9230,
+      "address": "1711 Murray Ave, Pittsburgh, PA 15217",
+      "lat": 40.43765,
+      "lng": -79.92279,
       "url": ""
     },
     {
@@ -247,8 +271,9 @@
       "cuisine": "Ethiopian",
       "neighborhood": "East Liberty",
       "blurb": "Well-reviewed Ethiopian with injera and a communal dining format.",
-      "lat": 40.4610,
-      "lng": -79.9250,
+      "address": "5929 Baum Blvd, Pittsburgh, PA 15206",
+      "lat": 40.46067,
+      "lng": -79.92693,
       "url": ""
     },
     {
@@ -257,8 +282,9 @@
       "cuisine": "Burmese",
       "neighborhood": "West View",
       "blurb": "Owners Myat Theingi & Aye Yee opened this Burmese kitchen in 2014.",
-      "lat": 40.5230,
-      "lng": -80.0350,
+      "address": "644 Center Ave, West View, PA 15229",
+      "lat": 40.51859,
+      "lng": -80.03107,
       "url": ""
     }
   ]
