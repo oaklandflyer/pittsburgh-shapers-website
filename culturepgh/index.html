@@ -5,345 +5,413 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CulturePGH · A Dinner Series | Global Shapers Pittsburgh</title>
 <meta name="description" content="CulturePGH is a Pittsburgh dinner series pairing a local restaurant with the story of the people and country behind its food. A project of the Global Shapers Pittsburgh Hub.">
+<meta name="theme-color" content="#0E2A52">
 <link rel="canonical" href="https://pittsburghshapers.org/culturepgh/">
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <link rel="apple-touch-icon" href="../assets/gs-pittsburgh-mark.png">
+<meta property="og:title" content="CulturePGH · A Dinner Series">
+<meta property="og:description" content="One restaurant, one table, and the people who carried the recipe here telling you how it arrived.">
+<meta property="og:image" content="https://pittsburghshapers.org/assets/culturepgh-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
 <script src="../assets/vendor/leaflet/leaflet.js"></script>
 <style>
   :root {
-    /* Inherited from pittsburghshapers.org — WEF-clean, Pittsburgh-warm */
-    --paper:  #FAFAF6;
+    /* Pulled from the CulturePGH logo: navy script, gold slab, on cream */
+    --navy:      #0E2A52;
+    --navy-deep: #091D3B;
+    --navy-soft: #1B3C6B;
+    --gold:      #D99A2B;
+    --gold-soft: #F5E6C6;
+    --gold-tint: #FBF3E2;
+    --gold-deep: #9A6614;   /* gold for small text on light — 4.6:1 on paper */
+    --sky:       #4F7CAC;   /* third map category */
+
+    --paper:  #FBF8F1;
     --surface:#FFFFFF;
-    --raise:  #F3F2EC;
-    --ink:    #16181D;
-    --slate:  #5B6170;
-    --mute:   #8A8F9C;
-    --line:   #E7E6DF;
-    --line-2: #DEDDD3;
+    --raise:  #F4EEE1;
+    --ink:    #0E2A52;
+    --text:   #2A3347;
+    --slate:  #4F5A6E;
+    --mute:   #6B7385;
+    --line:   #ECE4D3;
+    --line-2: #DFD4BE;
 
-    --blue:   #1A4FFF;
-    --navy:   #0B1F5B;
-    --blue-tint:#EEF2FF;
-    --gold:   #FFCB05;
-    --gold-deep:#B8860B;
+    --danger: #B3261E;
 
-    /* CulturePGH's own accent — a warm terracotta for the "table" moments */
-    --ember:  #D2582A;
-    --ember-tint:#FBEDE6;
-
-    --font-display: 'Bebas Neue', sans-serif;
+    --font-display: 'Alfa Slab One', 'Rockwell', 'Roboto Slab', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
-    --font-mono: 'Space Mono', monospace;
+    --font-mono: 'Space Mono', ui-monospace, monospace;
 
-    --shadow-sm: 0 1px 2px rgba(11,31,91,0.04), 0 1px 3px rgba(11,31,91,0.06);
-    --shadow-md: 0 12px 32px rgba(11,31,91,0.10);
+    --shadow-sm: 0 1px 2px rgba(14,42,82,0.05), 0 1px 3px rgba(14,42,82,0.07);
+    --shadow-md: 0 14px 34px rgba(14,42,82,0.11);
     --ease: cubic-bezier(0.4,0,0.2,1);
     --container: 1180px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
   body {
     background: var(--paper);
-    color: var(--ink);
+    color: var(--text);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--blue); text-decoration: none; }
-  a:hover { color: var(--navy); }
+  img { max-width: 100%; }
+  a { color: var(--navy); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 3px; text-decoration-thickness: 2px; }
+  a:hover { color: var(--gold-deep); }
   .wrap { max-width: var(--container); margin: 0 auto; padding: 0 40px; }
+  .skip { position: absolute; left: -9999px; top: 8px; z-index: 200; background: var(--navy); color: #fff; padding: 10px 16px; font-family: var(--font-mono); font-size: 0.75rem; }
+  .skip:focus { left: 8px; }
 
-  /* ---------- NAV (mirrors index.html) ---------- */
+  /* ---------- NAV ---------- */
   nav {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(250,250,246,0.85);
+    background: rgba(251,248,241,0.88);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--line);
   }
   .nav-inner {
-    max-width: var(--container); margin: 0 auto; padding: 16px 40px;
+    max-width: var(--container); margin: 0 auto; padding: 14px 40px;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .wordmark { display: flex; align-items: center; gap: 13px; color: var(--ink); text-decoration: none; }
-  .wordmark:hover { color: var(--ink); }
-  .wordmark .mark { height: 50px; width: auto; display: block; flex-shrink: 0; transition: transform 0.25s var(--ease); }
+  .wordmark { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .wordmark .mark { height: 44px; width: auto; display: block; flex-shrink: 0; transition: transform 0.25s var(--ease); }
   .wordmark:hover .mark { transform: rotate(-8deg); }
-  .wordmark .lockup {
-    font-family: var(--font-display); font-size: 1.45rem; letter-spacing: 0.08em;
-    line-height: 1; display: flex; align-items: baseline; gap: 2px; color: var(--ink);
-  }
-  .wordmark .lockup b { color: var(--ember); font-weight: 400; }
-  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .wordmark .lockup { height: 46px; width: auto; display: block; padding-left: 14px; border-left: 1px solid var(--line-2); }
+  .nav-links { display: flex; align-items: center; gap: 2px; }
   .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; margin: -8px; }
-  .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); transition: transform 0.25s var(--ease), opacity 0.2s var(--ease); }
+  .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--navy); transition: transform 0.25s var(--ease), opacity 0.2s var(--ease); }
   .nav-toggle span + span { margin-top: 5px; }
   .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
   .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .nav-links a {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--slate); padding: 10px 16px;
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-decoration: none;
+    text-transform: uppercase; color: var(--slate); padding: 10px 14px;
     border-radius: 2px; transition: color 0.2s var(--ease), background 0.2s var(--ease);
   }
-  .nav-links a:hover { color: var(--ink); background: var(--raise); }
-  .nav-cta {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em;
-    text-transform: uppercase; font-weight: 700; color: #fff !important;
-    background: var(--ember); padding: 11px 22px; margin-left: 12px; white-space: nowrap;
-    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  .nav-links a:hover { color: var(--navy); background: var(--raise); }
+  .nav-links .nav-cta {
+    font-weight: 700; color: #fff; background: var(--navy); padding: 11px 22px; margin-left: 12px; white-space: nowrap;
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
     clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
   }
-  .nav-cta:hover { color: #fff !important; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(210,88,42,0.30); }
+  .nav-links .nav-cta:hover { color: #fff; background: var(--navy-soft); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(14,42,82,0.25); }
 
-  /* ---------- BUTTONS (mirrors index.html) ---------- */
+  /* ---------- BUTTONS ---------- */
   .btn {
-    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em;
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-decoration: none;
     text-transform: uppercase; font-weight: 700; padding: 15px 30px;
-    cursor: pointer; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
-    display: inline-block; border: none;
+    cursor: pointer; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+    display: inline-flex; align-items: center; gap: 10px; border: none;
   }
   .btn-primary {
-    background: var(--ember); color: #fff;
+    background: var(--navy); color: #fff;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   }
-  .btn-primary:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(210,88,42,0.30); }
-  .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line-2); }
-  .btn-ghost:hover { border-color: var(--ember); color: var(--ember); transform: translateY(-2px); }
-  .btn-gold { background: var(--gold); color: var(--navy); }
-  .btn-gold:hover { background: #fff; color: var(--navy); transform: translateY(-2px); }
-  :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+  .btn-primary:hover { color: #fff; background: var(--navy-soft); transform: translateY(-2px); box-shadow: 0 10px 26px rgba(14,42,82,0.25); }
+  .btn-ghost { background: transparent; color: var(--navy); border: 1.5px solid var(--line-2); }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--navy); background: var(--gold-tint); transform: translateY(-2px); }
+  .btn-gold {
+    background: var(--gold); color: var(--navy-deep);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .btn-gold:hover { background: #E7AC42; color: var(--navy-deep); transform: translateY(-2px); }
+  .btn[disabled] { opacity: 0.65; cursor: progress; transform: none !important; box-shadow: none !important; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-  /* ---------- SHARED SECTION SHELL (mirrors index.html) ---------- */
-  section { padding: 92px 0; border-top: 1px solid var(--line); }
-  .eyebrow {
+  /* ---------- SHARED SECTION SHELL ---------- */
+  section { padding: 96px 0; border-top: 1px solid var(--line); }
+  .eyebrow, .sec-label {
     display: inline-flex; align-items: center; gap: 12px;
     font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--ember); margin-bottom: 24px;
+    text-transform: uppercase; color: var(--gold-deep); margin-bottom: 20px;
   }
-  .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--gold); }
+  .eyebrow::before, .sec-label::before { content: ''; width: 28px; height: 3px; background: var(--gold); }
   .sec-head { margin-bottom: 52px; max-width: 760px; }
-  .sec-label {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--gold-deep); display: flex; align-items: center; gap: 12px;
-    margin-bottom: 18px;
-  }
-  .sec-label::before { content: ''; width: 24px; height: 2px; background: var(--gold); }
   .sec-title {
     font-family: var(--font-display); font-weight: 400;
-    font-size: clamp(2.4rem, 4.5vw, 3.6rem); line-height: 1; letter-spacing: 0.02em; color: var(--ink);
+    font-size: clamp(2rem, 3.8vw, 3rem); line-height: 1.05; letter-spacing: 0.005em; color: var(--ink);
   }
-  .sec-intro { font-size: 1.05rem; line-height: 1.65; color: var(--slate); margin-top: 16px; max-width: 66ch; }
+  .sec-intro { font-size: 1.06rem; line-height: 1.7; color: var(--slate); margin-top: 18px; max-width: 64ch; }
+  .hl { background: linear-gradient(transparent 62%, var(--gold-soft) 62%, var(--gold-soft) 92%, transparent 92%); padding: 0 0.06em; }
 
   /* ---------- HERO ---------- */
   header.hero { position: relative; overflow: hidden; }
-  .hero-grid {
-    max-width: var(--container); margin: 0 auto; padding: 96px 40px 80px;
-    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center;
+  header.hero::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 60% at 100% 0%, rgba(217,154,43,0.14) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 0% 100%, rgba(14,42,82,0.05) 0%, transparent 70%);
   }
+  .hero-grid {
+    position: relative;
+    max-width: var(--container); margin: 0 auto; padding: 88px 40px 96px;
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 64px; align-items: center;
+  }
+  .hero-logo { display: block; width: clamp(200px, 24vw, 290px); height: auto; margin-bottom: 30px; }
   .hero h1 {
     font-family: var(--font-display); font-weight: 400;
-    font-size: clamp(3.5rem, 6.5vw, 6rem); line-height: 0.92; letter-spacing: 0.02em;
-    color: var(--ink); margin-bottom: 24px;
+    font-size: clamp(2.8rem, 5.4vw, 4.8rem); line-height: 1; letter-spacing: 0.005em;
+    color: var(--ink); margin-bottom: 26px;
   }
-  .hero h1 .ember { color: var(--ember); }
+  .hero h1 .hl { background: linear-gradient(transparent 64%, var(--gold) 64%, var(--gold) 86%, transparent 86%); }
   .hero p.lead {
     font-size: 1.2rem; line-height: 1.65; color: var(--slate);
-    max-width: 38ch; margin-bottom: 36px; font-weight: 400;
+    max-width: 40ch; margin-bottom: 36px;
   }
   .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 
-  /* Hero visual — the signature "menu card", rendered navy like index's hero-visual */
+  /* The signature "menu card" */
   .menu-card {
     position: relative; background: var(--navy); color: #fff;
     padding: 40px 38px 34px; overflow: hidden;
     clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+    box-shadow: var(--shadow-md);
   }
   .menu-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(210,88,42,0.30) 0%, transparent 70%);
-    pointer-events: none;
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(217,154,43,0.26) 0%, transparent 70%);
+  }
+  .menu-card::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
+    background: repeating-linear-gradient(90deg, var(--gold) 0 18px, transparent 18px 26px);
+    opacity: 0.85;
   }
   .menu-card > * { position: relative; z-index: 2; }
   .menu-card .kicker {
     font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold); display: flex; justify-content: space-between;
-    padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.16);
+    padding-bottom: 16px; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.16);
   }
-  .menu-card h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.6rem; letter-spacing: 0.03em; line-height: 1; }
-  .menu-card .mc-note { color: rgba(255,255,255,0.72); font-size: 0.95rem; line-height: 1.6; margin: 14px 0 22px; }
-  .spec { font-family: var(--font-mono); font-size: 0.72rem; border-top: 1px dashed rgba(255,255,255,0.28); padding-top: 16px; }
-  .spec div { display: flex; justify-content: space-between; padding: 6px 0; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; }
-  .spec div span:last-child { color: #fff; }
+  .menu-card h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.3rem; line-height: 1.05; }
+  .menu-card .mc-note { color: rgba(255,255,255,0.76); font-size: 0.97rem; line-height: 1.6; margin: 14px 0 22px; }
+  .spec { font-family: var(--font-mono); font-size: 0.72rem; border-top: 1px dashed rgba(255,255,255,0.28); padding-top: 14px; }
+  .spec div { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; color: rgba(255,255,255,0.62); letter-spacing: 0.04em; }
+  .spec div span:last-child { color: #fff; text-align: right; }
 
   /* ---------- COURSES (The Evening) ---------- */
-  .courses { border-top: 1px solid var(--line); margin-top: 8px; }
+  .courses { border-top: 1px solid var(--line); margin-top: 8px; counter-reset: course; }
   .course {
-    display: grid; grid-template-columns: 11rem 1fr; gap: 40px;
-    padding: 36px 0; border-bottom: 1px solid var(--line); align-items: start;
+    display: grid; grid-template-columns: 4.5rem 11rem 1fr; gap: 32px;
+    padding: 38px 0; border-bottom: 1px solid var(--line); align-items: start;
   }
-  .course .no { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); padding-top: 6px; }
-  .course h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 10px; }
-  .course p { color: var(--slate); line-height: 1.75; font-size: 0.98rem; max-width: 62ch; margin: 0; }
-  @media (max-width: 720px) { .course { grid-template-columns: 1fr; gap: 8px; } }
+  .course::before {
+    counter-increment: course; content: counter(course, decimal-leading-zero);
+    font-family: var(--font-display); font-size: 2.6rem; line-height: 1; color: var(--gold);
+  }
+  .course .no { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); padding-top: 10px; }
+  .course h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; line-height: 1.15; color: var(--ink); margin-bottom: 10px; }
+  .course p { color: var(--slate); line-height: 1.75; font-size: 1rem; max-width: 62ch; margin: 0; }
+  @media (max-width: 760px) {
+    .course { grid-template-columns: 3.4rem 1fr; gap: 6px 18px; }
+    .course::before { grid-row: span 2; font-size: 2rem; }
+    .course .no { padding-top: 0; }
+  }
 
   /* ---------- SEATINGS ---------- */
   .seatings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .seat {
-    background: var(--surface); border: 1px solid var(--line); padding: 34px 32px;
+    position: relative; background: var(--surface); border: 1px solid var(--line); padding: 34px 32px 32px;
     display: flex; flex-direction: column;
     transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
   }
   .seat:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
-  .seat .st { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ember); margin-bottom: 18px; }
-  .seat.tbd .st { color: var(--mute); }
-  .seat h3 { font-family: var(--font-display); font-weight: 400; font-size: 2.2rem; letter-spacing: 0.03em; margin-bottom: 12px; }
-  .seat p { color: var(--slate); line-height: 1.7; font-size: 0.95rem; margin: 0; }
-  @media (max-width: 820px) { .seatings { grid-template-columns: 1fr; } }
+  .seat.next { border-top: 4px solid var(--gold); padding-top: 31px; }
+  .seat .st {
+    align-self: flex-start; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--navy); background: var(--gold-soft); padding: 5px 9px; margin-bottom: 20px;
+  }
+  .seat.tbd .st { color: var(--slate); background: var(--raise); }
+  .seat h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; color: var(--ink); margin-bottom: 10px; }
+  .seat p { color: var(--slate); line-height: 1.7; font-size: 0.97rem; margin: 0; }
+  .seat .seat-link { margin-top: auto; padding-top: 22px; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; text-decoration: none; }
+  @media (max-width: 860px) { .seatings { grid-template-columns: 1fr; } }
 
   /* ---------- FORMS ---------- */
   .form-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: start; }
-  @media (max-width: 820px) { .form-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-points { list-style: none; margin-top: 28px; }
+  .form-points li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--slate); font-size: 0.97rem; line-height: 1.5; }
+  .form-points li::before { content: ''; flex: 0 0 8px; height: 8px; margin-top: 7px; background: var(--gold); transform: rotate(45deg); }
   .form {
-    background: var(--surface); border: 1px solid var(--line);
-    padding: clamp(28px, 4vw, 44px);
+    background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+    padding: clamp(26px, 4vw, 44px);
   }
   .field { margin-bottom: 18px; }
-  label { display: block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+  label, .label { display: block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+  label .opt { color: var(--mute); letter-spacing: 0.06em; text-transform: none; }
   input, select, textarea {
     width: 100%; padding: 13px 14px; background: var(--paper); border: 1px solid var(--line-2);
-    color: var(--ink); font-family: var(--font-body); font-size: 0.98rem; border-radius: 0;
-    transition: border-color 0.2s var(--ease);
+    color: var(--ink); font-family: var(--font-body); font-size: 1rem; border-radius: 0;
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
   }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ember); }
-  textarea { min-height: 104px; resize: vertical; }
+  input::placeholder, textarea::placeholder { color: #9AA0AD; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); background: #fff; box-shadow: 0 0 0 3px rgba(217,154,43,0.28); }
+  select { appearance: none; -webkit-appearance: none; padding-right: 38px; cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, var(--navy) 50%), linear-gradient(135deg, var(--navy) 50%, transparent 50%);
+    background-position: calc(100% - 19px) 55%, calc(100% - 14px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+  textarea { min-height: 112px; resize: vertical; line-height: 1.55; }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  @media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
-  .note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--mute); margin-top: 16px; line-height: 1.6; }
+  @media (max-width: 560px) { .two { grid-template-columns: 1fr; gap: 0; } }
+  [aria-invalid="true"] { border-color: var(--danger); }
+  .err { display: none; color: var(--danger); font-size: 0.82rem; margin-top: 6px; }
+  .field.bad .err { display: block; }
+  .hp { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
+  .form-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 6px; }
+  .note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.03em; color: var(--mute); margin-top: 16px; line-height: 1.6; }
+  .form-status { display: none; margin-top: 16px; padding: 14px 16px; font-size: 0.92rem; line-height: 1.55; border: 1px solid; }
+  .form-status.show { display: block; }
+  .form-status.error { color: var(--danger); background: #FDF1F0; border-color: #F2C9C5; }
   .ok {
-    background: var(--ember-tint); border: 1px solid #EAD3C7; color: var(--ink);
-    padding: 26px; font-size: 0.95rem; line-height: 1.6;
+    background: var(--gold-tint); border: 1px solid var(--gold-soft); border-left: 4px solid var(--gold); color: var(--text);
+    padding: 26px 28px; font-size: 0.98rem; line-height: 1.6;
   }
-  .ok strong { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; letter-spacing: 0.03em; display: block; margin-bottom: 6px; color: var(--ember); }
-  .hidden { display: none; }
+  .ok strong { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; display: block; margin-bottom: 6px; color: var(--ink); }
+  .hidden { display: none !important; }
+  .spin { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+  .btn.sending .spin { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ---------- PARTNERS (color moment, navy like index events-block) ---------- */
+  /* ---------- PARTNERS (navy color moment) ---------- */
   .partners {
     position: relative; overflow: hidden; background: var(--navy); color: #fff;
     border-top: none;
   }
-  .partners .wrap { position: relative; z-index: 2; }
-  .partners::after {
-    content: 'HOST'; position: absolute; right: -20px; top: 8%;
-    font-family: var(--font-display); font-size: 9rem; color: rgba(255,255,255,0.05); letter-spacing: 0.1em; pointer-events: none;
+  .partners::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 70% at 100% 0%, rgba(217,154,43,0.16) 0%, transparent 70%);
   }
+  .partners .wrap { position: relative; z-index: 2; }
   .partners .eyebrow { color: var(--gold); }
   .partners .sec-title { color: #fff; }
-  .partners .sec-intro { color: rgba(255,255,255,0.74); }
-  .give { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin: 48px 0; }
+  .partners .sec-intro { color: rgba(255,255,255,0.78); }
+  .partners a { color: #fff; }
+  .give { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin: 48px 0 56px; }
   @media (max-width: 720px) { .give { grid-template-columns: 1fr; } }
   .give h4 { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
-  .give .b h4 { color: var(--ember); }
   .give ul { list-style: none; padding: 0; margin: 0; }
-  .give li { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.14); font-size: 0.97rem; line-height: 1.55; color: rgba(255,255,255,0.86); }
-  .partners .form { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.14); max-width: 680px; }
-  .partners label { color: rgba(255,255,255,0.66); }
-  .partners input, .partners select, .partners textarea { background: rgba(0,0,0,0.25); border-color: rgba(255,255,255,0.18); color: #fff; }
-  .partners .note { color: rgba(255,255,255,0.5); }
-  .partners .ok { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: #fff; }
+  .give li { padding: 14px 0 14px 22px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.14); font-size: 0.98rem; line-height: 1.55; color: rgba(255,255,255,0.88); }
+  .give li::before { content: ''; position: absolute; left: 2px; top: 22px; width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); }
+  .partners .form { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.16); box-shadow: none; }
+  .partners label { color: rgba(255,255,255,0.72); }
+  .partners label .opt { color: rgba(255,255,255,0.5); }
+  .partners input, .partners select, .partners textarea { background: rgba(0,0,0,0.22); border-color: rgba(255,255,255,0.2); color: #fff; }
+  .partners input::placeholder, .partners textarea::placeholder { color: rgba(255,255,255,0.42); }
+  .partners input:focus, .partners select:focus, .partners textarea:focus { background: rgba(0,0,0,0.3); border-color: var(--gold); }
+  .partners select { background-image: linear-gradient(45deg, transparent 50%, #fff 50%), linear-gradient(135deg, #fff 50%, transparent 50%); }
+  .partners select option { color: var(--ink); }
+  .partners .err { color: #FFB4AB; }
+  .partners [aria-invalid="true"] { border-color: #FFB4AB; }
+  .partners .note { color: rgba(255,255,255,0.56); }
+  .partners .form-status.error { color: #FFDAD6; background: rgba(179,38,30,0.25); border-color: rgba(255,180,171,0.4); }
+  .partners .ok { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.16); border-left-color: var(--gold); color: #fff; }
   .partners .ok strong { color: var(--gold); }
+  .host-aside { border-left: 3px solid var(--gold); padding: 4px 0 4px 24px; align-self: start; }
+  .host-aside .big { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.2; color: #fff; }
+  .host-aside p { color: rgba(255,255,255,0.74); line-height: 1.7; margin-top: 16px; font-size: 0.98rem; }
 
   /* ---------- THE MAP ---------- */
-  .map-layout { display: grid; grid-template-columns: 320px 1fr; gap: 0; border: 1px solid var(--line); background: var(--surface); }
-  @media (max-width: 820px) { .map-layout { grid-template-columns: 1fr; } }
-  .map-list { border-right: 1px solid var(--line); display: flex; flex-direction: column; max-height: 560px; }
-  @media (max-width: 820px) { .map-list { border-right: none; border-bottom: 1px solid var(--line); max-height: 320px; } }
-  .map-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 18px 18px 14px; border-bottom: 1px solid var(--line); }
+  .map-layout { display: grid; grid-template-columns: 330px 1fr; gap: 0; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); }
+  @media (max-width: 860px) { .map-layout { grid-template-columns: 1fr; } }
+  .map-list { border-right: 1px solid var(--line); display: flex; flex-direction: column; max-height: 580px; min-height: 0; }
+  @media (max-width: 860px) { .map-list { border-right: none; border-bottom: 1px solid var(--line); max-height: 340px; } }
+  .map-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 16px 16px 14px; border-bottom: 1px solid var(--line); }
+  .map-count { width: 100%; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 6px; }
   .filter-chip {
     font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 7px 11px; border: 1px solid var(--line-2); background: var(--paper); color: var(--slate);
     cursor: pointer; transition: all 0.15s var(--ease);
   }
-  .filter-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
-  .filter-chip:hover { border-color: var(--ember); color: var(--ember); }
+  .filter-chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .filter-chip:hover { border-color: var(--gold); color: var(--navy); }
   .filter-chip[aria-pressed="true"]:hover { color: #fff; }
   .place-scroll { overflow-y: auto; flex: 1; }
   .place {
-    width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+    width: 100%; text-align: left; background: none; border: none; cursor: pointer; font: inherit;
     padding: 16px 18px; border-bottom: 1px solid var(--line); transition: background 0.15s var(--ease);
     display: block;
   }
-  .place:hover, .place.active { background: var(--raise); }
-  .place.active { box-shadow: inset 3px 0 0 var(--ember); }
-  .place .p-name { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: 0.02em; color: var(--ink); line-height: 1.05; }
+  .place:hover, .place.active { background: var(--gold-tint); }
+  .place.active { box-shadow: inset 4px 0 0 var(--gold); }
+  .place .p-name { font-family: var(--font-display); font-weight: 400; font-size: 1.08rem; color: var(--ink); line-height: 1.2; }
   .place .p-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); margin: 6px 0 4px; }
-  .place .p-meta .dot { color: var(--line-2); margin: 0 6px; }
+  .place .p-meta .dot, .pop-meta .dot { color: var(--line-2); margin: 0 6px; }
   .place .p-blurb { font-size: 0.86rem; line-height: 1.5; color: var(--slate); }
-  #cpgh-map { min-height: 560px; height: 100%; width: 100%; background: var(--blue-tint); z-index: 1; }
-  @media (max-width: 820px) { #cpgh-map { min-height: 380px; } }
-  .map-tiles-muted { filter: saturate(0.35) brightness(1.06) contrast(0.92); }
+  #cpgh-map { min-height: 580px; height: 100%; width: 100%; background: #EEF0F2; z-index: 1; }
+  @media (max-width: 860px) { #cpgh-map { min-height: 380px; } }
+  .map-tiles-muted { filter: saturate(0.3) brightness(1.05) contrast(0.92) sepia(0.12); }
+  .leaflet-container a { text-decoration: none; }
   .leaflet-popup-content-wrapper { border-radius: 2px; }
   .leaflet-popup-content { font-family: var(--font-body); margin: 14px 16px; }
-  .pop-name { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; letter-spacing: 0.02em; color: var(--ink); line-height: 1; }
+  .pop-name { font-family: var(--font-display); font-weight: 400; font-size: 1.1rem; color: var(--ink); line-height: 1.15; }
   .pop-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); margin: 7px 0 6px; }
+  .pop-addr { font-size: 0.8rem; color: var(--mute); margin-bottom: 6px; }
   .pop-blurb { font-size: 0.88rem; line-height: 1.5; color: var(--slate); margin-bottom: 8px; }
-  .pop-link { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+  .leaflet-container a.pop-link { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--navy); margin-right: 12px; }
   .cpgh-pin {
     width: 18px; height: 18px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
-    border: 2px solid #fff; box-shadow: 0 2px 5px rgba(11,31,91,0.35);
+    border: 2px solid #fff; box-shadow: 0 2px 5px rgba(14,42,82,0.35);
   }
-  .cpgh-pin.restaurant { background: var(--ember); }
-  .cpgh-pin.market { background: var(--blue); }
-  .cpgh-pin.cafe { background: var(--gold-deep); }
+  .cpgh-pin.restaurant, .map-legend .sw.restaurant { background: var(--gold); }
+  .cpgh-pin.market, .map-legend .sw.market { background: var(--navy); }
+  .cpgh-pin.cafe, .map-legend .sw.cafe { background: var(--sky); }
   .map-legend {
-    display: flex; flex-wrap: wrap; gap: 12px 22px; margin-top: 20px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 20px;
     font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate);
   }
   .map-legend .li { display: inline-flex; align-items: center; gap: 8px; }
-  .map-legend .sw { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
-  .map-legend .sw.restaurant { background: var(--ember); }
-  .map-legend .sw.market { background: var(--blue); }
-  .map-legend .sw.cafe { background: var(--gold-deep); }
-  .map-legend .add { margin-left: auto; }
-  @media (max-width: 640px) { .map-legend .add { margin-left: 0; } }
+  .map-legend .sw { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line-2); }
 
-  /* ---------- FOOTER (mirrors index.html) ---------- */
-  footer { border-top: 1px solid var(--line); padding: 48px 0; }
-  .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-  .foot-brand { max-width: 52ch; font-size: 0.9rem; line-height: 1.7; color: var(--slate); }
-  .foot-brand .lockup { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.08em; color: var(--ink); display: block; margin-bottom: 8px; }
-  .foot-brand .lockup b { color: var(--ember); font-weight: 400; }
-  .foot-brand a { color: var(--blue); }
-  .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); text-align: right; line-height: 1.9; }
+  /* Suggest a spot */
+  .suggest { margin-top: 48px; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; background: var(--raise); border: 1px solid var(--line); padding: clamp(26px, 4vw, 40px); }
+  @media (max-width: 860px) { .suggest { grid-template-columns: 1fr; } }
+  .suggest h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; color: var(--ink); line-height: 1.15; }
+  .suggest p.lede { color: var(--slate); line-height: 1.65; margin-top: 12px; font-size: 0.98rem; }
+  .suggest .form { box-shadow: none; }
+
+  /* ---------- FOOTER ---------- */
+  footer { border-top: 4px solid var(--gold); background: var(--navy-deep); color: rgba(255,255,255,0.72); padding: 56px 0 48px; }
+  .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 28px; }
+  .foot-brand { max-width: 52ch; font-size: 0.92rem; line-height: 1.7; }
+  .foot-brand .lockup { height: 72px; width: auto; display: block; margin-bottom: 18px; }
+  .foot-brand a, .foot-note a { color: #fff; }
+  .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; line-height: 1.9; }
 
   /* ---------- REVEAL ---------- */
   .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
   .reveal.in { opacity: 1; transform: none; }
 
   /* ---------- RESPONSIVE ---------- */
-  @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 40px; padding: 64px 40px 56px; }
-    section { padding: 68px 0; }
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 44px; padding: 56px 40px 72px; }
+    section { padding: 72px 0; }
     .nav-toggle { display: block; }
     .nav-links {
       display: none; position: absolute; top: 100%; left: 0; right: 0;
       flex-direction: column; align-items: stretch; gap: 0;
-      background: rgba(250,250,246,0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      background: rgba(251,248,241,0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); padding: 8px 0;
     }
     .nav-links.open { display: flex; }
     .nav-links a { padding: 15px 40px; border-radius: 0; }
-    .nav-cta { margin: 12px 40px 6px; text-align: center; clip-path: none; }
+    .nav-links .nav-cta { margin: 12px 40px 6px; text-align: center; clip-path: none; }
   }
   @media (max-width: 560px) {
-    .wrap, .nav-inner, .hero-grid, .foot-inner { padding-left: 22px; padding-right: 22px; }
+    .wrap, .nav-inner, .hero-grid, .foot-inner { padding-left: 20px; padding-right: 20px; }
+    .nav-links a { padding-left: 20px; padding-right: 20px; }
+    .nav-links .nav-cta { margin-left: 20px; margin-right: 20px; }
     .foot-inner { flex-direction: column; align-items: flex-start; }
     .foot-note { text-align: left; }
-    .nav-inner .wordmark .mark { height: 38px; }
-    .hero h1 { font-size: clamp(2.6rem, 12.5vw, 4rem); }
+    .nav-inner .wordmark .mark { height: 36px; }
+    .nav-inner .wordmark .lockup { height: 36px; padding-left: 12px; }
+    .wordmark { gap: 12px; }
+    .hero h1 { font-size: clamp(2.3rem, 10.5vw, 3.2rem); }
+    .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
+    .menu-card { padding: 32px 26px 30px; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
@@ -352,13 +420,14 @@
 </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
   <!-- NAV -->
   <nav id="top">
     <div class="nav-inner">
       <a href="../index.html" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
-        <img class="mark" src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
-        <span class="lockup">Culture<b>PGH</b></span>
+        <img class="mark" src="../assets/global-shapers-pittsburgh-logo.png" alt="">
+        <img class="lockup" src="../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
       </a>
       <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
@@ -374,12 +443,14 @@
     </div>
   </nav>
 
+  <main id="main">
   <!-- HERO -->
   <header class="hero">
     <div class="hero-grid">
       <div>
+        <img class="hero-logo" src="../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
         <span class="eyebrow">A Global Shapers Pittsburgh Project</span>
-        <h1>EVERY DISH<br>CAME FROM<br><span class="ember">SOMEWHERE</span></h1>
+        <h1>Every dish came from <span class="hl">somewhere.</span></h1>
         <p class="lead">A Pittsburgh dinner series. One restaurant, one table, and the people who carried the recipe here telling you how it arrived.</p>
         <div class="hero-actions">
           <a href="#rsvp" class="btn btn-primary">Save Me a Seat</a>
@@ -406,7 +477,7 @@
     <div class="wrap">
       <div class="sec-head">
         <div class="sec-label">How a Night Runs</div>
-        <h2 class="sec-title">THE EVENING IS THE MENU</h2>
+        <h2 class="sec-title">The evening is the menu</h2>
         <p class="sec-intro">Three parts, in order, every time. The format is fixed so the food and the people can change.</p>
       </div>
 
@@ -414,21 +485,21 @@
         <div class="course reveal">
           <div class="no">First Course</div>
           <div>
-            <h3>Arrive and Sit Down</h3>
+            <h3>Arrive and sit down</h3>
             <p>No name tags at the door and no working the room. Assigned seats, mixed tables, and a first course already on the way.</p>
           </div>
         </div>
         <div class="course reveal">
           <div class="no">Second Course</div>
           <div>
-            <h3>Someone Tells You Where It Came From</h3>
+            <h3>Someone tells you where it came from</h3>
             <p>The owner, the cook, or a family member takes fifteen minutes between courses. Not a lecture. What the dish is, who made it first, and how it got to Pittsburgh.</p>
           </div>
         </div>
         <div class="course reveal">
           <div class="no">Third Course</div>
           <div>
-            <h3>Questions, Then Dessert</h3>
+            <h3>Questions, then dessert</h3>
             <p>Open floor while the last plates come out. Most nights this runs longer than the talk did.</p>
           </div>
         </div>
@@ -441,15 +512,16 @@
     <div class="wrap">
       <div class="sec-head">
         <div class="sec-label">Seatings</div>
-        <h2 class="sec-title">WHERE WE ARE EATING NEXT</h2>
-        <p class="sec-intro">Every six weeks, a different kitchen and a different country. Partners are confirmed one to two nights ahead.</p>
+        <h2 class="sec-title">Where we're eating next</h2>
+        <p class="sec-intro">Every six weeks, a different kitchen and a different country. Partners are confirmed one to two seatings ahead.</p>
       </div>
 
       <div class="seatings">
-        <div class="seat reveal">
+        <div class="seat next reveal">
           <div class="st">Announcing August</div>
           <h3>No. 01</h3>
           <p>September 2026. Restaurant being confirmed now. Join the list to hear first.</p>
+          <a class="seat-link" href="#rsvp">Get on the list →</a>
         </div>
         <div class="seat tbd reveal">
           <div class="st">Scheduled</div>
@@ -470,28 +542,74 @@
     <div class="wrap">
       <div class="sec-head">
         <div class="sec-label">On the Map</div>
-        <h2 class="sec-title">EAT YOUR WAY ACROSS PITTSBURGH</h2>
+        <h2 class="sec-title">Eat your way across Pittsburgh</h2>
         <p class="sec-intro">A growing collection of local and immigrant-owned restaurants, markets, and cafés around the city — the kitchens whose stories CulturePGH exists to tell. Tap a pin or a name to learn more.</p>
       </div>
 
       <div class="map-layout">
         <div class="map-list">
           <div class="map-filters" id="map-filters">
-            <button class="filter-chip" data-cat="all" aria-pressed="true">All</button>
-            <button class="filter-chip" data-cat="restaurant" aria-pressed="false">Restaurants</button>
-            <button class="filter-chip" data-cat="market" aria-pressed="false">Markets</button>
-            <button class="filter-chip" data-cat="cafe" aria-pressed="false">Cafés</button>
+            <button class="filter-chip" type="button" data-cat="all" aria-pressed="true">All</button>
+            <button class="filter-chip" type="button" data-cat="restaurant" aria-pressed="false">Restaurants</button>
+            <button class="filter-chip" type="button" data-cat="market" aria-pressed="false">Markets</button>
+            <button class="filter-chip" type="button" data-cat="cafe" aria-pressed="false">Cafés</button>
+            <div class="map-count" id="map-count" aria-live="polite"></div>
           </div>
           <div class="place-scroll" id="place-list"></div>
         </div>
-        <div id="cpgh-map"></div>
+        <div id="cpgh-map" role="region" aria-label="Map of CulturePGH places"></div>
       </div>
 
       <div class="map-legend">
         <span class="li"><span class="sw restaurant"></span> Restaurant</span>
         <span class="li"><span class="sw market"></span> Market &amp; grocer</span>
         <span class="li"><span class="sw cafe"></span> Café</span>
-        <a class="li add" href="#partners">Know a spot we should add? →</a>
+      </div>
+
+      <div class="suggest" id="suggest">
+        <div>
+          <div class="sec-label">Suggest a Spot</div>
+          <h3>Know a kitchen we should add?</h3>
+          <p class="lede">Tell us about the place and what to order. We add spots to the map after a visit, and some of them become a seating.</p>
+        </div>
+        <div class="form">
+          <form id="suggestForm" data-form="suggest" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="CulturePGH · New map suggestion">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/?sent=suggest#suggest">
+            <input type="hidden" name="form" value="Map suggestion">
+            <div class="hp" aria-hidden="true"><label for="s-hp">Leave this empty</label><input id="s-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
+            <div class="two">
+              <div class="field">
+                <label for="s-place">Name of the Place</label>
+                <input id="s-place" name="place" type="text" required maxlength="120">
+                <div class="err" id="s-place-err">Tell us which place.</div>
+              </div>
+              <div class="field">
+                <label for="s-where">Neighborhood or Address</label>
+                <input id="s-where" name="location" type="text" required maxlength="160" placeholder="e.g. Brookline Blvd">
+                <div class="err" id="s-where-err">Where is it?</div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="s-why">What Should We Order? <span class="opt">(optional)</span></label>
+              <textarea id="s-why" name="why" maxlength="1500" placeholder="The dish, the people, the story"></textarea>
+            </div>
+            <div class="field">
+              <label for="s-email">Your Email <span class="opt">(optional, so we can thank you)</span></label>
+              <input id="s-email" name="email" type="email" autocomplete="email" maxlength="160">
+              <div class="err" id="s-email-err">That email doesn't look right.</div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Send Suggestion</span></button>
+            </div>
+            <div class="form-status" role="alert"></div>
+          </form>
+          <div class="ok hidden" tabindex="-1" data-ok="suggest">
+            <strong>Thanks — we'll go eat there.</strong>
+            Your suggestion is in. If it fits, it'll show up on the map after a visit.
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -502,28 +620,39 @@
       <div class="form-grid">
         <div>
           <div class="eyebrow">Reservations</div>
-          <h2 class="sec-title">GET ON THE LIST</h2>
+          <h2 class="sec-title">Get on the list</h2>
           <p class="sec-intro">We announce each seating to the list a week before it goes public. Tables are small, so that week matters.</p>
+          <ul class="form-points">
+            <li>First look at every seating, a week before the public</li>
+            <li>Two or three emails a month at most, about seatings only</li>
+            <li>You pay the restaurant at the table — joining the list is free</li>
+          </ul>
         </div>
 
         <div class="form">
-          <form id="rsvpForm" name="rsvp" method="POST" data-netlify="true" novalidate>
-            <input type="hidden" name="form-name" value="rsvp">
+          <form id="rsvpForm" data-form="rsvp" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="CulturePGH · New list signup">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/?sent=rsvp#rsvp">
+            <input type="hidden" name="form" value="RSVP list">
+            <div class="hp" aria-hidden="true"><label for="r-hp">Leave this empty</label><input id="r-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
             <div class="two">
               <div class="field">
                 <label for="r-name">Name</label>
-                <input id="r-name" name="name" type="text" required>
+                <input id="r-name" name="name" type="text" autocomplete="name" required maxlength="120">
+                <div class="err" id="r-name-err">Please add your name.</div>
               </div>
               <div class="field">
                 <label for="r-email">Email</label>
-                <input id="r-email" name="email" type="email" required>
+                <input id="r-email" name="email" type="email" autocomplete="email" required maxlength="160">
+                <div class="err" id="r-email-err">Please enter a valid email.</div>
               </div>
             </div>
             <div class="two">
               <div class="field">
                 <label for="r-seats">Seats</label>
                 <select id="r-seats" name="seats">
-                  <option>1</option><option>2</option><option>3</option><option>4</option>
+                  <option>1</option><option selected>2</option><option>3</option><option>4</option>
                 </select>
               </div>
               <div class="field">
@@ -532,18 +661,21 @@
                   <option>Global Shapers</option>
                   <option>A friend</option>
                   <option>The restaurant</option>
+                  <option>Social media</option>
                   <option>Somewhere else</option>
                 </select>
               </div>
             </div>
             <div class="field">
-              <label for="r-diet">Anything the Kitchen Should Know</label>
-              <input id="r-diet" name="dietary" type="text" placeholder="Allergies, halal, vegetarian">
+              <label for="r-diet">Anything the Kitchen Should Know <span class="opt">(optional)</span></label>
+              <input id="r-diet" name="dietary" type="text" maxlength="300" placeholder="Allergies, halal, vegetarian">
             </div>
-            <button class="btn btn-primary" type="submit">Save My Seat</button>
-            <p class="note">We email about seatings only. Two or three messages a month at most.</p>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Save My Seat</span></button>
+            </div>
+            <div class="form-status" role="alert"></div>
           </form>
-          <div id="rsvpOk" class="ok hidden">
+          <div class="ok hidden" tabindex="-1" data-ok="rsvp">
             <strong>You're on the list.</strong>
             Watch for the September seating announcement in August. Seats are released to the list first.
           </div>
@@ -557,12 +689,12 @@
     <div class="wrap">
       <div class="sec-head">
         <div class="eyebrow">For Restaurants &amp; Partners</div>
-        <h2 class="sec-title">FILL YOUR SLOWEST NIGHT WITH PEOPLE WHO CAME TO LISTEN</h2>
+        <h2 class="sec-title">Fill your slowest night with people who came to listen</h2>
         <p class="sec-intro">CulturePGH books a private room or a closed section on a weeknight, brings a full table, and puts your story in front of it. You cook what you actually want to serve.</p>
       </div>
 
       <div class="give">
-        <div class="a">
+        <div>
           <h4>What We Ask</h4>
           <ul>
             <li>A weeknight, a room, and 25 to 30 covers</li>
@@ -571,7 +703,7 @@
             <li>A headcount confirmation 48 hours out</li>
           </ul>
         </div>
-        <div class="b">
+        <div>
           <h4>What You Get</h4>
           <ul>
             <li>A booked room on a night that is usually quiet, paid at the table</li>
@@ -582,54 +714,70 @@
         </div>
       </div>
 
-      <div class="form">
-        <form id="partnerForm" name="partner" method="POST" data-netlify="true" novalidate>
-          <input type="hidden" name="form-name" value="partner">
-          <div class="two">
-            <div class="field">
-              <label for="p-rest">Restaurant or Organization</label>
-              <input id="p-rest" name="restaurant" type="text" required>
+      <div class="form-grid">
+        <div class="host-aside">
+          <div class="big">Tell us a little about your kitchen. We'll take it from there.</div>
+          <p>One of the project leads replies within a few days to talk through dates and a menu. No obligation on a first call, and no fee — guests pay you at the table.</p>
+        </div>
+        <div class="form">
+          <form id="partnerForm" data-form="partner" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="CulturePGH · Restaurant partner inquiry">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/?sent=partner#partners">
+            <input type="hidden" name="form" value="Partner inquiry">
+            <div class="hp" aria-hidden="true"><label for="p-hp">Leave this empty</label><input id="p-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
+            <div class="two">
+              <div class="field">
+                <label for="p-rest">Restaurant or Organization</label>
+                <input id="p-rest" name="restaurant" type="text" autocomplete="organization" required maxlength="160">
+                <div class="err" id="p-rest-err">Which restaurant or organization?</div>
+              </div>
+              <div class="field">
+                <label for="p-name">Your Name</label>
+                <input id="p-name" name="name" type="text" autocomplete="name" required maxlength="120">
+                <div class="err" id="p-name-err">Please add your name.</div>
+              </div>
+            </div>
+            <div class="two">
+              <div class="field">
+                <label for="p-email">Email</label>
+                <input id="p-email" name="email" type="email" autocomplete="email" required maxlength="160">
+                <div class="err" id="p-email-err">Please enter a valid email.</div>
+              </div>
+              <div class="field">
+                <label for="p-phone">Phone <span class="opt">(optional)</span></label>
+                <input id="p-phone" name="phone" type="tel" autocomplete="tel" maxlength="40">
+              </div>
             </div>
             <div class="field">
-              <label for="p-name">Your Name</label>
-              <input id="p-name" name="name" type="text" required>
+              <label for="p-msg">What Would You Want to Cook and Talk About? <span class="opt">(optional)</span></label>
+              <textarea id="p-msg" name="message" maxlength="3000"></textarea>
             </div>
+            <div class="form-actions">
+              <button class="btn btn-gold" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Start the Conversation</span></button>
+            </div>
+            <div class="form-status" role="alert"></div>
+          </form>
+          <div class="ok hidden" tabindex="-1" data-ok="partner">
+            <strong>Thank you.</strong>
+            A CulturePGH lead will reach out within a few days to talk through dates and menus.
           </div>
-          <div class="two">
-            <div class="field">
-              <label for="p-email">Email</label>
-              <input id="p-email" name="email" type="email" required>
-            </div>
-            <div class="field">
-              <label for="p-phone">Phone</label>
-              <input id="p-phone" name="phone" type="tel">
-            </div>
-          </div>
-          <div class="field">
-            <label for="p-msg">What Would You Want to Cook and Talk About</label>
-            <textarea id="p-msg" name="message"></textarea>
-          </div>
-          <button class="btn btn-gold" type="submit">Start the Conversation</button>
-          <p class="note">One of the project leads replies within a few days. No obligation on a first call.</p>
-        </form>
-        <div id="partnerOk" class="ok hidden">
-          <strong>Thank you.</strong>
-          A CulturePGH lead will reach out within a few days to talk through dates and menus.
         </div>
       </div>
     </div>
   </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="foot-inner">
       <div class="foot-brand">
-        <span class="lockup">Culture<b>PGH</b></span>
+        <img class="lockup" src="../assets/culturepgh-logo-light.png" alt="CulturePGH" width="737" height="458" loading="lazy">
         A project of the <a href="../index.html">Global Shapers Pittsburgh Hub</a>, an initiative of the World Economic Forum.<br>
         Adapted from CultureCLE, Global Shapers Cleveland Hub.
       </div>
       <div class="foot-note">
-        hello@pittsburghshapers.org<br>
+        <a href="mailto:hello@pittsburghshapers.org">hello@pittsburghshapers.org</a><br>
         Pittsburgh, Pennsylvania
       </div>
     </div>
@@ -663,21 +811,94 @@
       els.forEach(function (el) { io.observe(el); });
     })();
 
-    // Forms. Netlify Forms attributes are in the markup; on GitHub Pages the
-    // native POST has nowhere to go, so this handler shows the confirmation
-    // inline. On a Netlify deploy you can delete this and let the POST run.
-    function wire(formId, okId) {
-      var f = document.getElementById(formId), ok = document.getElementById(okId);
-      if (!f || !ok) return;
-      f.addEventListener('submit', function (ev) {
-        ev.preventDefault();
-        var missing = [].slice.call(f.querySelectorAll('[required]')).filter(function (i) { return !i.value.trim(); });
-        if (missing.length) { missing[0].focus(); return; }
-        f.classList.add('hidden'); ok.classList.remove('hidden');
+    // Forms. Submissions go to FormSubmit (formsubmit.co), which emails each one
+    // to FORM_INBOX — the site is static, so there is no server of our own. The
+    // markup also posts there natively, so the forms still work without JS.
+    // The very first submission triggers a one-time "Activate form" email to
+    // the inbox; nothing is delivered until that link is clicked.
+    (function () {
+      var FORM_INBOX = 'hello@pittsburghshapers.org';
+      var ENDPOINT = 'https://formsubmit.co/ajax/' + FORM_INBOX;
+      var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      function okFor(name) { return document.querySelector('[data-ok="' + name + '"]'); }
+      function showOk(form) {
+        var ok = okFor(form.dataset.form);
+        form.classList.add('hidden'); ok.classList.remove('hidden'); ok.focus({ preventScroll: true });
+      }
+
+      // Returning from the no-JS fallback redirect (?sent=rsvp etc.)
+      var sent = new URLSearchParams(location.search).get('sent');
+      if (sent) {
+        var f0 = document.querySelector('form[data-form="' + sent + '"]');
+        if (f0) showOk(f0);
+      }
+
+      function validate(form) {
+        var firstBad = null;
+        form.querySelectorAll('input:not([type=hidden]):not([name=_honey]), textarea, select').forEach(function (el) {
+          var v = el.value.trim();
+          var bad = (el.required && !v) || (el.type === 'email' && v && !EMAIL_RE.test(v));
+          var field = el.closest('.field');
+          if (field) field.classList.toggle('bad', !!bad);
+          if (bad) {
+            el.setAttribute('aria-invalid', 'true');
+            var err = document.getElementById(el.id + '-err');
+            if (err) el.setAttribute('aria-describedby', err.id);
+            if (!firstBad) firstBad = el;
+          } else {
+            el.removeAttribute('aria-invalid');
+          }
+        });
+        if (firstBad) firstBad.focus();
+        return !firstBad;
+      }
+
+      document.querySelectorAll('form[data-form]').forEach(function (form) {
+        var btn = form.querySelector('button[type=submit]');
+        var lbl = btn.querySelector('.lbl'), lblText = lbl.textContent;
+        var status = form.querySelector('.form-status');
+
+        // Clear an error as soon as the field is fixed
+        form.addEventListener('input', function (e) {
+          var field = e.target.closest('.field');
+          if (field && field.classList.contains('bad')) { field.classList.remove('bad'); e.target.removeAttribute('aria-invalid'); }
+        });
+
+        form.addEventListener('submit', function (ev) {
+          ev.preventDefault();
+          status.classList.remove('show', 'error');
+          if (!validate(form)) return;
+
+          var data = {};
+          new FormData(form).forEach(function (v, k) { if (k !== '_next') data[k] = typeof v === 'string' ? v.trim() : v; });
+          if (data._honey) { showOk(form); return; } // bot: pretend it worked
+          delete data._honey;
+          if (data.email) data._replyto = data.email;
+
+          btn.disabled = true; btn.classList.add('sending'); lbl.textContent = 'Sending…';
+
+          fetch(ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(data)
+          }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (body) {
+              if (!r.ok || String(body.success) !== 'true') throw new Error(body.message || ('HTTP ' + r.status));
+            });
+          }).then(function () {
+            form.reset();
+            showOk(form);
+          }).catch(function () {
+            status.innerHTML = 'Something went wrong sending that. Please try again, or email us at ' +
+              '<a href="mailto:' + FORM_INBOX + '">' + FORM_INBOX + '</a>.';
+            status.classList.add('show', 'error');
+          }).then(function () {
+            btn.disabled = false; btn.classList.remove('sending'); lbl.textContent = lblText;
+          });
+        });
       });
-    }
-    wire('rsvpForm', 'rsvpOk');
-    wire('partnerForm', 'partnerOk');
+    })();
 
     // Interactive Pittsburgh map — data from places.json, rendered with Leaflet.
     (function () {
@@ -699,8 +920,10 @@
 
       var listEl = document.getElementById('place-list');
       var filtersEl = document.getElementById('map-filters');
-      var markers = [], cards = [], current = 'all', bounds = L.latLngBounds([]);
+      var countEl = document.getElementById('map-count');
+      var markers = [], cards = [], bounds = L.latLngBounds([]);
 
+      function setCount(n) { countEl.textContent = n + (n === 1 ? ' place' : ' places'); }
       function pinIcon(cat) {
         return L.divIcon({
           className: '', iconSize: [18, 18], iconAnchor: [9, 18], popupAnchor: [0, -16],
@@ -709,10 +932,12 @@
       }
       function popupHtml(p) {
         var meta = [p.cuisine, p.neighborhood].filter(Boolean).map(esc).join(' <span class="dot">·</span> ');
-        var link = p.url ? '<a class="pop-link" href="' + esc(p.url) + '" target="_blank" rel="noopener">Visit site →</a>' : '';
+        var dir = p.address ? '<a class="pop-link" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name + ', ' + p.address) + '" target="_blank" rel="noopener">Directions →</a>' : '';
+        var link = p.url ? '<a class="pop-link" href="' + esc(p.url) + '" target="_blank" rel="noopener">Website →</a>' : '';
         return '<div class="pop-name">' + esc(p.name) + '</div>' +
                (meta ? '<div class="pop-meta">' + meta + '</div>' : '') +
-               (p.blurb ? '<div class="pop-blurb">' + esc(p.blurb) + '</div>' : '') + link;
+               (p.address ? '<div class="pop-addr">' + esc(p.address) + '</div>' : '') +
+               (p.blurb ? '<div class="pop-blurb">' + esc(p.blurb) + '</div>' : '') + link + dir;
       }
 
       function select(i) {
@@ -724,17 +949,17 @@
       }
 
       function applyFilter(cat) {
-        current = cat;
         [].forEach.call(filtersEl.querySelectorAll('.filter-chip'), function (b) {
           b.setAttribute('aria-pressed', b.dataset.cat === cat ? 'true' : 'false');
         });
-        var shown = L.latLngBounds([]);
+        var shown = L.latLngBounds([]), n = 0;
         markers.forEach(function (m, i) {
           var match = cat === 'all' || m._cat === cat;
           cards[i].style.display = match ? '' : 'none';
-          if (match) { m.addTo(map); shown.extend(m.getLatLng()); }
+          if (match) { m.addTo(map); shown.extend(m.getLatLng()); n++; }
           else { map.removeLayer(m); }
         });
+        setCount(n);
         if (shown.isValid()) map.fitBounds(shown, { padding: [40, 40], maxZoom: 14 });
       }
 
@@ -744,9 +969,9 @@
 
       fetch('places.json').then(function (r) { return r.json(); }).then(function (data) {
         var places = (data && data.places) || [];
-        places.forEach(function (p, i) {
+        places.forEach(function (p) {
           if (typeof p.lat !== 'number' || typeof p.lng !== 'number') return;
-          var m = L.marker([p.lat, p.lng], { icon: pinIcon(p.category) }).bindPopup(popupHtml(p));
+          var m = L.marker([p.lat, p.lng], { icon: pinIcon(p.category), title: p.name }).bindPopup(popupHtml(p));
           m._cat = p.category; m.addTo(map); markers.push(m); bounds.extend([p.lat, p.lng]);
           m.on('click', function () { select(markers.indexOf(m)); });
 
@@ -759,6 +984,7 @@
           card.addEventListener('click', function () { select(markers.indexOf(m)); });
           listEl.appendChild(card); cards.push(card);
         });
+        setCount(markers.length);
         if (bounds.isValid()) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
       }).catch(function () {
         listEl.innerHTML = '<div style="padding:24px 18px;font-family:var(--font-mono);font-size:0.72rem;color:var(--mute)">Map list unavailable.</div>';
