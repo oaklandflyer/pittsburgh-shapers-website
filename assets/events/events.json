@@ -8,11 +8,19 @@
     "photo": "shapers-happy-hour-2"
   },
   {
+    "title": "Pickleball",
+    "date": "Tuesday, October 6 6:30 PM - 7:30 PM",
+    "description": "",
+    "link": "https://luma.com/5qlaevyn",
+    "linkLabel": "Register Here",
+    "photo": "event-3"
+  },
+  {
     "title": "Burnout Discussion",
     "date": "Thursday, October 8 6:30 PM - 7:30 PM",
     "description": "​Burnout can creep in quietly, making even simple tasks feel heavier than they should. In this discussion, Andrew Coutinho will open up a practical conversation about what burnout looks like, how it shows up at work and in everyday life, and what can help when you start to feel stretched too thin.",
     "link": "https://luma.com/j7347hgc",
     "linkLabel": "Register Here",
-    "photo": "event-3"
+    "photo": "burnout-discussion"
   }
 ]
