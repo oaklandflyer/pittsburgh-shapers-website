@@ -8,6 +8,7 @@
 <link rel="canonical" href="https://pittsburghshapers.org/culturepgh/">
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <link rel="apple-touch-icon" href="../assets/gs-pittsburgh-mark.png">
+<meta property="og:image" content="https://pittsburghshapers.org/assets/culturepgh-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -72,11 +73,7 @@
   .wordmark:hover { color: var(--ink); }
   .wordmark .mark { height: 50px; width: auto; display: block; flex-shrink: 0; transition: transform 0.25s var(--ease); }
   .wordmark:hover .mark { transform: rotate(-8deg); }
-  .wordmark .lockup {
-    font-family: var(--font-display); font-size: 1.45rem; letter-spacing: 0.08em;
-    line-height: 1; display: flex; align-items: baseline; gap: 2px; color: var(--ink);
-  }
-  .wordmark .lockup b { color: var(--ember); font-weight: 400; }
+  .wordmark .lockup { height: 46px; width: auto; display: block; padding-left: 13px; border-left: 1px solid var(--line-2); }
   .nav-links { display: flex; align-items: center; gap: 4px; }
   .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; margin: -8px; }
   .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); transition: transform 0.25s var(--ease), opacity 0.2s var(--ease); }
@@ -144,6 +141,7 @@
     max-width: var(--container); margin: 0 auto; padding: 96px 40px 80px;
     display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center;
   }
+  .hero-logo { display: block; width: clamp(180px, 22vw, 260px); height: auto; margin-bottom: 28px; }
   .hero h1 {
     font-family: var(--font-display); font-weight: 400;
     font-size: clamp(3.5rem, 6.5vw, 6rem); line-height: 0.92; letter-spacing: 0.02em;
@@ -314,8 +312,7 @@
   footer { border-top: 1px solid var(--line); padding: 48px 0; }
   .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
   .foot-brand { max-width: 52ch; font-size: 0.9rem; line-height: 1.7; color: var(--slate); }
-  .foot-brand .lockup { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.08em; color: var(--ink); display: block; margin-bottom: 8px; }
-  .foot-brand .lockup b { color: var(--ember); font-weight: 400; }
+  .foot-brand .lockup { height: 64px; width: auto; display: block; margin-bottom: 14px; }
   .foot-brand a { color: var(--blue); }
   .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); text-align: right; line-height: 1.9; }
 
@@ -343,6 +340,7 @@
     .foot-inner { flex-direction: column; align-items: flex-start; }
     .foot-note { text-align: left; }
     .nav-inner .wordmark .mark { height: 38px; }
+    .nav-inner .wordmark .lockup { height: 36px; }
     .hero h1 { font-size: clamp(2.6rem, 12.5vw, 4rem); }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -358,7 +356,7 @@
     <div class="nav-inner">
       <a href="../index.html" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
         <img class="mark" src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh logo">
-        <span class="lockup">Culture<b>PGH</b></span>
+        <img class="lockup" src="../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
       </a>
       <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
@@ -378,6 +376,7 @@
   <header class="hero">
     <div class="hero-grid">
       <div>
+        <img class="hero-logo" src="../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
         <span class="eyebrow">A Global Shapers Pittsburgh Project</span>
         <h1>EVERY DISH<br>CAME FROM<br><span class="ember">SOMEWHERE</span></h1>
         <p class="lead">A Pittsburgh dinner series. One restaurant, one table, and the people who carried the recipe here telling you how it arrived.</p>
@@ -624,7 +623,7 @@
   <footer>
     <div class="foot-inner">
       <div class="foot-brand">
-        <span class="lockup">Culture<b>PGH</b></span>
+        <img class="lockup" src="../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458" loading="lazy">
         A project of the <a href="../index.html">Global Shapers Pittsburgh Hub</a>, an initiative of the World Economic Forum.<br>
         Adapted from CultureCLE, Global Shapers Cleveland Hub.
       </div>
