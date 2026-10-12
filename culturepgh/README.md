@@ -16,9 +16,16 @@ site updates.
 | `/culturepgh/for-restaurants/` | `for-restaurants/index.html` | The three participation tiers and a contact form |
 
 The shared look lives in `culturepgh.css` and the shared behavior in
-`culturepgh.js`. The CulturePGH Instagram handle is the `INSTAGRAM_HANDLE`
-constant at the top of `culturepgh.js`. Instagram links stay hidden until
+`culturepgh.js`. The CulturePGH Instagram handle lives in `settings.json`
+(`"instagram": "handle"`, without the @). Instagram links stay hidden until
 it's filled in.
+
+**The easy way to edit any of this is the admin page,
+[`/admin/culturepgh.html`](../admin/culturepgh.html).** Sign in at
+`/shapers.html` with an admin account, connect your GitHub token, and you can
+add and edit restaurants (with photo uploads), dinners, and settings, then
+publish with one button. The rest of this file documents the underlying
+JSON for anyone editing it by hand.
 
 ## Adding a restaurant
 
