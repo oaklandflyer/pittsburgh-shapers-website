@@ -1,0 +1,4 @@
+{
+  "_readme": "CulturePGH dinners. Leave \"dinners\" empty and the site shows \"Next dinner coming soon\". Field docs: culturepgh/README.md.",
+  "dinners": []
+}

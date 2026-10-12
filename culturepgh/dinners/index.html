@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinners · CulturePGH</title>
+<meta name="description" content="CulturePGH dinners: an occasional ticketed evening at a Pittsburgh immigrant-owned restaurant where guests hear the owner's story over a multi-course meal.">
+<meta name="theme-color" content="#0E2A52">
+<link rel="canonical" href="https://pittsburghshapers.org/culturepgh/dinners/">
+<link rel="icon" type="image/png" href="../../assets/favicon.png">
+<link rel="apple-touch-icon" href="../../assets/gs-pittsburgh-mark.png">
+<meta property="og:title" content="Dinners · CulturePGH">
+<meta property="og:description" content="CulturePGH dinners: an occasional ticketed evening at a Pittsburgh immigrant-owned restaurant where guests hear the owner's story over a multi-course meal.">
+<meta property="og:image" content="https://pittsburghshapers.org/assets/culturepgh-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../culturepgh.css">
+<script src="../culturepgh.js" defer></script>
+</head>
+<body data-page="dinners">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <nav id="top" aria-label="CulturePGH">
+    <div class="nav-inner">
+      <a href="../index.html" class="wordmark" aria-label="CulturePGH home">
+        <img class="mark" src="../../assets/global-shapers-pittsburgh-logo.png" alt="">
+        <img class="lockup" src="../../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../restaurants/">The Guide</a>
+        <a href="../dinners/" aria-current="page">Dinners</a>
+        <a href="../for-restaurants/">For Restaurants</a>
+        <a href="../index.html#about">About</a>
+        <a href="../../index.html">&larr; The Hub</a>
+        <a href="#signup" class="nav-cta">Join the List</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+
+  <header class="page-head">
+    <div class="wrap">
+      <div class="eyebrow">Dinners</div>
+      <h1>The occasional CulturePGH dinner</h1>
+      <p class="lead">A few times a year, one of our partner restaurants hosts a sit-down dinner. It's a ticketed evening where guests hear the owner's story over a multi-course meal, with proceeds supporting the restaurant.</p>
+      <div class="hero-actions"><a class="btn btn-primary" href="#signup">Hear about the next one</a></div>
+    </div>
+  </header>
+
+  <section id="upcoming">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Upcoming</div>
+        <h2 class="sec-title">Next dinner</h2>
+      </div>
+      <div class="dinner-list" id="dinner-list" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">The Evening</div>
+        <h2 class="sec-title">How a dinner works</h2>
+        <p class="sec-intro">Each dinner is a little different, because each restaurant decides its own menu. Here's the general shape of the night.</p>
+      </div>
+      <div class="courses">
+        <div class="course reveal">
+          <div class="no">First Course</div>
+          <div>
+            <h3>Sit down and eat</h3>
+            <p>We mix up the seating so you end up talking with people you haven't met. Food starts coming out soon after everyone arrives.</p>
+          </div>
+        </div>
+        <div class="course reveal">
+          <div class="no">Second Course</div>
+          <div>
+            <h3>Hear the story</h3>
+            <p>Between courses, the owner or someone in their family talks about what we're eating, where it's from, and how they ended up cooking it in Pittsburgh.</p>
+          </div>
+        </div>
+        <div class="course reveal">
+          <div class="no">Third Course</div>
+          <div>
+            <h3>Ask questions</h3>
+            <p>After the talk there's time for questions while dessert comes out.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="past" hidden>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">Past Dinners</div>
+        <h2 class="sec-title">Where we've been</h2>
+      </div>
+      <div class="dinner-list" id="past-list"></div>
+    </div>
+  </section>
+
+  <section id="signup">
+    <div class="wrap">
+      <div class="form-grid">
+        <div>
+          <div class="eyebrow">Email List</div>
+          <h2 class="sec-title">Be first to hear about dinners</h2>
+          <p class="sec-intro">Seats are limited, and people on the email list hear about each dinner before we post it publicly.</p>
+          <ul class="form-points">
+            <li>An occasional email when we feature a new restaurant or announce a dinner</li>
+            <li>List members hear about dinner tickets before we post them anywhere else</li>
+            <li>Free to join. Unsubscribe any time by replying to one of our emails</li>
+          </ul>
+        </div>
+
+        <div class="form">
+          <form id="signupForm" data-form="signup" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="CulturePGH · New list signup">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/dinners/?sent=signup#signup">
+            <input type="hidden" name="form" value="Email list">
+            <div class="hp" aria-hidden="true"><label for="r-hp">Leave this empty</label><input id="r-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
+            <div class="two">
+              <div class="field">
+                <label for="r-name">Name</label>
+                <input id="r-name" name="name" type="text" autocomplete="name" required maxlength="120">
+                <div class="err" id="r-name-err">Please add your name.</div>
+              </div>
+              <div class="field">
+                <label for="r-email">Email</label>
+                <input id="r-email" name="email" type="email" autocomplete="email" required maxlength="160">
+                <div class="err" id="r-email-err">Please enter a valid email.</div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="r-tie">How You Found Us <span class="opt">(optional)</span></label>
+              <select id="r-tie" name="connection">
+                <option value="">Choose one</option>
+                <option>Global Shapers</option>
+                <option>A friend</option>
+                <option>A restaurant</option>
+                <option>Social media</option>
+                <option>Somewhere else</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Join the List</span></button>
+            </div>
+            <div class="form-status" role="alert"></div>
+          </form>
+          <div class="ok hidden" tabindex="-1" data-ok="signup">
+            <strong>You're on the list.</strong>
+            We'll email you when we feature a new restaurant or open tickets for a dinner.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <img class="lockup" src="../../assets/culturepgh-logo-light.png" alt="CulturePGH" width="737" height="458" loading="lazy">
+        CulturePGH is the locals' guide to Pittsburgh's immigrant-owned restaurants, run by volunteers from the <a href="../../index.html">Global Shapers Pittsburgh Hub</a>, part of the World Economic Forum's Global Shapers Community. The idea comes from CultureCLE, a project of the Global Shapers Cleveland Hub.
+      </div>
+      <div class="foot-note">
+        <a href="mailto:hello@pittsburghshapers.org">hello@pittsburghshapers.org</a><br>
+        <a class="social-link" data-instagram href="#" hidden target="_blank" rel="noopener">Instagram</a><br>
+        Pittsburgh, Pennsylvania
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

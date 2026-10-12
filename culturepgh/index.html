@@ -3,638 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CulturePGH · A Dinner Series | Global Shapers Pittsburgh</title>
-<meta name="description" content="CulturePGH is a dinner series run by the Global Shapers Pittsburgh Hub. We bring a group to a local, often immigrant-owned restaurant, and the owner or their family tells us the story behind the food.">
+<title>CulturePGH · The Locals' Guide to Immigrant-Owned Restaurants</title>
+<meta name="description" content="CulturePGH is the locals' guide to Pittsburgh's immigrant-owned restaurants, with the stories of the people behind the food and an occasional sit-down dinner. A Global Shapers Pittsburgh project.">
 <meta name="theme-color" content="#0E2A52">
 <link rel="canonical" href="https://pittsburghshapers.org/culturepgh/">
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <link rel="apple-touch-icon" href="../assets/gs-pittsburgh-mark.png">
-<meta property="og:title" content="CulturePGH · A Dinner Series">
-<meta property="og:description" content="Dinners at local Pittsburgh restaurants, with the people who cook the food telling the story behind it.">
+<meta property="og:title" content="CulturePGH · The Locals' Guide to Immigrant-Owned Restaurants">
+<meta property="og:description" content="CulturePGH is the locals' guide to Pittsburgh's immigrant-owned restaurants, with the stories of the people behind the food and an occasional sit-down dinner. A Global Shapers Pittsburgh project.">
 <meta property="og:image" content="https://pittsburghshapers.org/assets/culturepgh-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
-<script src="../assets/vendor/leaflet/leaflet.js"></script>
-<style>
-  :root {
-    /* Pulled from the CulturePGH logo: navy script, gold slab, on cream */
-    --navy:      #0E2A52;
-    --navy-deep: #091D3B;
-    --navy-soft: #1B3C6B;
-    --gold:      #D99A2B;
-    --gold-soft: #F5E6C6;
-    --gold-tint: #FBF3E2;
-    --gold-deep: #9A6614;   /* gold for small text on light — 4.6:1 on paper */
-    --sky:       #4F7CAC;   /* third map category */
-
-    --paper:  #FBF8F1;
-    --surface:#FFFFFF;
-    --raise:  #F4EEE1;
-    --ink:    #0E2A52;
-    --text:   #2A3347;
-    --slate:  #4F5A6E;
-    --mute:   #6B7385;
-    --line:   #ECE4D3;
-    --line-2: #DFD4BE;
-
-    --danger: #B3261E;
-
-    --font-display: 'Alfa Slab One', 'Rockwell', 'Roboto Slab', Georgia, serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
-    --font-mono: 'Space Mono', ui-monospace, monospace;
-
-    --shadow-sm: 0 1px 2px rgba(14,42,82,0.05), 0 1px 3px rgba(14,42,82,0.07);
-    --shadow-md: 0 14px 34px rgba(14,42,82,0.11);
-    --ease: cubic-bezier(0.4,0,0.2,1);
-    --container: 1180px;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-  body {
-    background: var(--paper);
-    color: var(--text);
-    font-family: var(--font-body);
-    -webkit-font-smoothing: antialiased;
-  }
-  img { max-width: 100%; }
-  a { color: var(--navy); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 3px; text-decoration-thickness: 2px; }
-  a:hover { color: var(--gold-deep); }
-  .wrap { max-width: var(--container); margin: 0 auto; padding: 0 40px; }
-  .skip { position: absolute; left: -9999px; top: 8px; z-index: 200; background: var(--navy); color: #fff; padding: 10px 16px; font-family: var(--font-mono); font-size: 0.75rem; }
-  .skip:focus { left: 8px; }
-
-  /* ---------- NAV ---------- */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(251,248,241,0.88);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav-inner {
-    max-width: var(--container); margin: 0 auto; padding: 14px 40px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .wordmark { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-  .wordmark .mark { height: 44px; width: auto; display: block; flex-shrink: 0; transition: transform 0.25s var(--ease); }
-  .wordmark:hover .mark { transform: rotate(-8deg); }
-  .wordmark .lockup { height: 46px; width: auto; display: block; padding-left: 14px; border-left: 1px solid var(--line-2); }
-  .nav-links { display: flex; align-items: center; gap: 2px; }
-  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; margin: -8px; }
-  .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--navy); transition: transform 0.25s var(--ease), opacity 0.2s var(--ease); }
-  .nav-toggle span + span { margin-top: 5px; }
-  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .nav-links a {
-    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-decoration: none;
-    text-transform: uppercase; color: var(--slate); padding: 10px 14px;
-    border-radius: 2px; transition: color 0.2s var(--ease), background 0.2s var(--ease);
-  }
-  .nav-links a:hover { color: var(--navy); background: var(--raise); }
-  .nav-links .nav-cta {
-    font-weight: 700; color: #fff; background: var(--navy); padding: 11px 22px; margin-left: 12px; white-space: nowrap;
-    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
-    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  }
-  .nav-links .nav-cta:hover { color: #fff; background: var(--navy-soft); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(14,42,82,0.25); }
-
-  /* ---------- BUTTONS ---------- */
-  .btn {
-    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-decoration: none;
-    text-transform: uppercase; font-weight: 700; padding: 15px 30px;
-    cursor: pointer; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
-    display: inline-flex; align-items: center; gap: 10px; border: none;
-  }
-  .btn-primary {
-    background: var(--navy); color: #fff;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  }
-  .btn-primary:hover { color: #fff; background: var(--navy-soft); transform: translateY(-2px); box-shadow: 0 10px 26px rgba(14,42,82,0.25); }
-  .btn-ghost { background: transparent; color: var(--navy); border: 1.5px solid var(--line-2); }
-  .btn-ghost:hover { border-color: var(--gold); color: var(--navy); background: var(--gold-tint); transform: translateY(-2px); }
-  .btn-gold {
-    background: var(--gold); color: var(--navy-deep);
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  }
-  .btn-gold:hover { background: #E7AC42; color: var(--navy-deep); transform: translateY(-2px); }
-  .btn[disabled] { opacity: 0.65; cursor: progress; transform: none !important; box-shadow: none !important; }
-  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-
-  /* ---------- SHARED SECTION SHELL ---------- */
-  section { padding: 96px 0; border-top: 1px solid var(--line); }
-  .eyebrow, .sec-label {
-    display: inline-flex; align-items: center; gap: 12px;
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--gold-deep); margin-bottom: 20px;
-  }
-  .eyebrow::before, .sec-label::before { content: ''; width: 28px; height: 3px; background: var(--gold); }
-  .sec-head { margin-bottom: 52px; max-width: 760px; }
-  .sec-title {
-    font-family: var(--font-display); font-weight: 400;
-    font-size: clamp(2rem, 3.8vw, 3rem); line-height: 1.05; letter-spacing: 0.005em; color: var(--ink);
-  }
-  .sec-intro { font-size: 1.06rem; line-height: 1.7; color: var(--slate); margin-top: 18px; max-width: 64ch; }
-  .hl { background: linear-gradient(transparent 62%, var(--gold-soft) 62%, var(--gold-soft) 92%, transparent 92%); padding: 0 0.06em; }
-
-  /* ---------- HERO ---------- */
-  header.hero { position: relative; overflow: hidden; }
-  header.hero::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 55% 60% at 100% 0%, rgba(217,154,43,0.14) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 50% at 0% 100%, rgba(14,42,82,0.05) 0%, transparent 70%);
-  }
-  .hero-grid {
-    position: relative;
-    max-width: var(--container); margin: 0 auto; padding: 88px 40px 96px;
-    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 64px; align-items: center;
-  }
-  .hero-logo { display: block; width: clamp(200px, 24vw, 290px); height: auto; margin-bottom: 30px; }
-  .hero h1 {
-    font-family: var(--font-display); font-weight: 400;
-    font-size: clamp(2.8rem, 5.4vw, 4.8rem); line-height: 1; letter-spacing: 0.005em;
-    color: var(--ink); margin-bottom: 26px;
-  }
-  .hero h1 .hl { background: linear-gradient(transparent 64%, var(--gold) 64%, var(--gold) 86%, transparent 86%); }
-  .hero p.lead {
-    font-size: 1.2rem; line-height: 1.65; color: var(--slate);
-    max-width: 40ch; margin-bottom: 36px;
-  }
-  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-
-  /* The signature "menu card" */
-  .menu-card {
-    position: relative; background: var(--navy); color: #fff;
-    padding: 40px 38px 34px; overflow: hidden;
-    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
-    box-shadow: var(--shadow-md);
-  }
-  .menu-card::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(217,154,43,0.26) 0%, transparent 70%);
-  }
-  .menu-card::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
-    background: repeating-linear-gradient(90deg, var(--gold) 0 18px, transparent 18px 26px);
-    opacity: 0.85;
-  }
-  .menu-card > * { position: relative; z-index: 2; }
-  .menu-card .kicker {
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--gold); display: flex; justify-content: space-between;
-    padding-bottom: 16px; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.16);
-  }
-  .menu-card h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.3rem; line-height: 1.05; }
-  .menu-card .mc-note { color: rgba(255,255,255,0.76); font-size: 0.97rem; line-height: 1.6; margin: 14px 0 22px; }
-  .spec { font-family: var(--font-mono); font-size: 0.72rem; border-top: 1px dashed rgba(255,255,255,0.28); padding-top: 14px; }
-  .spec div { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; color: rgba(255,255,255,0.62); letter-spacing: 0.04em; }
-  .spec div span:last-child { color: #fff; text-align: right; }
-
-  /* ---------- COURSES (The Evening) ---------- */
-  .courses { border-top: 1px solid var(--line); margin-top: 8px; counter-reset: course; }
-  .course {
-    display: grid; grid-template-columns: 4.5rem 11rem 1fr; gap: 32px;
-    padding: 38px 0; border-bottom: 1px solid var(--line); align-items: start;
-  }
-  .course::before {
-    counter-increment: course; content: counter(course, decimal-leading-zero);
-    font-family: var(--font-display); font-size: 2.6rem; line-height: 1; color: var(--gold);
-  }
-  .course .no { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); padding-top: 10px; }
-  .course h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; line-height: 1.15; color: var(--ink); margin-bottom: 10px; }
-  .course p { color: var(--slate); line-height: 1.75; font-size: 1rem; max-width: 62ch; margin: 0; }
-  @media (max-width: 760px) {
-    .course { grid-template-columns: 3.4rem 1fr; gap: 6px 18px; }
-    .course::before { grid-row: span 2; font-size: 2rem; }
-    .course .no { padding-top: 0; }
-  }
-
-  /* ---------- SEATINGS ---------- */
-  .seatings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .seat {
-    position: relative; background: var(--surface); border: 1px solid var(--line); padding: 34px 32px 32px;
-    display: flex; flex-direction: column;
-    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
-  }
-  .seat:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-2); }
-  .seat.next { border-top: 4px solid var(--gold); padding-top: 31px; }
-  .seat .st {
-    align-self: flex-start; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--navy); background: var(--gold-soft); padding: 5px 9px; margin-bottom: 20px;
-  }
-  .seat.tbd .st { color: var(--slate); background: var(--raise); }
-  .seat h3 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; color: var(--ink); margin-bottom: 10px; }
-  .seat p { color: var(--slate); line-height: 1.7; font-size: 0.97rem; margin: 0; }
-  .seat .seat-link { margin-top: auto; padding-top: 22px; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; text-decoration: none; }
-  @media (max-width: 860px) { .seatings { grid-template-columns: 1fr; } }
-
-  /* ---------- FORMS ---------- */
-  .form-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: start; }
-  @media (max-width: 860px) { .form-grid { grid-template-columns: 1fr; } }
-  .form-points { list-style: none; margin-top: 28px; }
-  .form-points li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--slate); font-size: 0.97rem; line-height: 1.5; }
-  .form-points li::before { content: ''; flex: 0 0 8px; height: 8px; margin-top: 7px; background: var(--gold); transform: rotate(45deg); }
-  .form {
-    background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
-    padding: clamp(26px, 4vw, 44px);
-  }
-  .field { margin-bottom: 18px; }
-  label, .label { display: block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
-  label .opt { color: var(--mute); letter-spacing: 0.06em; text-transform: none; }
-  input, select, textarea {
-    width: 100%; padding: 13px 14px; background: var(--paper); border: 1px solid var(--line-2);
-    color: var(--ink); font-family: var(--font-body); font-size: 1rem; border-radius: 0;
-    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
-  }
-  input::placeholder, textarea::placeholder { color: #9AA0AD; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); background: #fff; box-shadow: 0 0 0 3px rgba(217,154,43,0.28); }
-  select { appearance: none; -webkit-appearance: none; padding-right: 38px; cursor: pointer;
-    background-image: linear-gradient(45deg, transparent 50%, var(--navy) 50%), linear-gradient(135deg, var(--navy) 50%, transparent 50%);
-    background-position: calc(100% - 19px) 55%, calc(100% - 14px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
-  textarea { min-height: 112px; resize: vertical; line-height: 1.55; }
-  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  @media (max-width: 560px) { .two { grid-template-columns: 1fr; gap: 0; } }
-  [aria-invalid="true"] { border-color: var(--danger); }
-  .err { display: none; color: var(--danger); font-size: 0.82rem; margin-top: 6px; }
-  .field.bad .err { display: block; }
-  .hp { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
-  .form-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 6px; }
-  .note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.03em; color: var(--mute); margin-top: 16px; line-height: 1.6; }
-  .form-status { display: none; margin-top: 16px; padding: 14px 16px; font-size: 0.92rem; line-height: 1.55; border: 1px solid; }
-  .form-status.show { display: block; }
-  .form-status.error { color: var(--danger); background: #FDF1F0; border-color: #F2C9C5; }
-  .ok {
-    background: var(--gold-tint); border: 1px solid var(--gold-soft); border-left: 4px solid var(--gold); color: var(--text);
-    padding: 26px 28px; font-size: 0.98rem; line-height: 1.6;
-  }
-  .ok strong { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; display: block; margin-bottom: 6px; color: var(--ink); }
-  .hidden { display: none !important; }
-  .spin { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
-  .btn.sending .spin { display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ---------- PARTNERS (navy color moment) ---------- */
-  .partners {
-    position: relative; overflow: hidden; background: var(--navy); color: #fff;
-    border-top: none;
-  }
-  .partners::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 60% 70% at 100% 0%, rgba(217,154,43,0.16) 0%, transparent 70%);
-  }
-  .partners .wrap { position: relative; z-index: 2; }
-  .partners .eyebrow { color: var(--gold); }
-  .partners .sec-title { color: #fff; }
-  .partners .sec-intro { color: rgba(255,255,255,0.78); }
-  .partners a { color: #fff; }
-  .give { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin: 48px 0 56px; }
-  @media (max-width: 720px) { .give { grid-template-columns: 1fr; } }
-  .give h4 { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
-  .give ul { list-style: none; padding: 0; margin: 0; }
-  .give li { padding: 14px 0 14px 22px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.14); font-size: 0.98rem; line-height: 1.55; color: rgba(255,255,255,0.88); }
-  .give li::before { content: ''; position: absolute; left: 2px; top: 22px; width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); }
-  .partners .form { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.16); box-shadow: none; }
-  .partners label { color: rgba(255,255,255,0.72); }
-  .partners label .opt { color: rgba(255,255,255,0.5); }
-  .partners input, .partners select, .partners textarea { background: rgba(0,0,0,0.22); border-color: rgba(255,255,255,0.2); color: #fff; }
-  .partners input::placeholder, .partners textarea::placeholder { color: rgba(255,255,255,0.42); }
-  .partners input:focus, .partners select:focus, .partners textarea:focus { background: rgba(0,0,0,0.3); border-color: var(--gold); }
-  .partners select { background-image: linear-gradient(45deg, transparent 50%, #fff 50%), linear-gradient(135deg, #fff 50%, transparent 50%); }
-  .partners select option { color: var(--ink); }
-  .partners .err { color: #FFB4AB; }
-  .partners [aria-invalid="true"] { border-color: #FFB4AB; }
-  .partners .note { color: rgba(255,255,255,0.56); }
-  .partners .form-status.error { color: #FFDAD6; background: rgba(179,38,30,0.25); border-color: rgba(255,180,171,0.4); }
-  .partners .ok { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.16); border-left-color: var(--gold); color: #fff; }
-  .partners .ok strong { color: var(--gold); }
-  .host-aside { border-left: 3px solid var(--gold); padding: 4px 0 4px 24px; align-self: start; }
-  .host-aside .big { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.2; color: #fff; }
-  .host-aside p { color: rgba(255,255,255,0.74); line-height: 1.7; margin-top: 16px; font-size: 0.98rem; }
-
-  /* ---------- THE MAP ---------- */
-  .map-layout { display: grid; grid-template-columns: 330px 1fr; gap: 0; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); }
-  @media (max-width: 860px) { .map-layout { grid-template-columns: 1fr; } }
-  .map-list { border-right: 1px solid var(--line); display: flex; flex-direction: column; max-height: 580px; min-height: 0; }
-  @media (max-width: 860px) { .map-list { border-right: none; border-bottom: 1px solid var(--line); max-height: 340px; } }
-  .map-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 16px 16px 14px; border-bottom: 1px solid var(--line); }
-  .map-count { width: 100%; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-top: 6px; }
-  .filter-chip {
-    font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 7px 11px; border: 1px solid var(--line-2); background: var(--paper); color: var(--slate);
-    cursor: pointer; transition: all 0.15s var(--ease);
-  }
-  .filter-chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
-  .filter-chip:hover { border-color: var(--gold); color: var(--navy); }
-  .filter-chip[aria-pressed="true"]:hover { color: #fff; }
-  .place-scroll { overflow-y: auto; flex: 1; }
-  .place {
-    width: 100%; text-align: left; background: none; border: none; cursor: pointer; font: inherit;
-    padding: 16px 18px; border-bottom: 1px solid var(--line); transition: background 0.15s var(--ease);
-    display: block;
-  }
-  .place:hover, .place.active { background: var(--gold-tint); }
-  .place.active { box-shadow: inset 4px 0 0 var(--gold); }
-  .place .p-name { font-family: var(--font-display); font-weight: 400; font-size: 1.08rem; color: var(--ink); line-height: 1.2; }
-  .place .p-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); margin: 6px 0 4px; }
-  .place .p-meta .dot, .pop-meta .dot { color: var(--line-2); margin: 0 6px; }
-  .place .p-blurb { font-size: 0.86rem; line-height: 1.5; color: var(--slate); }
-  #cpgh-map { min-height: 580px; height: 100%; width: 100%; background: #EEF0F2; z-index: 1; }
-  @media (max-width: 860px) { #cpgh-map { min-height: 380px; } }
-  .map-tiles-muted { filter: saturate(0.3) brightness(1.05) contrast(0.92) sepia(0.12); }
-  .leaflet-container a { text-decoration: none; }
-  .leaflet-popup-content-wrapper { border-radius: 2px; }
-  .leaflet-popup-content { font-family: var(--font-body); margin: 14px 16px; }
-  .pop-name { font-family: var(--font-display); font-weight: 400; font-size: 1.1rem; color: var(--ink); line-height: 1.15; }
-  .pop-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); margin: 7px 0 6px; }
-  .pop-addr { font-size: 0.8rem; color: var(--mute); margin-bottom: 6px; }
-  .pop-blurb { font-size: 0.88rem; line-height: 1.5; color: var(--slate); margin-bottom: 8px; }
-  .leaflet-container a.pop-link { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--navy); margin-right: 12px; }
-  .cpgh-pin {
-    width: 18px; height: 18px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
-    border: 2px solid #fff; box-shadow: 0 2px 5px rgba(14,42,82,0.35);
-  }
-  .cpgh-pin.restaurant, .map-legend .sw.restaurant { background: var(--gold); }
-  .cpgh-pin.market, .map-legend .sw.market { background: var(--navy); }
-  .cpgh-pin.cafe, .map-legend .sw.cafe { background: var(--sky); }
-  .map-legend {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 20px;
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate);
-  }
-  .map-legend .li { display: inline-flex; align-items: center; gap: 8px; }
-  .map-legend .sw { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line-2); }
-
-  /* Suggest a spot */
-  .suggest { margin-top: 48px; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; background: var(--raise); border: 1px solid var(--line); padding: clamp(26px, 4vw, 40px); }
-  @media (max-width: 860px) { .suggest { grid-template-columns: 1fr; } }
-  .suggest h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; color: var(--ink); line-height: 1.15; }
-  .suggest p.lede { color: var(--slate); line-height: 1.65; margin-top: 12px; font-size: 0.98rem; }
-  .suggest .form { box-shadow: none; }
-
-  /* ---------- FOOTER ---------- */
-  footer { border-top: 4px solid var(--gold); background: var(--navy-deep); color: rgba(255,255,255,0.72); padding: 56px 0 48px; }
-  .foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 28px; }
-  .foot-brand { max-width: 52ch; font-size: 0.92rem; line-height: 1.7; }
-  .foot-brand .lockup { height: 72px; width: auto; display: block; margin-bottom: 18px; }
-  .foot-brand a, .foot-note a { color: #fff; }
-  .foot-note { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; line-height: 1.9; }
-
-  /* ---------- REVEAL ---------- */
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-  .reveal.in { opacity: 1; transform: none; }
-
-  /* ---------- RESPONSIVE ---------- */
-  @media (max-width: 960px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 44px; padding: 56px 40px 72px; }
-    section { padding: 72px 0; }
-    .nav-toggle { display: block; }
-    .nav-links {
-      display: none; position: absolute; top: 100%; left: 0; right: 0;
-      flex-direction: column; align-items: stretch; gap: 0;
-      background: rgba(251,248,241,0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); padding: 8px 0;
-    }
-    .nav-links.open { display: flex; }
-    .nav-links a { padding: 15px 40px; border-radius: 0; }
-    .nav-links .nav-cta { margin: 12px 40px 6px; text-align: center; clip-path: none; }
-  }
-  @media (max-width: 560px) {
-    .wrap, .nav-inner, .hero-grid, .foot-inner { padding-left: 20px; padding-right: 20px; }
-    .nav-links a { padding-left: 20px; padding-right: 20px; }
-    .nav-links .nav-cta { margin-left: 20px; margin-right: 20px; }
-    .foot-inner { flex-direction: column; align-items: flex-start; }
-    .foot-note { text-align: left; }
-    .nav-inner .wordmark .mark { height: 36px; }
-    .nav-inner .wordmark .lockup { height: 36px; padding-left: 12px; }
-    .wordmark { gap: 12px; }
-    .hero h1 { font-size: clamp(2.3rem, 10.5vw, 3.2rem); }
-    .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
-    .menu-card { padding: 32px 26px 30px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-    .reveal { opacity: 1; transform: none; }
-  }
-</style>
+<link rel="stylesheet" href="culturepgh.css">
+<script src="culturepgh.js" defer></script>
 </head>
-<body>
+<body data-page="home">
   <a class="skip" href="#main">Skip to content</a>
 
-  <!-- NAV -->
-  <nav id="top">
+  <nav id="top" aria-label="CulturePGH">
     <div class="nav-inner">
-      <a href="../index.html" class="wordmark" aria-label="Global Shapers Pittsburgh — home">
+      <a href="index.html" class="wordmark" aria-label="CulturePGH home">
         <img class="mark" src="../assets/global-shapers-pittsburgh-logo.png" alt="">
         <img class="lockup" src="../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
       </a>
-      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links" id="nav-links">
-        <a href="#evening">How It Works</a>
-        <a href="#seatings">Dates</a>
-        <a href="#map">The Map</a>
-        <a href="#partners">For Restaurants</a>
-        <a href="../index.html">← The Hub</a>
-        <a href="#rsvp" class="nav-cta">Join the List</a>
+        <a href="restaurants/">The Guide</a>
+        <a href="dinners/">Dinners</a>
+        <a href="for-restaurants/">For Restaurants</a>
+        <a href="#about">About</a>
+        <a href="../index.html">&larr; The Hub</a>
+        <a href="#signup" class="nav-cta">Join the List</a>
       </div>
     </div>
   </nav>
 
   <main id="main">
-  <!-- HERO -->
+
   <header class="hero">
     <div class="hero-grid">
       <div>
         <img class="hero-logo" src="../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
         <span class="eyebrow">A Global Shapers Pittsburgh Project</span>
-        <h1>Come <span class="hl">eat</span> with us.</h1>
-        <p class="lead">CulturePGH is a dinner series run by volunteers from the Global Shapers Pittsburgh Hub. We book a table at a local, often immigrant-owned restaurant, and the owner or someone in their family tells us the story behind the food while we eat.</p>
+        <h1>The locals' guide to Pittsburgh's <span class="hl">immigrant-owned</span> restaurants.</h1>
+        <p class="lead">We find the restaurants, cafes, and markets run by people who brought their food to Pittsburgh from somewhere else, and we share the stories of the people behind them. A few times a year, we fill a dining room for a sit-down dinner with the owner.</p>
         <div class="hero-actions">
-          <a href="#rsvp" class="btn btn-primary">Join the Email List</a>
-          <a href="#partners" class="btn btn-ghost">Own a Restaurant?</a>
+          <a href="restaurants/" class="btn btn-primary">Browse the Guide</a>
+          <a href="#signup" class="btn btn-ghost">Join the Email List</a>
         </div>
       </div>
 
       <div class="menu-card reveal">
-        <div class="kicker"><span>Our First Dinner</span><span>No. 01</span></div>
-        <h2>Late Oct – Early Nov 2026</h2>
-        <p class="mc-note">We're still confirming the restaurant. We'll email the list with the place and date in October, before we post it anywhere else.</p>
-        <div class="spec">
-          <div><span>Group size</span><span>About 25 to 30 people</span></div>
-          <div><span>Cost</span><span>You pay for your own meal</span></div>
-          <div><span>Length</span><span>About two hours</span></div>
-          <div><span>Who can come</span><span>Anyone</span></div>
-        </div>
+        <div class="kicker"><span>The Guide</span><span>Updated as we go</span></div>
+        <h2>Eat your way around the world, without leaving Pittsburgh.</h2>
+        <div class="stats" id="guide-stats" aria-live="polite"></div>
+        <a href="restaurants/" class="btn btn-gold">See every place &rarr;</a>
       </div>
     </div>
   </header>
 
-  <!-- THE EVENING -->
-  <section id="evening">
+  <section id="featured">
     <div class="wrap">
       <div class="sec-head">
-        <div class="sec-label">The Plan</div>
-        <h2 class="sec-title">How a dinner works</h2>
-        <p class="sec-intro">This is our first season, so this is the plan rather than a tradition. We'll adjust it as we go.</p>
+        <div class="sec-label">Featured</div>
+        <h2 class="sec-title">Meet the owners</h2>
+        <p class="sec-intro">Restaurants we've visited and partnered with to tell their story: who runs the kitchen, how they came to Pittsburgh, and what inspires the food.</p>
+      </div>
+      <div id="featured-list"><p class="dir-count">Loading the guide…</p></div>
+      <p class="more-link"><a class="btn btn-ghost" href="restaurants/">Plus <span id="radar-count">more</span> places on our radar &rarr;</a></p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-label">About</div>
+        <h2 class="sec-title">Why we built this guide</h2>
+        <p class="sec-intro">Some of the best cooking in Pittsburgh happens in small, family-run places that are easy to miss. CulturePGH is a volunteer project of the Global Shapers Pittsburgh Hub to help locals find them, and to give the people behind them a chance to tell their own story.</p>
       </div>
 
       <div class="courses">
         <div class="course reveal">
-          <div class="no">First Course</div>
+          <div class="no">Find</div>
           <div>
-            <h3>Sit down and eat</h3>
-            <p>We'll mix up the seating so you end up talking with people you haven't met. Food starts coming out soon after everyone arrives.</p>
+            <h3>We map the places</h3>
+            <p>Restaurants, cafes, and markets around the city, mostly immigrant-owned, that we like or that people have told us about. Every place starts out on our radar.</p>
           </div>
         </div>
         <div class="course reveal">
-          <div class="no">Second Course</div>
+          <div class="no">Feature</div>
           <div>
-            <h3>Hear the story</h3>
-            <p>Between courses, the owner, a cook, or someone in their family talks for about fifteen minutes: what we're eating, where it's from, and how they ended up cooking it in Pittsburgh.</p>
+            <h3>We tell their stories</h3>
+            <p>When an owner wants to take part, we visit, photograph the food, and write up how they came to Pittsburgh and what they cook. Those places become featured partners.</p>
           </div>
         </div>
         <div class="course reveal">
-          <div class="no">Third Course</div>
+          <div class="no">Gather</div>
           <div>
-            <h3>Ask questions</h3>
-            <p>After the talk there's time for questions while dessert comes out.</p>
+            <h3>Sometimes, we sit down together</h3>
+            <p>A few times a year, a partner restaurant hosts a CulturePGH dinner: a ticketed evening where guests hear the owner's story over a multi-course meal.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SEATINGS -->
-  <section id="seatings">
+  <section id="dinners">
     <div class="wrap">
       <div class="sec-head">
-        <div class="sec-label">Dates</div>
-        <h2 class="sec-title">Upcoming dinners</h2>
-        <p class="sec-intro">We're aiming for a dinner about every six weeks, each at a different restaurant. Only the first one is close to set.</p>
+        <div class="sec-label">Dinners</div>
+        <h2 class="sec-title">The occasional dinner</h2>
+        <p class="sec-intro">Our sit-down dinners are a highlight, not a schedule. We host one when a partner restaurant is ready, roughly once a season.</p>
       </div>
-
-      <div class="seatings">
-        <div class="seat next reveal">
-          <div class="st">Details in October</div>
-          <h3>No. 01</h3>
-          <p>Late October or early November 2026. We're finalizing the restaurant now.</p>
-          <a class="seat-link" href="#rsvp">Join the list to hear first →</a>
-        </div>
-        <div class="seat tbd reveal">
-          <div class="st">Tentative</div>
-          <h3>No. 02</h3>
-          <p>Probably December 2026.</p>
-        </div>
-        <div class="seat tbd reveal">
-          <div class="st">Tentative</div>
-          <h3>No. 03</h3>
-          <p>Probably early 2027.</p>
-        </div>
-      </div>
+      <div class="dinner-list" id="next-dinner"></div>
+      <p class="more-link"><a class="btn btn-ghost" href="dinners/">How dinners work &rarr;</a></p>
     </div>
   </section>
 
-  <!-- THE MAP -->
-  <section id="map">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="sec-label">The Map</div>
-        <h2 class="sec-title">Places we like</h2>
-        <p class="sec-intro">Restaurants, markets, and cafés around Pittsburgh, mostly local and immigrant-owned, that we like or that people have told us about. Click a pin or a name for the address and a link.</p>
-      </div>
-
-      <div class="map-layout">
-        <div class="map-list">
-          <div class="map-filters" id="map-filters">
-            <button class="filter-chip" type="button" data-cat="all" aria-pressed="true">All</button>
-            <button class="filter-chip" type="button" data-cat="restaurant" aria-pressed="false">Restaurants</button>
-            <button class="filter-chip" type="button" data-cat="market" aria-pressed="false">Markets</button>
-            <button class="filter-chip" type="button" data-cat="cafe" aria-pressed="false">Cafés</button>
-            <div class="map-count" id="map-count" aria-live="polite"></div>
-          </div>
-          <div class="place-scroll" id="place-list"></div>
-        </div>
-        <div id="cpgh-map" role="region" aria-label="Map of CulturePGH places"></div>
-      </div>
-
-      <div class="map-legend">
-        <span class="li"><span class="sw restaurant"></span> Restaurant</span>
-        <span class="li"><span class="sw market"></span> Market &amp; grocer</span>
-        <span class="li"><span class="sw cafe"></span> Café</span>
-      </div>
-
-      <div class="suggest" id="suggest">
-        <div>
-          <div class="sec-label">Suggest a Spot</div>
-          <h3>Is a place missing?</h3>
-          <p class="lede">Send it our way. We try to visit before adding anything, and some of these places may end up hosting a dinner.</p>
-        </div>
-        <div class="form">
-          <form id="suggestForm" data-form="suggest" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
-            <input type="hidden" name="_subject" value="CulturePGH · New map suggestion">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/?sent=suggest#suggest">
-            <input type="hidden" name="form" value="Map suggestion">
-            <div class="hp" aria-hidden="true"><label for="s-hp">Leave this empty</label><input id="s-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
-            <div class="two">
-              <div class="field">
-                <label for="s-place">Name of the Place</label>
-                <input id="s-place" name="place" type="text" required maxlength="120">
-                <div class="err" id="s-place-err">Tell us which place.</div>
-              </div>
-              <div class="field">
-                <label for="s-where">Neighborhood or Address</label>
-                <input id="s-where" name="location" type="text" required maxlength="160" placeholder="e.g. Brookline Blvd">
-                <div class="err" id="s-where-err">Where is it?</div>
-              </div>
-            </div>
-            <div class="field">
-              <label for="s-why">What Should We Try There? <span class="opt">(optional)</span></label>
-              <textarea id="s-why" name="why" maxlength="1500" placeholder="A dish you like, or anything else we should know"></textarea>
-            </div>
-            <div class="field">
-              <label for="s-email">Your Email <span class="opt">(optional, so we can thank you)</span></label>
-              <input id="s-email" name="email" type="email" autocomplete="email" maxlength="160">
-              <div class="err" id="s-email-err">That email doesn't look right.</div>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-primary" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Send Suggestion</span></button>
-            </div>
-            <div class="form-status" role="alert"></div>
-          </form>
-          <div class="ok hidden" tabindex="-1" data-ok="suggest">
-            <strong>Thanks!</strong>
-            We got your suggestion. We'll check the place out.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- RSVP -->
-  <section id="rsvp">
+  <section id="signup">
     <div class="wrap">
       <div class="form-grid">
         <div>
           <div class="eyebrow">Email List</div>
-          <h2 class="sec-title">Hear about dinners first</h2>
-          <p class="sec-intro">Each dinner has room for about 25 to 30 people. People on the list hear about it about a week before we post it publicly.</p>
+          <h2 class="sec-title">Hear about new places and dinners</h2>
+          <p class="sec-intro">Join the list to hear when we feature a new restaurant, and to get first dibs when a dinner is announced.</p>
           <ul class="form-points">
-            <li>We only email about CulturePGH dinners, a few times a month at most</li>
-            <li>Joining is free. You pay the restaurant for your own meal</li>
-            <li>Unsubscribe any time by replying to one of our emails</li>
+            <li>An occasional email when we feature a new restaurant or announce a dinner</li>
+            <li>List members hear about dinner tickets before we post them anywhere else</li>
+            <li>Free to join. Unsubscribe any time by replying to one of our emails</li>
           </ul>
         </div>
 
         <div class="form">
-          <form id="rsvpForm" data-form="rsvp" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
+          <form id="signupForm" data-form="signup" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
             <input type="hidden" name="_subject" value="CulturePGH · New list signup">
             <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/?sent=rsvp#rsvp">
-            <input type="hidden" name="form" value="RSVP list">
+            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/?sent=signup#signup">
+            <input type="hidden" name="form" value="Email list">
             <div class="hp" aria-hidden="true"><label for="r-hp">Leave this empty</label><input id="r-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
             <div class="two">
               <div class="field">
@@ -648,347 +156,59 @@
                 <div class="err" id="r-email-err">Please enter a valid email.</div>
               </div>
             </div>
-            <div class="two">
-              <div class="field">
-                <label for="r-seats">Seats You'd Want</label>
-                <select id="r-seats" name="seats">
-                  <option>1</option><option selected>2</option><option>3</option><option>4</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="r-tie">How You Found Us</label>
-                <select id="r-tie" name="connection">
-                  <option>Global Shapers</option>
-                  <option>A friend</option>
-                  <option>The restaurant</option>
-                  <option>Social media</option>
-                  <option>Somewhere else</option>
-                </select>
-              </div>
-            </div>
             <div class="field">
-              <label for="r-diet">Dietary Needs <span class="opt">(optional)</span></label>
-              <input id="r-diet" name="dietary" type="text" maxlength="300" placeholder="Allergies, halal, vegetarian">
+              <label for="r-tie">How You Found Us <span class="opt">(optional)</span></label>
+              <select id="r-tie" name="connection">
+                <option value="">Choose one</option>
+                <option>Global Shapers</option>
+                <option>A friend</option>
+                <option>A restaurant</option>
+                <option>Social media</option>
+                <option>Somewhere else</option>
+              </select>
             </div>
             <div class="form-actions">
               <button class="btn btn-primary" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Join the List</span></button>
             </div>
             <div class="form-status" role="alert"></div>
           </form>
-          <div class="ok hidden" tabindex="-1" data-ok="rsvp">
+          <div class="ok hidden" tabindex="-1" data-ok="signup">
             <strong>You're on the list.</strong>
-            We'll email you when the first dinner is set, likely in October.
+            We'll email you when we feature a new restaurant or open tickets for a dinner.
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FOR RESTAURANTS -->
-  <section id="partners" class="partners">
+  <section class="partners" id="for-restaurants">
     <div class="wrap">
-      <div class="sec-head">
-        <div class="eyebrow">For Restaurants</div>
-        <h2 class="sec-title">Interested in hosting a dinner?</h2>
-        <p class="sec-intro">If you run a restaurant in or around Pittsburgh and would like to host, we'd love to talk. We bring a group of 25 to 30 people on a weeknight. You decide the menu and the price.</p>
-      </div>
-
-      <div class="give">
-        <div>
-          <h4>What We Ask</h4>
-          <ul>
-            <li>A weeknight with room for 25 to 30 people</li>
-            <li>A set menu at a per-person price you choose</li>
-            <li>About fifteen minutes for you or someone in your family to talk about the food</li>
-            <li>We'll confirm the final headcount two days ahead</li>
-          </ul>
-        </div>
-        <div>
-          <h4>What You Get</h4>
-          <ul>
-            <li>A full group on a weeknight, with each guest paying for their own meal</li>
-            <li>Photos from the night that you're welcome to use</li>
-            <li>A write-up on this website and on Global Shapers social media</li>
-            <li>New customers who know your story</li>
-          </ul>
-        </div>
-      </div>
-
       <div class="form-grid">
-        <div class="host-aside">
-          <div class="big">Tell us about your restaurant.</div>
-          <p>Someone from our team will get back to you within a few days to talk about dates and the menu. There's no cost to you, and a first conversation doesn't commit you to anything.</p>
+        <div>
+          <div class="eyebrow">For Restaurants</div>
+          <h2 class="sec-title">Own a restaurant? Choose how involved you want to be.</h2>
         </div>
-        <div class="form">
-          <form id="partnerForm" data-form="partner" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
-            <input type="hidden" name="_subject" value="CulturePGH · Restaurant partner inquiry">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/?sent=partner#partners">
-            <input type="hidden" name="form" value="Partner inquiry">
-            <div class="hp" aria-hidden="true"><label for="p-hp">Leave this empty</label><input id="p-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
-            <div class="two">
-              <div class="field">
-                <label for="p-rest">Restaurant or Organization</label>
-                <input id="p-rest" name="restaurant" type="text" autocomplete="organization" required maxlength="160">
-                <div class="err" id="p-rest-err">Which restaurant or organization?</div>
-              </div>
-              <div class="field">
-                <label for="p-name">Your Name</label>
-                <input id="p-name" name="name" type="text" autocomplete="name" required maxlength="120">
-                <div class="err" id="p-name-err">Please add your name.</div>
-              </div>
-            </div>
-            <div class="two">
-              <div class="field">
-                <label for="p-email">Email</label>
-                <input id="p-email" name="email" type="email" autocomplete="email" required maxlength="160">
-                <div class="err" id="p-email-err">Please enter a valid email.</div>
-              </div>
-              <div class="field">
-                <label for="p-phone">Phone <span class="opt">(optional)</span></label>
-                <input id="p-phone" name="phone" type="tel" autocomplete="tel" maxlength="40">
-              </div>
-            </div>
-            <div class="field">
-              <label for="p-msg">Anything You'd Like Us to Know <span class="opt">(optional)</span></label>
-              <textarea id="p-msg" name="message" maxlength="3000"></textarea>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-gold" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Send</span></button>
-            </div>
-            <div class="form-status" role="alert"></div>
-          </form>
-          <div class="ok hidden" tabindex="-1" data-ok="partner">
-            <strong>Thanks for reaching out.</strong>
-            We'll be in touch within a few days.
-          </div>
+        <div class="host-aside">
+          <p>Be listed in the guide, get a full feature with your story and professional photos, or host a CulturePGH dinner. A first conversation doesn't commit you to anything.</p>
+          <p><a class="btn btn-gold" href="for-restaurants/">See the options &rarr;</a></p>
         </div>
       </div>
     </div>
   </section>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="foot-inner">
       <div class="foot-brand">
         <img class="lockup" src="../assets/culturepgh-logo-light.png" alt="CulturePGH" width="737" height="458" loading="lazy">
-        CulturePGH is run by volunteers from the <a href="../index.html">Global Shapers Pittsburgh Hub</a>, part of the World Economic Forum's Global Shapers Community. The idea comes from CultureCLE, a dinner series by the Global Shapers Cleveland Hub.
+        CulturePGH is the locals' guide to Pittsburgh's immigrant-owned restaurants, run by volunteers from the <a href="../index.html">Global Shapers Pittsburgh Hub</a>, part of the World Economic Forum's Global Shapers Community. The idea comes from CultureCLE, a project of the Global Shapers Cleveland Hub.
       </div>
       <div class="foot-note">
         <a href="mailto:hello@pittsburghshapers.org">hello@pittsburghshapers.org</a><br>
+        <a class="social-link" data-instagram href="#" hidden target="_blank" rel="noopener">Instagram</a><br>
         Pittsburgh, Pennsylvania
       </div>
     </div>
   </footer>
-
-  <script>
-    // Mobile navigation toggle (mirrors index.html)
-    (function () {
-      var toggle = document.querySelector('.nav-toggle');
-      var links = document.getElementById('nav-links');
-      if (!toggle || !links) return;
-      toggle.addEventListener('click', function () {
-        var open = links.classList.toggle('open');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-      links.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          links.classList.remove('open');
-          toggle.setAttribute('aria-expanded', 'false');
-        });
-      });
-    })();
-
-    // Scroll reveal
-    (function () {
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { threshold: 0.15 });
-      els.forEach(function (el) { io.observe(el); });
-    })();
-
-    // Forms. Submissions go to FormSubmit (formsubmit.co), which emails each one
-    // to FORM_INBOX — the site is static, so there is no server of our own. The
-    // markup also posts there natively, so the forms still work without JS.
-    // The very first submission triggers a one-time "Activate form" email to
-    // the inbox; nothing is delivered until that link is clicked.
-    (function () {
-      var FORM_INBOX = 'hello@pittsburghshapers.org';
-      var ENDPOINT = 'https://formsubmit.co/ajax/' + FORM_INBOX;
-      var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-      function okFor(name) { return document.querySelector('[data-ok="' + name + '"]'); }
-      function showOk(form) {
-        var ok = okFor(form.dataset.form);
-        form.classList.add('hidden'); ok.classList.remove('hidden'); ok.focus({ preventScroll: true });
-      }
-
-      // Returning from the no-JS fallback redirect (?sent=rsvp etc.)
-      var sent = new URLSearchParams(location.search).get('sent');
-      if (sent) {
-        var f0 = document.querySelector('form[data-form="' + sent + '"]');
-        if (f0) showOk(f0);
-      }
-
-      function validate(form) {
-        var firstBad = null;
-        form.querySelectorAll('input:not([type=hidden]):not([name=_honey]), textarea, select').forEach(function (el) {
-          var v = el.value.trim();
-          var bad = (el.required && !v) || (el.type === 'email' && v && !EMAIL_RE.test(v));
-          var field = el.closest('.field');
-          if (field) field.classList.toggle('bad', !!bad);
-          if (bad) {
-            el.setAttribute('aria-invalid', 'true');
-            var err = document.getElementById(el.id + '-err');
-            if (err) el.setAttribute('aria-describedby', err.id);
-            if (!firstBad) firstBad = el;
-          } else {
-            el.removeAttribute('aria-invalid');
-          }
-        });
-        if (firstBad) firstBad.focus();
-        return !firstBad;
-      }
-
-      document.querySelectorAll('form[data-form]').forEach(function (form) {
-        var btn = form.querySelector('button[type=submit]');
-        var lbl = btn.querySelector('.lbl'), lblText = lbl.textContent;
-        var status = form.querySelector('.form-status');
-
-        // Clear an error as soon as the field is fixed
-        form.addEventListener('input', function (e) {
-          var field = e.target.closest('.field');
-          if (field && field.classList.contains('bad')) { field.classList.remove('bad'); e.target.removeAttribute('aria-invalid'); }
-        });
-
-        form.addEventListener('submit', function (ev) {
-          ev.preventDefault();
-          status.classList.remove('show', 'error');
-          if (!validate(form)) return;
-
-          var data = {};
-          new FormData(form).forEach(function (v, k) { if (k !== '_next') data[k] = typeof v === 'string' ? v.trim() : v; });
-          if (data._honey) { showOk(form); return; } // bot: pretend it worked
-          delete data._honey;
-          if (data.email) data._replyto = data.email;
-
-          btn.disabled = true; btn.classList.add('sending'); lbl.textContent = 'Sending…';
-
-          fetch(ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(data)
-          }).then(function (r) {
-            return r.json().catch(function () { return {}; }).then(function (body) {
-              if (!r.ok || String(body.success) !== 'true') throw new Error(body.message || ('HTTP ' + r.status));
-            });
-          }).then(function () {
-            form.reset();
-            showOk(form);
-          }).catch(function () {
-            status.innerHTML = 'Something went wrong sending that. Please try again, or email us at ' +
-              '<a href="mailto:' + FORM_INBOX + '">' + FORM_INBOX + '</a>.';
-            status.classList.add('show', 'error');
-          }).then(function () {
-            btn.disabled = false; btn.classList.remove('sending'); lbl.textContent = lblText;
-          });
-        });
-      });
-    })();
-
-    // Interactive Pittsburgh map — data from places.json, rendered with Leaflet.
-    (function () {
-      var mapEl = document.getElementById('cpgh-map');
-      if (!mapEl) return;
-      if (typeof L === 'undefined') {
-        mapEl.innerHTML = '<div style="padding:24px 18px;font-family:var(--font-mono);font-size:0.72rem;color:var(--mute)">Map failed to load. Please refresh.</div>';
-        return;
-      }
-      function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-
-      var map = L.map('cpgh-map', { scrollWheelZoom: false }).setView([40.4506, -79.9709], 12);
-      map.on('click', function () { map.scrollWheelZoom.enable(); });
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        className: 'map-tiles-muted',
-        maxZoom: 19
-      }).addTo(map);
-
-      var listEl = document.getElementById('place-list');
-      var filtersEl = document.getElementById('map-filters');
-      var countEl = document.getElementById('map-count');
-      var markers = [], cards = [], bounds = L.latLngBounds([]);
-
-      function setCount(n) { countEl.textContent = n + (n === 1 ? ' place' : ' places'); }
-      function pinIcon(cat) {
-        return L.divIcon({
-          className: '', iconSize: [18, 18], iconAnchor: [9, 18], popupAnchor: [0, -16],
-          html: '<div class="cpgh-pin ' + esc(cat) + '"></div>'
-        });
-      }
-      function popupHtml(p) {
-        var meta = [p.cuisine, p.neighborhood].filter(Boolean).map(esc).join(' <span class="dot">·</span> ');
-        var dir = p.address ? '<a class="pop-link" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name + ', ' + p.address) + '" target="_blank" rel="noopener">Directions →</a>' : '';
-        var link = p.url ? '<a class="pop-link" href="' + esc(p.url) + '" target="_blank" rel="noopener">Website →</a>' : '';
-        return '<div class="pop-name">' + esc(p.name) + '</div>' +
-               (meta ? '<div class="pop-meta">' + meta + '</div>' : '') +
-               (p.address ? '<div class="pop-addr">' + esc(p.address) + '</div>' : '') +
-               (p.blurb ? '<div class="pop-blurb">' + esc(p.blurb) + '</div>' : '') + link + dir;
-      }
-
-      function select(i) {
-        cards.forEach(function (c, j) { c.classList.toggle('active', j === i); });
-        var m = markers[i]; if (!m) return;
-        map.setView(m.getLatLng(), Math.max(map.getZoom(), 14), { animate: true });
-        m.openPopup();
-        cards[i].scrollIntoView({ block: 'nearest' });
-      }
-
-      function applyFilter(cat) {
-        [].forEach.call(filtersEl.querySelectorAll('.filter-chip'), function (b) {
-          b.setAttribute('aria-pressed', b.dataset.cat === cat ? 'true' : 'false');
-        });
-        var shown = L.latLngBounds([]), n = 0;
-        markers.forEach(function (m, i) {
-          var match = cat === 'all' || m._cat === cat;
-          cards[i].style.display = match ? '' : 'none';
-          if (match) { m.addTo(map); shown.extend(m.getLatLng()); n++; }
-          else { map.removeLayer(m); }
-        });
-        setCount(n);
-        if (shown.isValid()) map.fitBounds(shown, { padding: [40, 40], maxZoom: 14 });
-      }
-
-      filtersEl.addEventListener('click', function (e) {
-        var b = e.target.closest('.filter-chip'); if (b) applyFilter(b.dataset.cat);
-      });
-
-      fetch('places.json').then(function (r) { return r.json(); }).then(function (data) {
-        var places = (data && data.places) || [];
-        places.forEach(function (p) {
-          if (typeof p.lat !== 'number' || typeof p.lng !== 'number') return;
-          var m = L.marker([p.lat, p.lng], { icon: pinIcon(p.category), title: p.name }).bindPopup(popupHtml(p));
-          m._cat = p.category; m.addTo(map); markers.push(m); bounds.extend([p.lat, p.lng]);
-          m.on('click', function () { select(markers.indexOf(m)); });
-
-          var meta = [p.cuisine, p.neighborhood].filter(Boolean).map(esc).join(' <span class="dot">·</span> ');
-          var card = document.createElement('button');
-          card.className = 'place'; card.type = 'button';
-          card.innerHTML = '<div class="p-name">' + esc(p.name) + '</div>' +
-                           (meta ? '<div class="p-meta">' + meta + '</div>' : '') +
-                           (p.blurb ? '<div class="p-blurb">' + esc(p.blurb) + '</div>' : '');
-          card.addEventListener('click', function () { select(markers.indexOf(m)); });
-          listEl.appendChild(card); cards.push(card);
-        });
-        setCount(markers.length);
-        if (bounds.isValid()) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
-      }).catch(function () {
-        listEl.innerHTML = '<div style="padding:24px 18px;font-family:var(--font-mono);font-size:0.72rem;color:var(--mute)">Map list unavailable.</div>';
-      });
-    })();
-  </script>
 </body>
 </html>
