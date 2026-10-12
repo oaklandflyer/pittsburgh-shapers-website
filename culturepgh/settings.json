@@ -1,0 +1,4 @@
+{
+  "_readme": "CulturePGH site settings. Edit from admin/culturepgh.html. instagram is the handle without the @; leave empty to hide Instagram links.",
+  "instagram": ""
+}

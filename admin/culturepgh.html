@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="gate.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CulturePGH Admin · Global Shapers Pittsburgh</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FAFAF6; --surface:#FFFFFF; --raise:#F3F2EC; --ink:#16181D;
+    --slate:#5B6170; --mute:#8A8F9C; --line:#E7E6DF; --line-2:#DEDDD3;
+    --blue:#1A4FFF; --navy:#0B1F5B; --blue-tint:#EEF2FF; --gold:#FFCB05; --gold-deep:#B8860B;
+    --green:#0E9F6E; --red:#D64545; --todo:#FFF6D6;
+    --font-display:'Bebas Neue',sans-serif; --font-body:'DM Sans',system-ui,sans-serif; --font-mono:'Space Mono',monospace;
+    --shadow-md:0 12px 32px rgba(11,31,91,0.10); --ease:cubic-bezier(0.4,0,0.2,1); --container:1180px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; padding-bottom:110px; }
+  a { color:var(--blue); text-decoration:none; }
+  .wrap { max-width:var(--container); margin:0 auto; padding:0 32px; }
+  :focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
+
+  header.bar { border-bottom:1px solid var(--line); background:var(--surface); position:sticky; top:0; z-index:50; }
+  .bar-inner { max-width:var(--container); margin:0 auto; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .bar-inner .id { display:flex; align-items:center; gap:12px; }
+  .bar-inner img { height:36px; }
+  .bar-inner .id b { font-family:var(--font-display); font-size:1.3rem; letter-spacing:0.08em; font-weight:400; }
+  .bar-inner .id .sub { font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); display:block; }
+  .bar-right { display:flex; align-items:center; gap:16px; }
+  .conn { display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); }
+  .conn .dot { width:9px; height:9px; border-radius:50%; background:var(--mute); }
+  .conn.ok .dot { background:var(--green); } .conn.ok { color:var(--green); }
+  .conn.err .dot { background:var(--red); } .conn.err { color:var(--red); }
+  .bar-right a.back { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+
+  .admin-nav { display:flex; gap:6px; margin:22px 0 0; flex-wrap:wrap; }
+  .admin-nav a { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); border:1px solid var(--line-2); padding:7px 14px; }
+  .admin-nav a.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+  h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.2rem,5.5vw,3.2rem); letter-spacing:0.02em; line-height:0.95; margin:22px 0 10px; }
+  .lead { color:var(--slate); font-size:1.02rem; line-height:1.6; max-width:70ch; }
+  .sec-label { font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); display:flex; align-items:center; gap:10px; margin:36px 0 16px; }
+  .sec-label::before { content:''; width:22px; height:2px; background:var(--gold); }
+  .step-n { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:var(--blue); color:#fff; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; border-radius:50%; flex-shrink:0; }
+
+  .panel { background:var(--surface); border:1px solid var(--line); padding:22px 24px; }
+  .connect-row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+  .field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .field > label, .flabel { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); }
+  .field > label .opt { color:var(--mute); text-transform:none; letter-spacing:0.04em; }
+  .field input, .field select, .field textarea {
+    padding:10px 12px; border:1px solid var(--line-2); background:var(--surface); font-family:var(--font-body); font-size:0.94rem; color:var(--ink); width:100%;
+  }
+  .field textarea { min-height:96px; resize:vertical; line-height:1.55; }
+  .field textarea.tall { min-height:180px; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(26,79,255,0.12); }
+  .field .is-todo { background:var(--todo); border-color:#E9CF6B; }
+  .field .bad-input { border-color:var(--red); }
+  .field .hint { font-size:0.8rem; color:var(--mute); line-height:1.45; }
+  .field.grow { flex:1; min-width:240px; }
+  #connect-panel .field input { font-family:var(--font-mono); font-size:0.82rem; }
+  details.help { margin-top:14px; }
+  details.help summary { cursor:pointer; font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); }
+  details.help ol { margin:14px 0 4px 20px; color:var(--slate); font-size:0.92rem; line-height:1.7; }
+  details.help code { font-family:var(--font-mono); font-size:0.82rem; background:var(--raise); padding:2px 6px; color:var(--navy); }
+  .adv { margin-top:12px; display:none; gap:12px; flex-wrap:wrap; }
+  .adv.show { display:flex; }
+  .adv-toggle { background:none; border:none; cursor:pointer; font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); margin-top:12px; padding:0; }
+
+  .btn { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:12px 22px; cursor:pointer; border:none; transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease); display:inline-flex; align-items:center; gap:8px; justify-content:center; }
+  .btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .btn-primary { background:var(--blue); color:#fff; clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px)); }
+  .btn-primary:not(:disabled):hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(26,79,255,0.28); }
+  .btn-gold { background:var(--gold); color:var(--navy); }
+  .btn-gold:not(:disabled):hover { background:var(--navy); color:#fff; transform:translateY(-2px); }
+  .btn-ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line-2); }
+  .btn-ghost:not(:disabled):hover { border-color:var(--blue); color:var(--blue); }
+  .btn-danger { background:transparent; color:var(--red); border:1.5px solid #F0C4C4; }
+  .btn-danger:not(:disabled):hover { background:var(--red); color:#fff; border-color:var(--red); }
+  .btn-sm { padding:8px 14px; font-size:0.62rem; }
+  .mini-btn { background:none; border:1px solid var(--line-2); font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--slate); padding:6px 12px; cursor:pointer; }
+  .mini-btn:hover:not(:disabled) { border-color:var(--blue); color:var(--blue); }
+  .mini-btn.del:hover:not(:disabled) { border-color:var(--red); color:var(--red); }
+  .mini-btn:disabled { opacity:0.35; cursor:not-allowed; }
+
+  /* Tabs */
+  .tabs { display:flex; gap:0; border-bottom:2px solid var(--line); margin-top:8px; flex-wrap:wrap; }
+  .tab { background:none; border:none; cursor:pointer; padding:12px 20px; font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); border-bottom:3px solid transparent; margin-bottom:-2px; }
+  .tab[aria-selected="true"] { color:var(--navy); border-bottom-color:var(--gold); font-weight:700; }
+  .tab .badge-n { display:inline-block; min-width:20px; padding:1px 6px; margin-left:6px; background:var(--raise); color:var(--slate); font-size:0.6rem; border-radius:10px; }
+  .tabpanel { padding-top:22px; }
+  .empty { border:1px dashed var(--line-2); background:var(--surface); padding:26px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.72rem; line-height:1.6; }
+
+  /* Restaurants: list + editor */
+  .r-shell { display:grid; grid-template-columns:320px minmax(0,1fr); gap:22px; align-items:start; }
+  @media (max-width:900px) { .r-shell { grid-template-columns:1fr; } }
+  .r-side { background:var(--surface); border:1px solid var(--line); position:sticky; top:84px; }
+  @media (max-width:900px) { .r-side { position:static; } }
+  .r-side-head { padding:14px; border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
+  .r-side-head .row { display:flex; gap:8px; }
+  .r-side-head input, .r-side-head select { padding:9px 10px; border:1px solid var(--line-2); font-family:var(--font-body); font-size:0.88rem; width:100%; background:var(--surface); }
+  .r-list { list-style:none; max-height:62vh; overflow:auto; }
+  @media (max-width:900px) { .r-list { max-height:300px; } }
+  .r-item { width:100%; text-align:left; background:none; border:none; border-bottom:1px solid var(--line); padding:11px 14px; cursor:pointer; font:inherit; display:flex; gap:10px; align-items:center; }
+  .r-item:hover { background:var(--raise); }
+  .r-item[aria-current="true"] { background:var(--blue-tint); box-shadow:inset 3px 0 0 var(--blue); }
+  .r-item .nm { font-weight:600; font-size:0.93rem; color:var(--ink); display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .r-item .mt { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); display:block; margin-top:2px; }
+  .r-item .txt { min-width:0; flex:1; }
+  .pill { font-family:var(--font-mono); font-size:0.52rem; letter-spacing:0.08em; text-transform:uppercase; padding:3px 7px; flex-shrink:0; }
+  .pill.featured { background:#FFF0B3; color:#6B4E00; }
+  .pill.listed { background:var(--raise); color:var(--slate); }
+  .pill.err { background:#FDE8E8; color:var(--red); }
+  .pill.new { background:#E3F8EF; color:var(--green); }
+  .r-count { padding:10px 14px; font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); }
+
+  .ed { background:var(--surface); border:1px solid var(--line); }
+  .ed-head { padding:18px 22px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .ed-head h2 { font-family:var(--font-display); font-weight:400; font-size:1.9rem; letter-spacing:0.03em; line-height:1; }
+  .ed-head .acts { display:flex; gap:8px; flex-wrap:wrap; }
+  .ed-body { padding:6px 22px 24px; }
+  fieldset.grp { border:none; border-top:1px solid var(--line); padding:20px 0 4px; margin-top:16px; }
+  fieldset.grp:first-child { border-top:none; margin-top:0; }
+  fieldset.grp > legend { font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); padding:0; margin-bottom:4px; float:left; width:100%; }
+  fieldset.grp > legend + * { clear:both; }
+  .grp-note { font-size:0.86rem; color:var(--slate); line-height:1.55; margin:4px 0 14px; clear:both; }
+  .grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px 16px; margin-top:12px; }
+  .grid.three { grid-template-columns:repeat(3, minmax(0,1fr)); }
+  .grid .span2 { grid-column:span 2; }
+  .grid .span3 { grid-column:1 / -1; }
+  @media (max-width:640px) { .grid, .grid.three { grid-template-columns:1fr; } .grid .span2 { grid-column:auto; } }
+  .inline { display:flex; gap:8px; align-items:flex-end; }
+  .inline .field { flex:1; }
+
+  .errors { background:#FDF1F1; border:1px solid #F2C9C9; border-left:4px solid var(--red); padding:12px 16px; margin:16px 0 0; font-size:0.88rem; color:#8A1F1F; line-height:1.55; }
+  .errors ul { margin:6px 0 0 18px; }
+  .todo-note { background:var(--todo); border:1px solid #E9CF6B; padding:10px 14px; margin-top:16px; font-size:0.86rem; color:#6B4E00; line-height:1.5; }
+
+  /* Images */
+  .img-slot { display:grid; grid-template-columns:160px 1fr; gap:14px; align-items:start; margin-top:12px; }
+  .img-slot.round { grid-template-columns:120px 1fr; }
+  @media (max-width:520px) { .img-slot, .img-slot.round { grid-template-columns:1fr; } }
+  .img-box { position:relative; width:100%; aspect-ratio:3/2; background:var(--blue-tint); border:1px dashed #B9C6F5; display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); text-align:center; padding:6px; }
+  .img-slot.round .img-box { aspect-ratio:1; border-radius:50%; max-width:140px; }
+  .img-box img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .img-box input { position:absolute; width:1px; height:1px; opacity:0; }
+  .img-box:focus-within { outline:2px solid var(--blue); outline-offset:2px; }
+  .img-box.drag { background:#DCE5FF; border-color:var(--blue); }
+  .img-side { display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .img-side .btns { display:flex; gap:6px; flex-wrap:wrap; }
+  .gallery { display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:14px; margin-top:12px; }
+  .g-item { border:1px solid var(--line); background:var(--paper); padding:8px; display:flex; flex-direction:column; gap:8px; }
+  .g-item .img-box { cursor:default; }
+  .g-item textarea { min-height:56px; font-size:0.85rem; }
+  .g-item .btns { display:flex; gap:4px; }
+  .g-add { border:1px dashed #B9C6F5; background:var(--blue-tint); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; min-height:160px; cursor:pointer; font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); text-align:center; padding:12px; position:relative; }
+  .g-add input { position:absolute; width:1px; height:1px; opacity:0; }
+  .g-add:focus-within { outline:2px solid var(--blue); outline-offset:2px; }
+  .g-add.drag { background:#DCE5FF; border-color:var(--blue); }
+  .busy { font-family:var(--font-mono); font-size:0.62rem; color:var(--mute); }
+
+  /* Dinners */
+  .d-card { background:var(--surface); border:1px solid var(--line); padding:18px 20px; margin-bottom:14px; }
+  .d-card.upcoming { border-left:4px solid var(--gold); }
+  .d-card .d-top { display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; }
+  .d-card .d-top b { font-weight:600; }
+
+  .publish { position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(11,31,91,0.06); z-index:40; }
+  .publish-inner { max-width:var(--container); margin:0 auto; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .publish .summary { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.04em; color:var(--slate); line-height:1.5; }
+  .publish .summary b { color:var(--ink); }
+  .publish .summary .bad { color:var(--red); }
+  .log { margin-top:18px; border:1px solid var(--line-2); background:#0d0f14; color:#cfe3ff; font-family:var(--font-mono); font-size:0.72rem; line-height:1.7; padding:16px 18px; max-height:240px; overflow:auto; display:none; white-space:pre-wrap; }
+  .log.show { display:block; }
+  .log .ok { color:#7fe0b0; } .log .err { color:#ff9d9d; } .log .dim { color:#7d90b8; }
+  .toast { position:fixed; left:50%; bottom:92px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.06em; padding:13px 22px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:200; max-width:90vw; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .visually-hidden { position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  @media (max-width:560px) { .wrap, .bar-inner, .publish-inner { padding-left:16px; padding-right:16px; } .ed-body { padding:4px 14px 20px; } .ed-head { padding:16px 14px; } .bar-right a.back { display:none; } }
+</style>
+</head>
+<body>
+
+  <header class="bar">
+    <div class="bar-inner">
+      <div class="id">
+        <img src="../assets/global-shapers-pittsburgh-logo.png" alt="Global Shapers Pittsburgh">
+        <div><b>CulturePGH Admin</b><span class="sub">Guide &amp; Dinners Manager</span></div>
+      </div>
+      <div class="bar-right">
+        <div class="conn" id="conn"><span class="dot"></span><span id="conn-text">Not connected</span></div>
+        <a class="back" href="../culturepgh/" target="_blank" rel="noopener">View CulturePGH →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="admin-nav" aria-label="Admin tools">
+      <a href="photos.html">Photos &amp; Roster</a>
+      <a href="events.html">Events</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="projects.html">Projects</a>
+      <a href="shapers.html">Shaper Links</a>
+      <a href="culturepgh.html" class="active" aria-current="page">CulturePGH</a>
+    </nav>
+    <h1>CULTUREPGH MANAGER</h1>
+    <p class="lead">Add and edit restaurants in the guide, upload owner headshots and food photos, schedule dinners, and set the Instagram handle. Changes stay in this browser tab until you hit <b>Publish</b>, then they go live on the site in about a minute.</p>
+
+    <div class="sec-label"><span class="step-n">1</span> Connect to the website</div>
+    <div class="panel" id="connect-panel">
+      <div class="connect-row">
+        <div class="field grow">
+          <label for="token">GitHub access token</label>
+          <input type="password" id="token" placeholder="github_pat_… (stored only in this browser)" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btn btn-primary" id="connect" type="button">Connect</button>
+        <button class="btn btn-ghost" id="forget" type="button" hidden>Forget token</button>
+      </div>
+      <button class="adv-toggle" id="adv-toggle" type="button" aria-expanded="false" aria-controls="adv">▸ Repository settings</button>
+      <div class="adv" id="adv">
+        <div class="field"><label for="owner">Owner</label><input type="text" id="owner" value="oaklandflyer"></div>
+        <div class="field"><label for="repo">Repository</label><input type="text" id="repo" value="pittsburgh-shapers-website"></div>
+        <div class="field"><label for="branch">Branch</label><input type="text" id="branch" value="main"></div>
+      </div>
+      <details class="help">
+        <summary>How do I get a token? (one time, ~2 minutes)</summary>
+        <ol>
+          <li>Go to <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> (Fine-grained tokens).</li>
+          <li><b>Resource owner:</b> <code>oaklandflyer</code>. <b>Repository access:</b> Only select repositories → <code>pittsburgh-shapers-website</code>.</li>
+          <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → <b>Read and write</b>.</li>
+          <li>Generate the token (starts with <code>github_pat_</code>) and paste it above. It's saved only in this browser, and the other admin tools share it.</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="sec-label"><span class="step-n">2</span> Edit</div>
+    <div class="tabs" role="tablist" aria-label="What to edit">
+      <button class="tab" role="tab" id="tab-r" aria-controls="panel-r" aria-selected="true" type="button">Restaurants <span class="badge-n" id="n-r">0</span></button>
+      <button class="tab" role="tab" id="tab-d" aria-controls="panel-d" aria-selected="false" type="button" tabindex="-1">Dinners <span class="badge-n" id="n-d">0</span></button>
+      <button class="tab" role="tab" id="tab-s" aria-controls="panel-s" aria-selected="false" type="button" tabindex="-1">Settings</button>
+    </div>
+
+    <section class="tabpanel" role="tabpanel" id="panel-r" aria-labelledby="tab-r">
+      <div id="r-root"><div class="empty">Connect above to load the restaurant guide.</div></div>
+    </section>
+    <section class="tabpanel" role="tabpanel" id="panel-d" aria-labelledby="tab-d" hidden>
+      <div id="d-root"><div class="empty">Connect above to load dinners.</div></div>
+    </section>
+    <section class="tabpanel" role="tabpanel" id="panel-s" aria-labelledby="tab-s" hidden>
+      <div id="s-root"><div class="empty">Connect above to load settings.</div></div>
+    </section>
+
+    <div class="log" id="log" aria-live="polite"></div>
+  </main>
+
+  <div class="publish">
+    <div class="publish-inner">
+      <div class="summary" id="summary" aria-live="polite">Connect a token to start.</div>
+      <span style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" id="discard" type="button" disabled>Discard changes</button>
+        <button class="btn btn-gold" id="publish" type="button" disabled>▲ Publish to website</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------------------------------------------------------------------------
+  // Config
+  // ---------------------------------------------------------------------------
+  var LS_TOKEN = 'gs_photo_token', LS_REPO = 'gs_photo_repo';   // shared with the other admin tools
+  var F_GUIDE = 'culturepgh/restaurants.json';
+  var F_DINNERS = 'culturepgh/dinners.json';
+  var F_SETTINGS = 'culturepgh/settings.json';
+  var IMG_ROOT = 'assets/culturepgh/';
+  var PLACEHOLDER = 'assets/culturepgh/placeholder-TODO.svg';
+  var SIZES = { hero: 1600, gallery: 1600, headshot: 600, dinner: 1600 };
+  var JPG_Q = 0.82;
+  var DASH_RE = /[—–]/;   // em and en dashes: house style says none in site copy
+
+  // ---------------------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------------------
+  var S = {
+    connected: false, loaded: false, publishing: false,
+    guide: null,          // top-level object from restaurants.json (minus the list)
+    rs: [],               // [{ uid, d: entryObject, isNew, slugTouched }]
+    dinnersDoc: null, ds: [],
+    settings: null,
+    sel: null,            // uid of selected restaurant
+    filter: { q: '', status: '' },
+    dirty: { guide: false, dinners: false, settings: false },
+    uploads: {},          // repo path -> Blob (new images, not yet published)
+    previews: {},         // repo path -> object URL
+    deletes: {},          // repo path -> true (published images no longer used)
+    busy: 0,              // images being processed
+    snapshot: null        // JSON of what was loaded, for Discard
+  };
+  var uid = 0;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var E = {
+    token: $('token'), connect: $('connect'), forget: $('forget'), owner: $('owner'), repo: $('repo'), branch: $('branch'),
+    adv: $('adv'), advToggle: $('adv-toggle'), conn: $('conn'), connText: $('conn-text'),
+    rRoot: $('r-root'), dRoot: $('d-root'), sRoot: $('s-root'),
+    publish: $('publish'), discard: $('discard'), summary: $('summary'), log: $('log'), toast: $('toast')
+  };
+
+  // ---------------------------------------------------------------------------
+  // Small helpers
+  // ---------------------------------------------------------------------------
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function toast(msg) { E.toast.textContent = msg; E.toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { E.toast.classList.remove('show'); }, 2800); }
+  function slugify(s) { return String(s || '').toLowerCase().replace(/'/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+  function isTodo(v) { return typeof v === 'string' && /^\s*TODO\b/i.test(v); }
+  function blank(v) { return v == null || (typeof v === 'string' && (!v.trim() || isTodo(v))); }
+  function rand() { return Math.random().toString(36).slice(2, 7); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function byUid(id) { return S.rs.filter(function (r) { return r.uid === id; })[0]; }
+  function get(o, path) { return path.split('.').reduce(function (a, k) { return a == null ? undefined : a[k]; }, o); }
+  function set(o, path, v) {
+    var ks = path.split('.'), last = ks.pop();
+    ks.forEach(function (k) { if (o[k] == null || typeof o[k] !== 'object') o[k] = {}; o = o[k]; });
+    o[last] = v;
+  }
+  function imgUrl(path) {
+    if (!path) return '';
+    if (S.previews[path]) return S.previews[path];
+    if (/^https?:\/\//i.test(path)) return path;
+    return '../' + path.replace(/^\/+/, '') + (S.bust ? '?v=' + S.bust : '');
+  }
+  function markDirty(which) { S.dirty[which] = true; updateBar(); }
+  function anyDirty() { return S.dirty.guide || S.dirty.dinners || S.dirty.settings; }
+
+  // Drop a no-longer-used image: forget pending uploads, schedule published ones for deletion.
+  function releaseImage(path) {
+    if (!path || typeof path !== 'string') return;
+    if (S.uploads[path]) {
+      delete S.uploads[path];
+      if (S.previews[path]) { URL.revokeObjectURL(S.previews[path]); delete S.previews[path]; }
+    } else if (path.indexOf(IMG_ROOT) === 0 && path !== PLACEHOLDER) {
+      S.deletes[path] = true;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Image processing (resize + JPEG in the browser, strips EXIF/location data)
+  // ---------------------------------------------------------------------------
+  function loadViaImg(file) { return new Promise(function (res, rej) { var url = URL.createObjectURL(file), img = new Image(); img.onload = function () { URL.revokeObjectURL(url); res(img); }; img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('decode failed')); }; img.src = url; }); }
+  function optimize(file, maxEdge) {
+    var p = ('createImageBitmap' in window) ? createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return loadViaImg(file); }) : loadViaImg(file);
+    return p.then(function (bmp) {
+      var w = bmp.width, h = bmp.height, k = Math.min(1, maxEdge / Math.max(w, h));
+      var c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
+      var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(bmp, 0, 0, c.width, c.height);
+      if (bmp.close) bmp.close();
+      return new Promise(function (res, rej) { c.toBlob(function (b) { b ? res(b) : rej(new Error('encode failed')); }, 'image/jpeg', JPG_Q); });
+    });
+  }
+  // Process a file and register it as a pending upload at a fresh path. Calls done(path).
+  function takeImage(file, folder, base, maxEdge, done) {
+    if (!file || !/^image\//.test(file.type)) { toast('Choose an image file (JPG, PNG, HEIC, WEBP)'); return; }
+    S.busy++; updateBar();
+    optimize(file, maxEdge).then(function (blob) {
+      var path = IMG_ROOT + folder + '/' + base + '-' + rand() + '.jpg';
+      S.uploads[path] = blob; S.previews[path] = URL.createObjectURL(blob);
+      S.busy--; done(path);
+    }).catch(function () { S.busy--; updateBar(); toast('Could not read that image. Try a JPG or PNG.'); });
+  }
+  function folderFor(r) { return slugify(r.d.slug) || ('new-' + r.uid); }
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+  function dashFields(obj, prefix, out) {
+    Object.keys(obj || {}).forEach(function (k) {
+      if (k.charAt(0) === '_') return;
+      var v = obj[k], p = prefix ? prefix + '.' + k : k;
+      if (typeof v === 'string' && DASH_RE.test(v)) out.push(p);
+      else if (v && typeof v === 'object') dashFields(v, p, out);
+    });
+    return out;
+  }
+  function restaurantErrors(r) {
+    var d = r.d, errs = [];
+    if (blank(d.name)) errs.push('Name is required.');
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(d.slug || '')) errs.push('URL slug must be lowercase letters, numbers, and single hyphens.');
+    else if (S.rs.some(function (o) { return o !== r && o.d.slug === d.slug; })) errs.push('Another restaurant already uses the slug "' + d.slug + '".');
+    var hasLat = d.lat != null, hasLng = d.lng != null;
+    if (hasLat !== hasLng) errs.push('Fill in both latitude and longitude, or neither.');
+    if (hasLat && (typeof d.lat !== 'number' || d.lat < 39 || d.lat > 42)) errs.push('Latitude should be a number near 40.4 (Pittsburgh).');
+    if (hasLng && (typeof d.lng !== 'number' || d.lng < -82 || d.lng > -78)) errs.push('Longitude should be a negative number near -80.0 (Pittsburgh).');
+    if (!blank(d.website) && !/^https?:\/\//i.test(d.website)) errs.push('Website must start with https://');
+    if (d.heroImage && d.heroImage.src && blank(d.heroImage.alt)) errs.push('Main photo needs a description (alt text).');
+    (d.gallery || []).forEach(function (g, i) { if (blank(g.alt)) errs.push('Gallery photo ' + (i + 1) + ' needs a description (alt text).'); });
+    var dash = dashFields(d, '', []);
+    if (dash.length) errs.push('Replace em/en dashes (— or –) with a comma, period, or hyphen in: ' + dash.join(', ') + '.');
+    return errs;
+  }
+  function dinnerErrors(x, i) {
+    var errs = [];
+    if (x.date && !/^\d{4}-\d{2}-\d{2}$/.test(x.date)) errs.push('Dinner ' + (i + 1) + ': date must be a full date.');
+    if (!blank(x.ticketUrl) && !/^https?:\/\//i.test(x.ticketUrl)) errs.push('Dinner ' + (i + 1) + ': ticket link must start with https://');
+    if (x.photo && x.photo.src && blank(x.photo.alt)) errs.push('Dinner ' + (i + 1) + ': photo needs a description (alt text).');
+    var dash = dashFields(x, '', []);
+    if (dash.length) errs.push('Dinner ' + (i + 1) + ': replace em/en dashes in ' + dash.join(', ') + '.');
+    return errs;
+  }
+  function allErrors() {
+    var out = [];
+    S.rs.forEach(function (r) { restaurantErrors(r).forEach(function (e) { out.push((r.d.name || 'Untitled') + ': ' + e); }); });
+    S.ds.forEach(function (x, i) { out = out.concat(dinnerErrors(x.d, i)); });
+    if (S.settings && !blank(S.settings.instagram) && !/^@?[A-Za-z0-9._]{1,30}$/.test(S.settings.instagram.trim())) out.push('Settings: Instagram handle can only contain letters, numbers, periods, and underscores.');
+    return out;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Restaurants tab
+  // ---------------------------------------------------------------------------
+  function typeKeys() { return Object.keys((S.guide && S.guide.types) || {}); }
+  function typeLabel(t) { return ((S.guide && S.guide.types) || {})[t] || t; }
+  function distinct(field) {
+    var m = {}; S.rs.forEach(function (r) { var v = r.d[field]; if (!blank(v)) m[v] = 1; });
+    return Object.keys(m).sort();
+  }
+  function cuisineGroups() {
+    var list = ((S.guide && S.guide.cuisineGroups) || []).slice();
+    distinct('cuisineGroup').forEach(function (g) { if (list.indexOf(g) === -1) list.push(g); });
+    return list;
+  }
+
+  function renderRestaurants() {
+    if (!S.loaded) { E.rRoot.innerHTML = '<div class="empty">Connect above to load the restaurant guide.</div>'; return; }
+    E.rRoot.innerHTML =
+      '<div class="r-shell">' +
+        '<aside class="r-side" aria-label="Restaurant list">' +
+          '<div class="r-side-head">' +
+            '<button class="btn btn-primary" type="button" id="r-add">+ Add restaurant</button>' +
+            '<label class="visually-hidden" for="r-q">Search restaurants</label>' +
+            '<input id="r-q" type="search" placeholder="Search by name, cuisine, neighborhood" value="' + esc(S.filter.q) + '">' +
+            '<label class="visually-hidden" for="r-st">Filter by status</label>' +
+            '<select id="r-st"><option value="">All statuses</option><option value="featured">Featured partners</option><option value="listed">On our radar</option><option value="issues">Needs fixing</option></select>' +
+          '</div>' +
+          '<ul class="r-list" id="r-list"></ul>' +
+          '<div class="r-count" id="r-count"></div>' +
+        '</aside>' +
+        '<div id="r-editor"></div>' +
+      '</div>';
+    $('r-st').value = S.filter.status;
+    $('r-add').addEventListener('click', addRestaurant);
+    $('r-q').addEventListener('input', function (e) { S.filter.q = e.target.value; renderList(); });
+    $('r-st').addEventListener('change', function (e) { S.filter.status = e.target.value; renderList(); });
+    renderList(); renderEditor();
+  }
+
+  function renderList() {
+    var ul = $('r-list'); if (!ul) return;
+    var q = S.filter.q.trim().toLowerCase();
+    var shown = S.rs.slice().sort(function (a, b) {
+      if (a.isNew !== b.isNew) return a.isNew ? -1 : 1;
+      return String(a.d.name || '').localeCompare(String(b.d.name || ''));
+    }).filter(function (r) {
+      var d = r.d;
+      if (S.filter.status === 'issues' && !restaurantErrors(r).length) return false;
+      if ((S.filter.status === 'featured' || S.filter.status === 'listed') && d.status !== S.filter.status) return false;
+      if (!q) return true;
+      return [d.name, d.cuisine, d.cuisineGroup, d.neighborhood, d.owner && d.owner.name].join(' ').toLowerCase().indexOf(q) !== -1;
+    });
+    ul.innerHTML = shown.length ? '' : '<li class="empty" style="border:none">No matches.</li>';
+    shown.forEach(function (r) {
+      var d = r.d, bad = restaurantErrors(r).length;
+      var li = document.createElement('li');
+      var meta = [d.cuisine, d.neighborhood].filter(function (v) { return !blank(v); }).join(' · ');
+      li.innerHTML = '<button type="button" class="r-item"' + (S.sel === r.uid ? ' aria-current="true"' : '') + '>' +
+        '<span class="txt"><span class="nm">' + esc(d.name || 'Untitled restaurant') + '</span><span class="mt">' + esc(meta || 'No details yet') + '</span></span>' +
+        (bad ? '<span class="pill err" title="Needs fixing before publish">Fix</span>' : '') +
+        (r.isNew ? '<span class="pill new">New</span>' : '') +
+        '<span class="pill ' + (d.status === 'featured' ? 'featured">Featured' : 'listed">Radar') + '</span></button>';
+      li.firstChild.addEventListener('click', function () { S.sel = r.uid; renderList(); renderEditor(); var ed = $('r-editor'); if (window.innerWidth < 900 && ed) ed.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+      ul.appendChild(li);
+    });
+    $('r-count').textContent = shown.length === S.rs.length ? S.rs.length + ' places' : shown.length + ' of ' + S.rs.length + ' places';
+    $('n-r').textContent = S.rs.length;
+  }
+
+  function addRestaurant() {
+    var r = { uid: ++uid, isNew: true, slugTouched: false, d: {
+      slug: '', name: '', status: 'listed', tier: null, type: 'restaurant', cuisine: '', cuisineGroup: '', neighborhood: '',
+      address: '', lat: null, lng: null, website: '', instagram: '', blurb: '', owner: null, story: '', heroImage: null, gallery: [] } };
+    S.rs.push(r); S.sel = r.uid; S.filter.q = ''; S.filter.status = '';
+    markDirty('guide'); renderRestaurants();
+    var n = $('f-name'); if (n) n.focus();
+  }
+
+  function deleteRestaurant(r) {
+    if (!confirm('Remove ' + (r.d.name || 'this restaurant') + ' from the guide? Its photos will be deleted when you publish. Any dinner linked to it will lose the link.')) return;
+    releaseImage(r.d.heroImage && r.d.heroImage.src);
+    releaseImage(r.d.owner && r.d.owner.headshot);
+    (r.d.gallery || []).forEach(function (g) { releaseImage(g.src); });
+    S.rs = S.rs.filter(function (x) { return x !== r; });
+    S.ds.forEach(function (x) { if (x.d.restaurant === r.d.slug) { x.d.restaurant = ''; markDirty('dinners'); } });
+    S.sel = null; markDirty('guide'); renderRestaurants(); toast('Removed. Publish to make it final.');
+  }
+
+  // Field builders. Each input carries data-k (the JSON path) and data-t (type).
+  function fText(id, k, label, val, opts) {
+    opts = opts || {};
+    var classes = [opts.tall ? 'tall' : '', isTodo(val) ? 'is-todo' : ''].filter(Boolean).join(' ');
+    var cls = classes ? ' class="' + classes + '"' : '';
+    var input = opts.area
+      ? '<textarea id="' + id + '" data-k="' + k + '"' + cls + ' placeholder="' + esc(opts.ph || '') + '">' + esc(val == null ? '' : val) + '</textarea>'
+      : '<input id="' + id + '" type="' + (opts.type || 'text') + '" data-k="' + k + '"' + (opts.t ? ' data-t="' + opts.t + '"' : '') + (opts.list ? ' list="' + opts.list + '"' : '') + (opts.inputmode ? ' inputmode="' + opts.inputmode + '"' : '') + cls + ' value="' + esc(val == null ? '' : val) + '" placeholder="' + esc(opts.ph || '') + '"' + (opts.auto ? ' autocomplete="' + opts.auto + '"' : ' autocomplete="off"') + '>';
+    return '<div class="field' + (opts.span ? ' ' + opts.span : '') + '"><label for="' + id + '">' + label + (opts.opt ? ' <span class="opt">(optional)</span>' : '') + '</label>' + input +
+      (opts.hint ? '<div class="hint" id="' + id + '-hint">' + opts.hint + '</div>' : '') + '</div>';
+  }
+  function fSelect(id, k, label, val, options, opts) {
+    opts = opts || {};
+    return '<div class="field' + (opts.span ? ' ' + opts.span : '') + '"><label for="' + id + '">' + label + '</label><select id="' + id + '" data-k="' + k + '"' + (opts.t ? ' data-t="' + opts.t + '"' : '') + '>' +
+      options.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (String(val == null ? '' : val) === String(o[0]) ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') +
+      '</select>' + (opts.hint ? '<div class="hint">' + opts.hint + '</div>' : '') + '</div>';
+  }
+  function imageSlot(id, path, alt, label, opts) {
+    opts = opts || {};
+    var url = imgUrl(path);
+    return '<div class="img-slot' + (opts.round ? ' round' : '') + '">' +
+      '<label class="img-box" id="' + id + '-box" data-drop="' + id + '">' + (url ? '<img src="' + esc(url) + '" alt="">' : (opts.empty || 'Upload photo')) +
+        '<input type="file" accept="image/*" id="' + id + '-file" aria-label="' + esc((url ? 'Replace ' : 'Upload ') + label) + '"></label>' +
+      '<div class="img-side">' +
+        (opts.altKey ? fText(id + '-alt', opts.altKey, 'Describe the photo (alt text)', alt, { area: true, ph: 'e.g. A plate of chili momo with tomato achar', hint: 'Read aloud by screen readers. Say what\'s in the picture.' }) : '') +
+        '<div class="btns">' +
+          '<button type="button" class="mini-btn" data-pick="' + id + '">' + (url ? 'Replace' : 'Choose file') + '</button>' +
+          (path ? '<button type="button" class="mini-btn del" data-clear="' + id + '">Remove</button>' : '') +
+        '</div>' +
+        (opts.note ? '<div class="hint">' + opts.note + '</div>' : '') +
+      '</div></div>';
+  }
+
+  function renderEditor() {
+    var host = $('r-editor'); if (!host) return;
+    var r = byUid(S.sel);
+    if (!r) {
+      host.innerHTML = '<div class="empty">Pick a restaurant from the list to edit it, or add a new one.<br><br>' +
+        '<b>Featured partner</b>: we\'ve visited, gathered photos, and the owner agreed to take part.<br><b>On our radar</b>: a place we like that hasn\'t partnered with us.</div>';
+      return;
+    }
+    var d = r.d, owner = d.owner || {}, errs = restaurantErrors(r);
+    var hasTodo = JSON.stringify(d).indexOf('"TODO') !== -1;
+    var tiers = [['', 'Not signed up'], ['1', '1. Listed in the guide'], ['2', '2. Full feature'], ['3', '3. Hosts a dinner']];
+    var types = typeKeys().map(function (t) { return [t, typeLabel(t)]; });
+    var groups = [['', 'Choose a group']].concat(cuisineGroups().map(function (g) { return [g, g]; }));
+    if (!blank(d.cuisineGroup) && cuisineGroups().indexOf(d.cuisineGroup) === -1) groups.push([d.cuisineGroup, d.cuisineGroup]);
+    if (isTodo(d.cuisineGroup)) groups.push([d.cuisineGroup, d.cuisineGroup]);
+
+    host.innerHTML =
+      '<div class="ed">' +
+        '<div class="ed-head"><h2>' + esc(d.name || 'New restaurant') + '</h2><div class="acts">' +
+          (r.isNew ? '' : '<a class="btn btn-ghost btn-sm" target="_blank" rel="noopener" href="../culturepgh/restaurant/?slug=' + encodeURIComponent(d.slug) + '">View live page ↗</a>') +
+          '<button type="button" class="btn btn-danger btn-sm" id="r-del">Remove</button></div></div>' +
+        '<div class="ed-body" id="ed-body">' +
+          (errs.length ? '<div class="errors" role="alert"><b>Fix before publishing:</b><ul>' + errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('') + '</ul></div>' : '') +
+          (hasTodo ? '<div class="todo-note">Fields highlighted in yellow still hold <b>TODO</b> placeholder text. The site hides them until you replace them.</div>' : '') +
+
+          '<fieldset class="grp"><legend>Basics</legend><div class="grid">' +
+            fText('f-name', 'name', 'Name', d.name, { ph: 'e.g. Himali Kitchen' }) +
+            fText('f-slug', 'slug', 'URL slug', d.slug, { ph: 'himali-kitchen', hint: r.isNew ? 'Fills in from the name. Page will be /culturepgh/restaurant/?slug=' + esc(d.slug || '…') : 'Changing this breaks links people have already shared.' }) +
+            fSelect('f-status', 'status', 'Status', d.status, [['listed', 'On our radar (not a partner)'], ['featured', 'Featured partner']], { hint: 'Only featured partners get the partner badge.' }) +
+            fSelect('f-tier', 'tier', 'Participation tier', d.tier == null ? '' : d.tier, tiers, { t: 'int', hint: 'For our records. Not shown on the site.' }) +
+            fSelect('f-type', 'type', 'Type', d.type, types, {}) +
+            fText('f-blurb', 'blurb', 'One-line blurb', d.blurb, { opt: true, ph: 'Shown on the guide card', span: '' }) +
+          '</div></fieldset>' +
+
+          '<fieldset class="grp"><legend>Cuisine</legend><div class="grid">' +
+            fText('f-cuisine', 'cuisine', 'Specific cuisine', d.cuisine, { ph: 'e.g. Nepali', list: 'dl-cuisine', hint: 'Shown on cards and the profile.' }) +
+            fSelect('f-group', 'cuisineGroup', 'Filter group', d.cuisineGroup, groups, { hint: 'Used only by the guide\'s Cuisine filter. Add groups in Settings.' }) +
+          '</div></fieldset>' +
+
+          '<fieldset class="grp"><legend>Location &amp; links</legend><div class="grid">' +
+            fText('f-hood', 'neighborhood', 'Neighborhood', d.neighborhood, { list: 'dl-hood', ph: 'e.g. Brentwood', hint: 'Pick an existing one when you can so the filter stays tidy.' }) +
+            fText('f-addr', 'address', 'Street address', d.address, { ph: '3536 Saw Mill Run Blvd, Pittsburgh, PA 15227' }) +
+            '<div class="field span2"><span class="flabel">Map pin</span><div class="inline">' +
+              fText('f-lat', 'lat', 'Latitude', d.lat, { t: 'num', inputmode: 'decimal', ph: '40.44' }) +
+              fText('f-lng', 'lng', 'Longitude', d.lng, { t: 'num', inputmode: 'decimal', ph: '-79.99' }) +
+              '<button type="button" class="btn btn-ghost btn-sm" id="f-geo" style="margin-bottom:1px">Find from address</button>' +
+            '</div><div class="hint" id="geo-hint">Leave both empty to keep it off the map. "Find from address" asks OpenStreetMap; double-check the pin on the live page. You can also right-click the spot in Google Maps and copy the numbers.</div></div>' +
+            fText('f-web', 'website', 'Website', d.website, { opt: true, type: 'url', ph: 'https://' }) +
+            fText('f-ig', 'instagram', 'Instagram', d.instagram, { opt: true, ph: 'handle, without the @' }) +
+          '</div></fieldset>' +
+
+          '<fieldset class="grp"><legend>Owner</legend><p class="grp-note">Leave the name empty to hide the owner section. Without a headshot the page shows their initials; without a bio it says the story is coming soon.</p><div class="grid">' +
+            fText('f-oname', 'owner.name', 'Owner name', owner.name, { opt: true, ph: 'e.g. Tom' }) +
+            '<div class="field"><span class="flabel">Headshot <span class="opt" style="text-transform:none">(optional)</span></span>' +
+              imageSlot('img-head', owner.headshot, '', 'owner headshot', { round: true, empty: 'Headshot', note: 'Square crops work best. Alt text is added automatically from the name.' }) + '</div>' +
+            fText('f-obio', 'owner.bio', 'Owner bio', owner.bio, { area: true, span: 'span2', opt: true, ph: 'How they came to Pittsburgh and what inspires the food. Leave a blank line between paragraphs.' }) +
+          '</div></fieldset>' +
+
+          '<fieldset class="grp"><legend>Story</legend><div class="grid">' +
+            fText('f-story', 'story', 'The restaurant\'s story', d.story, { area: true, tall: true, span: 'span2', opt: true, ph: 'Longer write-up for the profile page. Leave a blank line between paragraphs.' }) +
+          '</div></fieldset>' +
+
+          '<fieldset class="grp"><legend>Photos</legend><p class="grp-note">Photos are resized and compressed in your browser before upload, and location data is stripped. The main photo appears at the top of the profile and on the guide card.</p>' +
+            '<span class="flabel">Main photo</span>' +
+            imageSlot('img-hero', d.heroImage && d.heroImage.src, d.heroImage && d.heroImage.alt, 'main photo', { altKey: 'heroImage.alt', empty: 'Main photo' }) +
+            '<div style="margin-top:22px"><span class="flabel">Food gallery (' + (d.gallery || []).length + ')</span></div>' +
+            '<div class="gallery" id="gal">' +
+              (d.gallery || []).map(function (g, i) {
+                return '<div class="g-item"><div class="img-box"><img src="' + esc(imgUrl(g.src)) + '" alt=""></div>' +
+                  '<div class="field"><label for="g-alt-' + i + '">Photo ' + (i + 1) + ' description</label><textarea id="g-alt-' + i + '" data-k="gallery.' + i + '.alt"' + (blank(g.alt) ? ' class="bad-input"' : '') + ' placeholder="What dish is this?">' + esc(g.alt || '') + '</textarea></div>' +
+                  '<div class="btns"><button type="button" class="mini-btn" data-gmove="' + i + ',-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Move photo ' + (i + 1) + ' earlier">◀</button>' +
+                  '<button type="button" class="mini-btn" data-gmove="' + i + ',1"' + (i === d.gallery.length - 1 ? ' disabled' : '') + ' aria-label="Move photo ' + (i + 1) + ' later">▶</button>' +
+                  '<button type="button" class="mini-btn del" data-gdel="' + i + '">Remove</button></div></div>';
+              }).join('') +
+              '<label class="g-add" data-drop="gal-add">+ Add food photos<br><span style="color:var(--mute);text-transform:none;letter-spacing:0">or drop them here</span><input type="file" accept="image/*" multiple id="gal-file" aria-label="Add food photos"></label>' +
+            '</div>' +
+          '</fieldset>' +
+        '</div>' +
+      '</div>' +
+      '<datalist id="dl-hood">' + distinct('neighborhood').map(function (v) { return '<option value="' + esc(v) + '">'; }).join('') + '</datalist>' +
+      '<datalist id="dl-cuisine">' + distinct('cuisine').map(function (v) { return '<option value="' + esc(v) + '">'; }).join('') + '</datalist>';
+
+    wireEditor(r);
+  }
+
+  function wireEditor(r) {
+    var d = r.d, body = $('ed-body');
+    $('r-del').addEventListener('click', function () { deleteRestaurant(r); });
+
+    function onField(e) {
+      var t = e.target, k = t.dataset.k; if (!k) return;
+      var v = t.value;
+      if (t.dataset.t === 'num') { v = v.trim() === '' ? null : (isFinite(+v) ? +v : v); }
+      else if (t.dataset.t === 'int') { v = v === '' ? null : parseInt(v, 10); }
+      if (k.indexOf('owner.') === 0 && !d.owner) d.owner = { name: '', headshot: null, bio: '' };
+      if (k.indexOf('heroImage.') === 0 && !d.heroImage) return;
+      if (k.indexOf('gallery.') === 0) { var p = k.split('.'); d.gallery[+p[1]][p[2]] = v; t.classList.toggle('bad-input', blank(v)); }
+      else set(d, k, v);
+      if (k === 'name' && r.isNew && !r.slugTouched) {
+        d.slug = slugify(v); var sl = $('f-slug'); if (sl) sl.value = d.slug;
+        var h = $('f-slug-hint'); if (h) h.textContent = 'Fills in from the name. Page will be /culturepgh/restaurant/?slug=' + (d.slug || '…');
+      }
+      if (k === 'slug') { r.slugTouched = true; }
+      if (k === 'owner.name' && d.owner && blank(d.owner.name) && !d.owner.headshot && blank(d.owner.bio)) d.owner = null;
+      if (t.classList) t.classList.toggle('is-todo', isTodo(t.value));
+      if (k === 'name') { var h2 = document.querySelector('.ed-head h2'); if (h2) h2.textContent = v || 'New restaurant'; }
+      markDirty('guide'); renderList();
+      if (e.type === 'change') refreshErrors(r);
+    }
+    body.addEventListener('input', onField);
+    body.addEventListener('change', function (e) { if (e.target.tagName === 'SELECT' || e.target.dataset.k) onField(e); });
+    body.addEventListener('focusout', function (e) { if (e.target.dataset && e.target.dataset.k) refreshErrors(r); });
+
+    // Images
+    function wireSlot(id, onFile, onClear) {
+      var inp = $(id + '-file'); if (!inp) return;
+      inp.addEventListener('change', function () { if (inp.files[0]) onFile(inp.files[0]); inp.value = ''; });
+      var pick = body.querySelector('[data-pick="' + id + '"]'); if (pick) pick.addEventListener('click', function () { inp.click(); });
+      var clr = body.querySelector('[data-clear="' + id + '"]'); if (clr) clr.addEventListener('click', onClear);
+      wireDrop($(id + '-box'), function (files) { onFile(files[0]); });
+    }
+    wireSlot('img-hero', function (file) {
+      takeImage(file, folderFor(r), 'hero', SIZES.hero, function (path) {
+        var old = d.heroImage && d.heroImage.src; if (old) releaseImage(old);
+        d.heroImage = { src: path, alt: (d.heroImage && !blank(d.heroImage.alt) && old !== PLACEHOLDER) ? d.heroImage.alt : '' };
+        markDirty('guide'); renderEditor(); renderList();
+      });
+    }, function () { releaseImage(d.heroImage.src); d.heroImage = null; markDirty('guide'); renderEditor(); renderList(); });
+    wireSlot('img-head', function (file) {
+      takeImage(file, folderFor(r), 'owner', SIZES.headshot, function (path) {
+        if (!d.owner) d.owner = { name: '', headshot: null, bio: '' };
+        if (d.owner.headshot) releaseImage(d.owner.headshot);
+        d.owner.headshot = path; markDirty('guide'); renderEditor();
+      });
+    }, function () { releaseImage(d.owner.headshot); d.owner.headshot = null; markDirty('guide'); renderEditor(); });
+
+    var gf = $('gal-file');
+    function addGallery(files) {
+      var list = [].slice.call(files).filter(function (f) { return /^image\//.test(f.type); });
+      if (!list.length) { toast('Choose image files'); return; }
+      var pending = list.length;
+      list.forEach(function (f) {
+        takeImage(f, folderFor(r), 'food', SIZES.gallery, function (path) {
+          d.gallery = d.gallery || []; d.gallery.push({ src: path, alt: '' }); markDirty('guide');
+          if (--pending === 0) { renderEditor(); renderList(); toast('Added ' + list.length + ' photo' + (list.length > 1 ? 's' : '') + '. Add a description to each.'); }
+        });
+      });
+    }
+    gf.addEventListener('change', function () { addGallery(gf.files); gf.value = ''; });
+    wireDrop(body.querySelector('[data-drop="gal-add"]'), addGallery);
+    body.querySelectorAll('[data-gdel]').forEach(function (b) {
+      b.addEventListener('click', function () { var i = +b.dataset.gdel; releaseImage(d.gallery[i].src); d.gallery.splice(i, 1); markDirty('guide'); renderEditor(); renderList(); });
+    });
+    body.querySelectorAll('[data-gmove]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var p = b.dataset.gmove.split(','), i = +p[0], j = i + (+p[1]);
+        var t = d.gallery[i]; d.gallery[i] = d.gallery[j]; d.gallery[j] = t; markDirty('guide'); renderEditor();
+        var nb = $('gal').querySelectorAll('[data-gmove]')[j * 2 + (+p[1] > 0 ? 1 : 0)]; if (nb && !nb.disabled) nb.focus();
+      });
+    });
+
+    // Geocode via OpenStreetMap Nominatim (one request per click).
+    $('f-geo').addEventListener('click', function () {
+      var hint = $('geo-hint'), q = blank(d.address) ? '' : d.address;
+      if (!q) { toast('Fill in the street address first'); $('f-addr').focus(); return; }
+      hint.textContent = 'Looking up…';
+      fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=us&q=' + encodeURIComponent(q), { headers: { 'Accept': 'application/json' } })
+        .then(function (res) { if (!res.ok) throw new Error(); return res.json(); })
+        .then(function (rows) {
+          if (!rows || !rows[0]) { hint.textContent = 'No match for that address. Check the spelling, or copy the numbers from Google Maps.'; return; }
+          d.lat = Math.round(+rows[0].lat * 1e5) / 1e5; d.lng = Math.round(+rows[0].lon * 1e5) / 1e5;
+          $('f-lat').value = d.lat; $('f-lng').value = d.lng;
+          hint.textContent = 'Found: ' + rows[0].display_name + '. Double-check the pin on the live page after publishing.';
+          markDirty('guide'); refreshErrors(r);
+        })
+        .catch(function () { hint.textContent = 'Lookup failed. Copy the numbers from Google Maps instead (right-click the spot).'; });
+    });
+  }
+
+  function refreshErrors(r) {
+    var host = $('ed-body'); if (!host) return;
+    var box = host.querySelector('.errors'), errs = restaurantErrors(r);
+    if (!errs.length) { if (box) box.remove(); renderList(); return; }
+    var html = '<b>Fix before publishing:</b><ul>' + errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('') + '</ul>';
+    if (box) box.innerHTML = html;
+    else { box = document.createElement('div'); box.className = 'errors'; box.setAttribute('role', 'alert'); box.innerHTML = html; host.insertBefore(box, host.firstChild); }
+    renderList();
+  }
+
+  function wireDrop(zone, onFiles) {
+    if (!zone) return;
+    zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', function () { zone.classList.remove('drag'); });
+    zone.addEventListener('drop', function (e) { e.preventDefault(); zone.classList.remove('drag'); if (e.dataTransfer.files.length) onFiles(e.dataTransfer.files); });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Dinners tab
+  // ---------------------------------------------------------------------------
+  function renderDinners() {
+    if (!S.loaded) { E.dRoot.innerHTML = '<div class="empty">Connect above to load dinners.</div>'; return; }
+    $('n-d').textContent = S.ds.length;
+    var rOpts = [['', 'Choose a restaurant']].concat(S.rs.slice().sort(function (a, b) { return String(a.d.name).localeCompare(String(b.d.name)); })
+      .filter(function (r) { return r.d.slug; }).map(function (r) { return [r.d.slug, r.d.name + (r.d.status === 'featured' ? '' : ' (on our radar)')]; }));
+    var html = '<p class="lead" style="margin-bottom:18px">When there are no <b>upcoming</b> dinners, the site shows "Next dinner coming soon" with the email signup. Mark a dinner <b>Past</b> after it happens and it moves to "Where we\'ve been".</p>';
+    if (!S.ds.length) html += '<div class="empty">No dinners yet. The site is showing "Next dinner coming soon".</div>';
+    S.ds.forEach(function (x, i) {
+      var d = x.d, errs = dinnerErrors(d, i), p = 'd' + i + '-';
+      html += '<div class="d-card' + (d.status === 'upcoming' ? ' upcoming' : '') + '" data-i="' + i + '">' +
+        '<div class="d-top"><b>' + esc(d.title || 'Untitled dinner') + '</b><span style="display:flex;gap:6px">' +
+          '<button type="button" class="mini-btn" data-dmove="' + i + ',-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Move dinner up">▲</button>' +
+          '<button type="button" class="mini-btn" data-dmove="' + i + ',1"' + (i === S.ds.length - 1 ? ' disabled' : '') + ' aria-label="Move dinner down">▼</button>' +
+          '<button type="button" class="mini-btn del" data-ddel="' + i + '">Remove</button></span></div>' +
+        (errs.length ? '<div class="errors" role="alert"><ul>' + errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('') + '</ul></div>' : '') +
+        '<div class="grid three">' +
+          fText(p + 'title', 'title', 'Title', d.title, { ph: 'Leave empty for "Dinner at [restaurant]"', opt: true }) +
+          fSelect(p + 'status', 'status', 'Status', d.status, [['upcoming', 'Upcoming'], ['past', 'Past']], {}) +
+          fSelect(p + 'rest', 'restaurant', 'Restaurant', d.restaurant, rOpts, {}) +
+          fText(p + 'date', 'date', 'Date', d.date, { type: 'date', opt: true }) +
+          fText(p + 'label', 'dateLabel', 'Or a looser date', d.dateLabel, { opt: true, ph: 'e.g. Late January 2027', hint: 'Shown instead of the date when filled in.' }) +
+          fText(p + 'tix', 'ticketUrl', 'Ticket link', d.ticketUrl, { opt: true, type: 'url', ph: 'https://' }) +
+          fText(p + 'sum', 'summary', 'Summary', d.summary, { area: true, span: 'span3', opt: true, ph: 'One or two sentences about the evening.' }) +
+        '</div>' +
+        '<div style="margin-top:14px"><span class="flabel">Photo (optional)</span>' +
+          imageSlot(p + 'img', d.photo && d.photo.src, d.photo && d.photo.alt, 'dinner photo', { altKey: 'photo.alt', empty: 'Dinner photo' }) + '</div>' +
+      '</div>';
+    });
+    html += '<button type="button" class="btn btn-primary" id="d-add">+ Add dinner</button>';
+    E.dRoot.innerHTML = html;
+
+    $('d-add').addEventListener('click', function () {
+      S.ds.push({ d: { title: '', status: 'upcoming', date: '', dateLabel: '', restaurant: '', summary: '', ticketUrl: '', photo: null } });
+      markDirty('dinners'); renderDinners(); var f = $('d' + (S.ds.length - 1) + '-title'); if (f) f.focus();
+    });
+    E.dRoot.querySelectorAll('.d-card').forEach(function (card) {
+      var i = +card.dataset.i, d = S.ds[i].d, p = 'd' + i + '-';
+      function onField(e) {
+        var k = e.target.dataset.k; if (!k) return;
+        if (k === 'photo.alt') { if (!d.photo) return; d.photo.alt = e.target.value; }
+        else d[k] = e.target.value;
+        if (k === 'title') card.querySelector('.d-top b').textContent = e.target.value || 'Untitled dinner';
+        markDirty('dinners');
+      }
+      card.addEventListener('input', onField);
+      card.addEventListener('change', function (e) {
+        onField(e);
+        if (e.target.dataset.k === 'status') card.classList.toggle('upcoming', e.target.value === 'upcoming');
+      });
+      var inp = $(p + 'img-file');
+      function onFile(file) {
+        takeImage(file, 'dinners', slugify(d.restaurant || d.title || 'dinner') || 'dinner', SIZES.dinner, function (path) {
+          if (d.photo && d.photo.src) releaseImage(d.photo.src);
+          d.photo = { src: path, alt: (d.photo && d.photo.alt) || '' }; markDirty('dinners'); renderDinners();
+        });
+      }
+      inp.addEventListener('change', function () { if (inp.files[0]) onFile(inp.files[0]); inp.value = ''; });
+      var pick = card.querySelector('[data-pick="' + p + 'img"]'); if (pick) pick.addEventListener('click', function () { inp.click(); });
+      var clr = card.querySelector('[data-clear="' + p + 'img"]'); if (clr) clr.addEventListener('click', function () { releaseImage(d.photo.src); d.photo = null; markDirty('dinners'); renderDinners(); });
+      wireDrop($(p + 'img-box'), function (files) { onFile(files[0]); });
+    });
+    E.dRoot.querySelectorAll('[data-ddel]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var i = +b.dataset.ddel; if (!confirm('Remove this dinner?')) return;
+        if (S.ds[i].d.photo) releaseImage(S.ds[i].d.photo.src);
+        S.ds.splice(i, 1); markDirty('dinners'); renderDinners();
+      });
+    });
+    E.dRoot.querySelectorAll('[data-dmove]').forEach(function (b) {
+      b.addEventListener('click', function () { var p = b.dataset.dmove.split(','), i = +p[0], j = i + (+p[1]); var t = S.ds[i]; S.ds[i] = S.ds[j]; S.ds[j] = t; markDirty('dinners'); renderDinners(); });
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Settings tab
+  // ---------------------------------------------------------------------------
+  function renderSettings() {
+    if (!S.loaded) { E.sRoot.innerHTML = '<div class="empty">Connect above to load settings.</div>'; return; }
+    var used = {}; S.rs.forEach(function (r) { if (!blank(r.d.cuisineGroup)) used[r.d.cuisineGroup] = (used[r.d.cuisineGroup] || 0) + 1; });
+    var groups = (S.guide.cuisineGroups || []);
+    E.sRoot.innerHTML =
+      '<div class="panel">' +
+        '<div class="grid">' +
+          fText('s-ig', 'instagram', 'CulturePGH Instagram handle', S.settings.instagram, { ph: 'culturepgh', hint: 'Without the @. While empty, Instagram links stay hidden on the site.' }) +
+        '</div>' +
+        '<fieldset class="grp" style="margin-top:20px"><legend>Cuisine filter groups</legend>' +
+          '<p class="grp-note">The order of the guide\'s Cuisine dropdown. A group only shows on the site once a restaurant uses it.</p>' +
+          '<ul id="s-groups" style="list-style:none;display:flex;flex-direction:column;gap:6px;max-width:520px">' +
+            groups.map(function (g, i) {
+              return '<li style="display:flex;gap:8px;align-items:center;border:1px solid var(--line);padding:8px 10px;background:var(--paper)">' +
+                '<span style="flex:1">' + esc(g) + ' <span class="hint" style="font-size:0.78rem;color:var(--mute)">' + (used[g] || 0) + ' place' + (used[g] === 1 ? '' : 's') + '</span></span>' +
+                '<button type="button" class="mini-btn" data-gm="' + i + ',-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Move ' + esc(g) + ' up">▲</button>' +
+                '<button type="button" class="mini-btn" data-gm="' + i + ',1"' + (i === groups.length - 1 ? ' disabled' : '') + ' aria-label="Move ' + esc(g) + ' down">▼</button>' +
+                '<button type="button" class="mini-btn del" data-gx="' + i + '"' + (used[g] ? ' disabled title="Still used by ' + used[g] + ' place(s)"' : '') + ' aria-label="Remove ' + esc(g) + '">✕</button></li>';
+            }).join('') +
+          '</ul>' +
+          '<div class="inline" style="max-width:520px;margin-top:10px">' + fText('s-newg', '', 'Add a group', '', { ph: 'e.g. South Asian' }) +
+            '<button type="button" class="btn btn-ghost btn-sm" id="s-addg" style="margin-bottom:1px">Add</button></div>' +
+        '</fieldset>' +
+      '</div>';
+    $('s-ig').addEventListener('input', function (e) { S.settings.instagram = e.target.value.trim().replace(/^@/, ''); markDirty('settings'); });
+    function addG() {
+      var v = $('s-newg').value.trim(); if (!v) return;
+      if (groups.some(function (g) { return g.toLowerCase() === v.toLowerCase(); })) { toast('That group already exists'); return; }
+      if (DASH_RE.test(v)) { toast('Please leave out em/en dashes'); return; }
+      groups.push(v); S.guide.cuisineGroups = groups; markDirty('guide'); renderSettings(); $('s-newg').focus();
+    }
+    $('s-addg').addEventListener('click', addG);
+    $('s-newg').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addG(); } });
+    E.sRoot.querySelectorAll('[data-gm]').forEach(function (b) { b.addEventListener('click', function () { var p = b.dataset.gm.split(','), i = +p[0], j = i + (+p[1]); var t = groups[i]; groups[i] = groups[j]; groups[j] = t; markDirty('guide'); renderSettings(); }); });
+    E.sRoot.querySelectorAll('[data-gx]').forEach(function (b) { b.addEventListener('click', function () { groups.splice(+b.dataset.gx, 1); markDirty('guide'); renderSettings(); }); });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Tabs (arrow keys move between tabs)
+  // ---------------------------------------------------------------------------
+  var tabs = [].slice.call(document.querySelectorAll('.tab'));
+  function selectTab(t, focus) {
+    tabs.forEach(function (x) {
+      var on = x === t; x.setAttribute('aria-selected', on ? 'true' : 'false'); x.tabIndex = on ? 0 : -1;
+      $(x.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) t.focus();
+    if (t.id === 'tab-d') renderDinners();
+    if (t.id === 'tab-s') renderSettings();
+    if (t.id === 'tab-r') renderRestaurants();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(t); });
+    t.addEventListener('keydown', function (e) {
+      var j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+      if (j == null) return; e.preventDefault(); selectTab(tabs[(j + tabs.length) % tabs.length], true);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Publish bar
+  // ---------------------------------------------------------------------------
+  function updateBar() {
+    var errs = S.loaded ? allErrors() : [];
+    var nUp = Object.keys(S.uploads).length, nDel = Object.keys(S.deletes).length;
+    E.publish.disabled = !(S.connected && anyDirty() && !S.busy && !S.publishing && !errs.length);
+    E.discard.disabled = !(S.loaded && anyDirty() && !S.publishing);
+    if (!S.connected) E.summary.innerHTML = 'Connect a token to start.';
+    else if (S.publishing) E.summary.innerHTML = 'Publishing…';
+    else if (S.busy) E.summary.innerHTML = 'Processing photos…';
+    else if (!anyDirty()) E.summary.innerHTML = 'Everything is up to date.';
+    else {
+      var what = [S.dirty.guide && 'restaurants', S.dirty.dinners && 'dinners', S.dirty.settings && 'settings'].filter(Boolean).join(', ');
+      E.summary.innerHTML = 'Unpublished changes: <b>' + what + '</b>' +
+        (nUp ? ' · ' + nUp + ' new photo' + (nUp > 1 ? 's' : '') : '') + (nDel ? ' · ' + nDel + ' to delete' : '') +
+        (errs.length ? '<br><span class="bad">Fix first: ' + esc(errs[0]) + (errs.length > 1 ? ' (+' + (errs.length - 1) + ' more)' : '') + '</span>' : '');
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // GitHub
+  // ---------------------------------------------------------------------------
+  function cfg() { return { owner: E.owner.value.trim(), repo: E.repo.value.trim(), branch: E.branch.value.trim() || 'main', token: E.token.value.trim() }; }
+  function apiUrl(path) { var c = cfg(); return 'https://api.github.com/repos/' + c.owner + '/' + c.repo + '/contents/' + path; }
+  function headers() { return { 'Authorization': 'Bearer ' + cfg().token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; }
+  function utf8ToB64(s) { return btoa(unescape(encodeURIComponent(s))); }
+  function b64ToUtf8(b) { return decodeURIComponent(escape(atob(b.replace(/\n/g, '')))); }
+  function blobToB64(blob) { return new Promise(function (res, rej) { var fr = new FileReader(); fr.onload = function () { res(String(fr.result).split(',')[1]); }; fr.onerror = rej; fr.readAsDataURL(blob); }); }
+  function ghGet(path) { return fetch(apiUrl(path) + '?ref=' + encodeURIComponent(cfg().branch), { headers: headers(), cache: 'no-store' }).then(function (r) { if (r.status === 404) return null; if (!r.ok) return r.text().then(function (t) { throw new Error('GET ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); }); }
+  function ghPut(path, b64, message, sha) { var body = { message: message, content: b64, branch: cfg().branch }; if (sha) body.sha = sha; return fetch(apiUrl(path), { method: 'PUT', headers: headers(), body: JSON.stringify(body) }).then(function (r) { if (!r.ok) return r.text().then(function (t) { throw new Error('PUT ' + path + ' → ' + r.status + ' ' + t); }); return r.json(); }); }
+  function ghDelete(path, message, sha) { return fetch(apiUrl(path), { method: 'DELETE', headers: headers(), body: JSON.stringify({ message: message, branch: cfg().branch, sha: sha }) }).then(function (r) { if (!r.ok && r.status !== 404) return r.text().then(function (t) { throw new Error('DELETE ' + path + ' → ' + r.status + ' ' + t); }); return true; }); }
+  function readJson(res) { if (!res || !res.content) return null; return JSON.parse(b64ToUtf8(res.content)); }
+
+  function setConn(state, text) { E.conn.className = 'conn' + (state ? ' ' + state : ''); E.connText.textContent = text; }
+
+  function connect() {
+    var c = cfg();
+    if (!c.token) { toast('Paste your token first'); E.token.focus(); return; }
+    if (anyDirty() && !confirm('Reconnecting reloads from the website and drops your unpublished changes. Continue?')) return;
+    setConn('', 'Connecting…'); E.connect.disabled = true;
+    fetch('https://api.github.com/repos/' + c.owner + '/' + c.repo, { headers: headers() })
+      .then(function (r) { if (r.status === 401) throw new Error('Bad token (401).'); if (r.status === 404) throw new Error('Repo not found or no access (404).'); if (!r.ok) throw new Error('GitHub error ' + r.status); })
+      .then(load)
+      .then(function () {
+        S.connected = true; setConn('ok', 'Connected'); E.forget.hidden = false;
+        try { localStorage.setItem(LS_TOKEN, c.token); localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch })); } catch (e) {}
+        toast('Loaded ' + S.rs.length + ' places and ' + S.ds.length + ' dinner' + (S.ds.length === 1 ? '' : 's'));
+        renderAll();
+      })
+      .catch(function (e) { S.connected = false; setConn('err', 'Failed'); toast(e.message || 'Connection failed'); })
+      .then(function () { E.connect.disabled = false; updateBar(); });
+  }
+
+  function load() {
+    return Promise.all([ghGet(F_GUIDE), ghGet(F_DINNERS), ghGet(F_SETTINGS)]).then(function (res) {
+      var g = readJson(res[0]) || { cuisineGroups: [], types: { restaurant: 'Restaurant', cafe: 'Cafe', market: 'Market & grocer' }, restaurants: [] };
+      var dn = readJson(res[1]) || { dinners: [] };
+      var st = readJson(res[2]) || { instagram: '' };
+      S.snapshot = JSON.stringify([g, dn, st]);
+      ingest(g, dn, st);
+    });
+  }
+  function ingest(g, dn, st) {
+    Object.keys(S.previews).forEach(function (p) { URL.revokeObjectURL(S.previews[p]); });
+    S.uploads = {}; S.previews = {}; S.deletes = {}; S.busy = 0;
+    S.rs = (g.restaurants || []).map(function (d) { return { uid: ++uid, isNew: false, slugTouched: true, d: d }; });
+    S.guide = g; delete S.guide.restaurants;
+    if (!Array.isArray(S.guide.cuisineGroups)) S.guide.cuisineGroups = [];
+    S.dinnersDoc = dn; S.ds = (dn.dinners || []).map(function (d) { return { d: d }; }); delete S.dinnersDoc.dinners;
+    S.settings = st; if (typeof S.settings.instagram !== 'string') S.settings.instagram = '';
+    S.dirty = { guide: false, dinners: false, settings: false };
+    if (S.sel && !byUid(S.sel)) S.sel = null;
+    S.loaded = true;
+  }
+  function discard() {
+    if (!confirm('Throw away all unpublished changes?')) return;
+    var p = JSON.parse(S.snapshot); S.sel = null; ingest(p[0], p[1], p[2]); renderAll(); toast('Changes discarded');
+  }
+
+  // Put keys in a predictable order so diffs stay readable.
+  var R_ORDER = ['slug', 'name', 'status', 'tier', '_todo', 'type', 'cuisine', 'cuisineGroup', 'neighborhood', 'address', 'lat', 'lng', 'website', 'instagram', 'blurb', 'owner', 'story', 'heroImage', 'gallery'];
+  function ordered(d) {
+    var o = {};
+    R_ORDER.forEach(function (k) { if (k in d) o[k] = d[k]; });
+    Object.keys(d).forEach(function (k) { if (!(k in o)) o[k] = d[k]; });
+    if (o.owner && blank(o.owner.name) && !o.owner.headshot && blank(o.owner.bio)) o.owner = null;
+    ['name', 'cuisine', 'neighborhood', 'address', 'website', 'instagram', 'blurb'].forEach(function (k) { if (typeof o[k] === 'string') o[k] = o[k].trim(); });
+    if (typeof o.instagram === 'string') o.instagram = o.instagram.replace(/^@/, '');
+    return o;
+  }
+  function referencedImages() {
+    var m = {};
+    S.rs.forEach(function (r) { var d = r.d; if (d.heroImage && d.heroImage.src) m[d.heroImage.src] = 1; if (d.owner && d.owner.headshot) m[d.owner.headshot] = 1; (d.gallery || []).forEach(function (g) { m[g.src] = 1; }); });
+    S.ds.forEach(function (x) { if (x.d.photo && x.d.photo.src) m[x.d.photo.src] = 1; });
+    return m;
+  }
+
+  function log(msg, cls) { E.log.classList.add('show'); var div = document.createElement('div'); if (cls) div.className = cls; div.textContent = msg; E.log.appendChild(div); E.log.scrollTop = E.log.scrollHeight; }
+
+  function publish() {
+    if (S.publishing || !anyDirty()) return;
+    var errs = allErrors(); if (errs.length) { toast('Fix the highlighted problems first'); return; }
+    S.publishing = true; updateBar(); E.log.innerHTML = '';
+    log('Publishing CulturePGH changes…', 'dim');
+    var refs = referencedImages();
+    var chain = Promise.resolve();
+
+    // 1. New photos (only ones still in use)
+    Object.keys(S.uploads).forEach(function (path) {
+      if (!refs[path]) return;
+      chain = chain.then(function () {
+        log('↑ ' + path);
+        return blobToB64(S.uploads[path]).then(function (b64) { return ghPut(path, b64, 'culturepgh: add photo ' + path.split('/').pop(), null); })
+          .then(function () { log('  ✓ uploaded', 'ok'); });
+      });
+    });
+    // 2. Data files
+    function putJson(file, obj, msg) {
+      chain = chain.then(function () {
+        log('↻ ' + file);
+        return ghGet(file).then(function (r) { return ghPut(file, utf8ToB64(JSON.stringify(obj, null, 2) + '\n'), msg, r ? r.sha : null); })
+          .then(function () { log('  ✓ saved', 'ok'); });
+      });
+    }
+    if (S.dirty.guide) {
+      var g = {}; Object.keys(S.guide).forEach(function (k) { g[k] = S.guide[k]; });
+      g.restaurants = S.rs.map(function (r) { return ordered(r.d); });
+      putJson(F_GUIDE, g, 'culturepgh: update restaurants (' + g.restaurants.length + ')');
+    }
+    if (S.dirty.dinners) {
+      var dn = {}; Object.keys(S.dinnersDoc).forEach(function (k) { dn[k] = S.dinnersDoc[k]; });
+      dn.dinners = S.ds.map(function (x) {
+        var d = x.d, o = { title: (d.title || '').trim(), status: d.status, date: d.date || '', dateLabel: (d.dateLabel || '').trim(), restaurant: d.restaurant || '', summary: (d.summary || '').trim(), ticketUrl: (d.ticketUrl || '').trim(), photo: d.photo || null };
+        Object.keys(d).forEach(function (k) { if (!(k in o)) o[k] = d[k]; });
+        return o;
+      });
+      putJson(F_DINNERS, dn, 'culturepgh: update dinners (' + dn.dinners.length + ')');
+    }
+    if (S.dirty.settings) putJson(F_SETTINGS, S.settings, 'culturepgh: update settings');
+    // 3. Delete photos nothing points at any more
+    Object.keys(S.deletes).forEach(function (path) {
+      if (refs[path]) return;
+      chain = chain.then(function () {
+        return ghGet(path).then(function (r) { if (!r) return; log('✕ ' + path); return ghDelete(path, 'culturepgh: remove photo ' + path.split('/').pop(), r.sha).then(function () { log('  ✓ removed', 'ok'); }); });
+      });
+    });
+
+    chain.then(function () {
+      // What we just wrote is now the baseline.
+      var g = {}; Object.keys(S.guide).forEach(function (k) { g[k] = S.guide[k]; }); g.restaurants = S.rs.map(function (r) { return ordered(r.d); });
+      var dn = {}; Object.keys(S.dinnersDoc).forEach(function (k) { dn[k] = S.dinnersDoc[k]; }); dn.dinners = S.ds.map(function (x) { return x.d; });
+      S.snapshot = JSON.stringify([g, dn, S.settings]);
+      S.rs.forEach(function (r) { r.isNew = false; r.slugTouched = true; });
+      S.uploads = {}; S.deletes = {}; S.bust = Date.now();
+      S.dirty = { guide: false, dinners: false, settings: false };
+      log('✓ Done. Live on the site in about a minute (GitHub Pages redeploy).', 'ok');
+      toast('Published! Live in about a minute.');
+    }).catch(function (e) {
+      log('✗ ' + (e.message || 'publish failed'), 'err');
+      log('Nothing you entered is lost. Fix the problem (or reconnect) and press Publish again.', 'dim');
+      toast('Publish failed. See the log.');
+    }).then(function () { S.publishing = false; renderAll(); });
+  }
+
+  function renderAll() {
+    $('n-r').textContent = S.rs.length; $('n-d').textContent = S.ds.length;
+    var cur = tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0];
+    selectTab(cur || tabs[0]); updateBar();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------------------
+  E.advToggle.addEventListener('click', function () { var on = E.adv.classList.toggle('show'); E.advToggle.setAttribute('aria-expanded', on); E.advToggle.textContent = (on ? '▾' : '▸') + ' Repository settings'; });
+  E.connect.addEventListener('click', connect);
+  E.token.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
+  E.publish.addEventListener('click', publish);
+  E.discard.addEventListener('click', discard);
+  E.forget.addEventListener('click', function () {
+    if (anyDirty() && !confirm('You have unpublished changes. Forget the token and drop them?')) return;
+    try { localStorage.removeItem(LS_TOKEN); } catch (e) {}
+    E.token.value = ''; S.connected = false; S.loaded = false; S.rs = []; S.ds = []; S.dirty = { guide: false, dinners: false, settings: false };
+    setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); renderAll();
+  });
+  // Stop a stray drop from navigating away and losing work.
+  window.addEventListener('dragover', function (e) { e.preventDefault(); });
+  window.addEventListener('drop', function (e) { e.preventDefault(); });
+  window.addEventListener('beforeunload', function (e) { if (anyDirty()) { e.preventDefault(); e.returnValue = ''; } });
+
+  renderAll();
+  try {
+    var saved = JSON.parse(localStorage.getItem(LS_REPO) || 'null');
+    if (saved) { E.owner.value = saved.owner || E.owner.value; E.repo.value = saved.repo || E.repo.value; E.branch.value = saved.branch || E.branch.value; }
+    var t = localStorage.getItem(LS_TOKEN);
+    if (t) { E.token.value = t; E.forget.hidden = false; connect(); }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

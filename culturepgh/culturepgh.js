@@ -20,10 +20,6 @@
   // Settings
   // ---------------------------------------------------------------------------
 
-  // TODO: fill in the CulturePGH Instagram handle (without the @). While this
-  // is empty, every Instagram link on the CulturePGH pages stays hidden.
-  var INSTAGRAM_HANDLE = '';
-
   var FORM_INBOX = 'hello@pittsburghshapers.org';
 
   // Folder this script lives in (culturepgh/), and the site root above it.
@@ -484,12 +480,13 @@
   // Shared behavior on every page
   // ---------------------------------------------------------------------------
 
-  // Instagram links: hidden until INSTAGRAM_HANDLE is filled in.
-  (function () {
-    var url = instagramUrl(INSTAGRAM_HANDLE);
+  // Instagram links: hidden until the handle is set in settings.json
+  // (editable from admin/culturepgh.html).
+  getJSON('settings.json').then(function (settings) {
+    var url = instagramUrl(settings && settings.instagram);
     if (!url) return;
     document.querySelectorAll('[data-instagram]').forEach(function (a) { a.href = url; a.hidden = false; });
-  })();
+  }).catch(function () {});
 
   // Mobile navigation toggle
   (function () {
