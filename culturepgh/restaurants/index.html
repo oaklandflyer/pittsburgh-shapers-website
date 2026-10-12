@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Guide · CulturePGH</title>
+<meta name="description" content="Browse Pittsburgh's immigrant-owned restaurants, cafes, and markets by cuisine, type, and neighborhood.">
+<meta name="theme-color" content="#0E2A52">
+<link rel="canonical" href="https://pittsburghshapers.org/culturepgh/restaurants/">
+<link rel="icon" type="image/png" href="../../assets/favicon.png">
+<link rel="apple-touch-icon" href="../../assets/gs-pittsburgh-mark.png">
+<meta property="og:title" content="The Guide · CulturePGH">
+<meta property="og:description" content="Browse Pittsburgh's immigrant-owned restaurants, cafes, and markets by cuisine, type, and neighborhood.">
+<meta property="og:image" content="https://pittsburghshapers.org/assets/culturepgh-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../culturepgh.css">
+<link rel="stylesheet" href="../../assets/vendor/leaflet/leaflet.css">
+<script src="../../assets/vendor/leaflet/leaflet.js" defer></script>
+<script src="../culturepgh.js" defer></script>
+</head>
+<body data-page="directory">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <nav id="top" aria-label="CulturePGH">
+    <div class="nav-inner">
+      <a href="../index.html" class="wordmark" aria-label="CulturePGH home">
+        <img class="mark" src="../../assets/global-shapers-pittsburgh-logo.png" alt="">
+        <img class="lockup" src="../../assets/culturepgh-logo.png" alt="CulturePGH" width="737" height="458">
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../restaurants/" aria-current="page">The Guide</a>
+        <a href="../dinners/">Dinners</a>
+        <a href="../for-restaurants/">For Restaurants</a>
+        <a href="../index.html#about">About</a>
+        <a href="../../index.html">&larr; The Hub</a>
+        <a href="../index.html#signup" class="nav-cta">Join the List</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+
+  <header class="page-head">
+    <div class="wrap">
+      <div class="eyebrow">The Guide</div>
+      <h1>Pittsburgh's immigrant-owned restaurants</h1>
+      <p class="lead">Filter by cuisine, type, or neighborhood. <strong>Featured partners</strong> are places we've visited and written up with the owner. Places marked <strong>On our radar</strong> are ones we like or that people have recommended, and haven't been featured yet.</p>
+    </div>
+  </header>
+
+  <section id="guide" style="padding-top:48px">
+    <div class="wrap">
+      <form class="dir-filters" id="dir-filters" role="search" aria-label="Filter the guide">
+        <div class="field">
+          <label for="f-cuisine">Cuisine</label>
+          <select id="f-cuisine" name="cuisine"><option value="">All cuisines</option></select>
+        </div>
+        <div class="field">
+          <label for="f-type">Type</label>
+          <select id="f-type" name="type"><option value="">All types</option></select>
+        </div>
+        <div class="field">
+          <label for="f-hood">Neighborhood</label>
+          <select id="f-hood" name="neighborhood"><option value="">All neighborhoods</option></select>
+        </div>
+        <button class="btn btn-ghost clear" type="button" id="f-clear">Clear filters</button>
+      </form>
+
+      <div id="cpgh-map" role="region" aria-label="Map of places in the guide"></div>
+      <div class="map-legend" aria-hidden="true">
+        <span class="li"><span class="sw restaurant"></span> Restaurant</span>
+        <span class="li"><span class="sw cafe"></span> Cafe</span>
+        <span class="li"><span class="sw market"></span> Market &amp; grocer</span>
+      </div>
+
+      <h2 class="visually-hidden">All places</h2>
+      <p class="dir-count" id="dir-count" role="status" aria-live="polite"></p>
+      <div id="dir-grid"><noscript><div class="empty-state"><strong>The guide needs JavaScript.</strong>Please turn it on, or email <a href="mailto:hello@pittsburghshapers.org">hello@pittsburghshapers.org</a> for recommendations.</div></noscript></div>
+
+      <div class="suggest" id="suggest">
+        <div>
+          <div class="sec-label">Suggest a Spot</div>
+          <h2 class="suggest-h">Is a place missing?</h2>
+          <p class="lede">Send it our way. We'll add it to our radar, and some places go on to become featured partners.</p>
+        </div>
+        <div class="form">
+          <form id="suggestForm" data-form="suggest" action="https://formsubmit.co/hello@pittsburghshapers.org" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="CulturePGH · New place suggestion">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://pittsburghshapers.org/culturepgh/restaurants/?sent=suggest#suggest">
+            <input type="hidden" name="form" value="Place suggestion">
+            <div class="hp" aria-hidden="true"><label for="s-hp">Leave this empty</label><input id="s-hp" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
+            <div class="two">
+              <div class="field">
+                <label for="s-place">Name of the Place</label>
+                <input id="s-place" name="place" type="text" required maxlength="120">
+                <div class="err" id="s-place-err">Tell us which place.</div>
+              </div>
+              <div class="field">
+                <label for="s-where">Neighborhood or Address</label>
+                <input id="s-where" name="location" type="text" required maxlength="160" placeholder="e.g. Brookline Blvd">
+                <div class="err" id="s-where-err">Where is it?</div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="s-why">What Should We Try There? <span class="opt">(optional)</span></label>
+              <textarea id="s-why" name="why" maxlength="1500" placeholder="A dish you like, or anything else we should know"></textarea>
+            </div>
+            <div class="field">
+              <label for="s-email">Your Email <span class="opt">(optional, so we can thank you)</span></label>
+              <input id="s-email" name="email" type="email" autocomplete="email" maxlength="160">
+              <div class="err" id="s-email-err">That email doesn't look right.</div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit"><span class="spin" aria-hidden="true"></span><span class="lbl">Send Suggestion</span></button>
+            </div>
+            <div class="form-status" role="alert"></div>
+          </form>
+          <div class="ok hidden" tabindex="-1" data-ok="suggest">
+            <strong>Thanks!</strong>
+            We got your suggestion and will check the place out.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <img class="lockup" src="../../assets/culturepgh-logo-light.png" alt="CulturePGH" width="737" height="458" loading="lazy">
+        CulturePGH is the locals' guide to Pittsburgh's immigrant-owned restaurants, run by volunteers from the <a href="../../index.html">Global Shapers Pittsburgh Hub</a>, part of the World Economic Forum's Global Shapers Community. The idea comes from CultureCLE, a project of the Global Shapers Cleveland Hub.
+      </div>
+      <div class="foot-note">
+        <a href="mailto:hello@pittsburghshapers.org">hello@pittsburghshapers.org</a><br>
+        <a class="social-link" data-instagram href="#" hidden target="_blank" rel="noopener">Instagram</a><br>
+        Pittsburgh, Pennsylvania
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
