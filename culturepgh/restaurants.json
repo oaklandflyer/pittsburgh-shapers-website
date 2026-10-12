@@ -16,21 +16,21 @@
   },
   "restaurants": [
     {
-      "slug": "tramas",
-      "name": "Tramas",
+      "slug": "trams",
+      "name": "Tram's Kitchen",
       "status": "featured",
       "tier": 2,
       "_todo": "Example entry. Every value starting with TODO is a placeholder; the site treats it as empty. Confirm tier and status with Tom before launch.",
       "type": "restaurant",
-      "cuisine": "TODO: specific cuisine, e.g. Peruvian",
-      "cuisineGroup": "TODO: one of the cuisineGroups above",
-      "neighborhood": "TODO: neighborhood",
-      "address": "TODO: street address",
-      "lat": null,
-      "lng": null,
+      "cuisine": "Vietnamese",
+      "cuisineGroup": "Asian",
+      "neighborhood": "Bloomfield",
+      "address": "4050 Penn Ave, Pittsburgh, PA 15224",
+      "lat": 40.46543,
+      "lng": -79.95597,
       "website": "",
       "instagram": "",
-      "blurb": "TODO: one sentence for the directory card",
+      "blurb": "",
       "owner": {
         "name": "Tom",
         "headshot": null,
@@ -38,8 +38,8 @@
       },
       "story": "TODO: the longer story of the restaurant. Separate paragraphs with a blank line.",
       "heroImage": {
-        "src": "assets/culturepgh/placeholder-TODO.svg",
-        "alt": "Placeholder image. Photo of Tramas coming soon."
+        "src": "assets/culturepgh/trams/hero-bhmuw.jpg",
+        "alt": "Split Rice "
       },
       "gallery": [
         {
