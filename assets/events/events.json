@@ -1,19 +1,11 @@
 [
   {
-    "title": "Hub Retreat at Soergel Orchards",
-    "date": "Saturday, October 17th 11am",
-    "description": "​Join the Pittsburgh Hub Retreat, a chance to step away from the usual routine, catch up, and enjoy a lively gathering in Pittsburgh.",
-    "link": "https://luma.com/0c49sn50",
+    "title": "Postcards to Voters",
+    "date": "Tuesday, October 20 6:30 PM - 7:30 PM",
+    "description": "",
+    "link": "https://luma.com/rsrk8n79",
     "linkLabel": "Register Here",
-    "photo": "hub-retreat-at-soergel-orchards"
-  },
-  {
-    "title": "CulturePGH Planning Dinner",
-    "date": "Wednesday, Oct 21 6:30 PM - 7:30 PM",
-    "description": "Planning Meeting for CulturePGH at Tram's Kitchen",
-    "link": "https://luma.com/u7pxb4zi",
-    "linkLabel": "Register Here",
-    "photo": "culturepgh-planning-dinner"
+    "photo": "postcards-to-voters"
   },
   {
     "title": "Burnout Discussion",
@@ -22,5 +14,13 @@
     "link": "https://luma.com/j7347hgc",
     "linkLabel": "Register Here",
     "photo": "burnout-discussion"
+  },
+  {
+    "title": "CulturePGH Planning Dinner",
+    "date": "Wednesday, Oct 28 6:30 PM - 7:30 PM",
+    "description": "Planning Meeting for CulturePGH at Tram's Kitchen",
+    "link": "https://luma.com/u7pxb4zi",
+    "linkLabel": "Register Here",
+    "photo": "culturepgh-planning-dinner"
   }
 ]
