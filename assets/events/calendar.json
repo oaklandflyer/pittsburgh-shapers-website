@@ -1,0 +1,62 @@
+[
+  {
+    "key": "6hlqjh9h5qbcho217ige7s2ba9",
+    "id": "6hlqjh9h5qbcho217ige7s2ba9",
+    "title": "Projects Meeting",
+    "start": "2026-11-12T00:00:00-05:00",
+    "end": "2026-11-13T00:00:00-05:00",
+    "allDay": true,
+    "date": "Thu, Nov 12",
+    "location": "",
+    "description": "",
+    "link": ""
+  },
+  {
+    "key": "6l4n7sbjfj4u1d43rqosv9f658",
+    "id": "6l4n7sbjfj4u1d43rqosv9f658",
+    "title": "CulturePGH Meeting",
+    "start": "2026-11-18T00:00:00-05:00",
+    "end": "2026-11-19T00:00:00-05:00",
+    "allDay": true,
+    "date": "Wed, Nov 18",
+    "location": "",
+    "description": "",
+    "link": ""
+  },
+  {
+    "key": "1t5ncp323gi5hivul2dspl95rg",
+    "id": "1t5ncp323gi5hivul2dspl95rg",
+    "title": "Shapers Brunch/Shapersgiving",
+    "start": "2026-11-21T00:00:00-05:00",
+    "end": "2026-11-22T00:00:00-05:00",
+    "allDay": true,
+    "date": "Sat, Nov 21",
+    "location": "",
+    "description": "",
+    "link": ""
+  },
+  {
+    "key": "30g67in6lhtr5o2ia475n3p67n",
+    "id": "30g67in6lhtr5o2ia475n3p67n",
+    "title": "Light Up Night",
+    "start": "2026-11-21T17:00:00-05:00",
+    "end": "2026-11-21T21:30:00-05:00",
+    "allDay": false,
+    "date": "Sat, Nov 21 · 5 PM – 9:30 PM",
+    "location": "Downtown",
+    "description": "",
+    "link": "https://www.visitpittsburgh.com/blog/pittsburgh-celebrates-light-up-night/"
+  },
+  {
+    "key": "4g1o0njb35ivbqraobkhg9hl0b",
+    "id": "4g1o0njb35ivbqraobkhg9hl0b",
+    "title": "Shapers Holiday Party",
+    "start": "2026-12-12T00:00:00-05:00",
+    "end": "2026-12-13T00:00:00-05:00",
+    "allDay": true,
+    "date": "Sat, Dec 12",
+    "location": "",
+    "description": "",
+    "link": ""
+  }
+]

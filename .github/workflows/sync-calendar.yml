@@ -1,0 +1,42 @@
+name: Sync Google Calendar events
+
+# Pulls the Global Shapers PGH Google Calendar into assets/events/calendar.json.
+# Events added to the calendar show up on the site after the next run; events
+# that have ended drop off (the site also hides them the moment they end).
+on:
+  schedule:
+    - cron: "17 * * * *"   # hourly
+  workflow_dispatch:        # "Sync now" button in /admin/events.html
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-calendar
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r tools/requirements-calendar.txt
+      - name: Fetch calendar
+        env:
+          # Optional: the calendar's "Secret address in iCal format". Only
+          # needed if the calendar is not shared publicly.
+          CALENDAR_ICS_URL: ${{ secrets.CALENDAR_ICS_URL }}
+        run: python3 tools/sync-calendar.py
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- assets/events/calendar.json; then
+            echo "Calendar unchanged."; exit 0
+          fi
+          git config user.name "calendar-sync[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/events/calendar.json
+          git commit -m "events: sync from Google Calendar"
+          git push

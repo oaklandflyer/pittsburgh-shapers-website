@@ -88,6 +88,16 @@
   .fields .hint { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.05em; color:var(--mute); }
   .icon-btn { background:none; border:1px solid var(--line-2); width:30px; height:30px; cursor:pointer; font-size:0.85rem; color:var(--slate); display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s; }
   .icon-btn.del:hover { border-color:var(--red); color:var(--red); }
+  .card.cal .f-title-ro { font-weight:600; font-size:1.05rem; }
+  .card.cal .when { font-family:var(--font-mono); font-size:0.64rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-deep); }
+  .card.cal .desc-ro { color:var(--slate); font-size:0.88rem; line-height:1.5; white-space:pre-wrap; }
+  .card.cal.is-hidden { opacity:0.55; }
+  .hide-tog { display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); cursor:pointer; white-space:nowrap; }
+  .cal-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
+  .cal-bar .note { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.05em; color:var(--mute); flex:1; min-width:220px; line-height:1.6; }
+  .callout { background:var(--blue-tint); border-left:3px solid var(--blue); padding:14px 18px; color:var(--navy); font-size:0.94rem; line-height:1.6; margin-bottom:16px; }
+  .fields label.dl { font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); display:flex; align-items:center; gap:8px; }
+  .fields input[type=date] { padding:7px 10px; border:1px solid var(--line-2); font-family:var(--font-mono); font-size:0.8rem; color:var(--ink); background:var(--surface); }
   .empty { border:1px dashed var(--line-2); background:var(--surface); padding:22px; text-align:center; color:var(--mute); font-family:var(--font-mono); font-size:0.72rem; }
 
   .publish { position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(11,31,91,0.06); z-index:40; }
@@ -128,7 +138,7 @@
       <a href="culturepgh.html">CulturePGH</a>
     </nav>
     <h1>EVENTS MANAGER</h1>
-    <p class="lead">Add or remove events, edit the details, and attach a photo if you have one. Hit <b>Publish</b> and it's live on the site.</p>
+    <p class="lead">Events now come straight from the <b>Global Shapers PGH Google Calendar</b>. Add an event to the calendar and it shows up on the site within the hour; once it's over, it disappears on its own. You only need this page to add a photo or button to an event, hide one, or post something that isn't on the calendar.</p>
 
     <div class="sec-label"><span class="step-n">1</span> Connect to the website</div>
     <div class="panel" id="connect-panel">
@@ -151,15 +161,25 @@
         <ol>
           <li>Go to <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> (Fine-grained tokens).</li>
           <li><b>Resource owner:</b> <code>oaklandflyer</code>. <b>Repository access:</b> Only select repositories → <code>pittsburgh-shapers-website</code>.</li>
-          <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → <b>Read and write</b>.</li>
+          <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → <b>Read and write</b>. Also set <b>Actions</b> → <b>Read and write</b> if you want the “Sync now” button to work.</li>
           <li>Generate the token (starts with <code>github_pat_</code>) and paste it above. It's saved only in this browser.</li>
         </ol>
       </details>
     </div>
 
-    <div class="sec-label"><span class="step-n">2</span> Your events</div>
+    <div class="sec-label"><span class="step-n">2</span> From the Google Calendar</div>
+    <div class="callout">To add, change, or cancel an event, just edit it in the <a href="https://calendar.google.com/calendar/u/0?cid=czNpdXV2Yjd0NGpob2QzM250NzZibjlzcG9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ" target="_blank" rel="noopener">Global Shapers PGH calendar</a>. The site checks it every hour. Put a link in the event's description and the site adds an “Event details” button for it.</div>
+    <div class="cal-bar">
+      <button class="btn btn-primary" id="sync" disabled>↻ Sync now</button>
+      <a class="btn btn-ghost" href="https://calendar.google.com/calendar/u/0?cid=czNpdXV2Yjd0NGpob2QzM250NzZibjlzcG9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ" target="_blank" rel="noopener">Open calendar ↗</a>
+      <div class="note" id="sync-note">Optional per event: add a photo, change the button, or hide it from the site. Then hit Publish.</div>
+    </div>
+    <div id="cal-editor"><div class="empty">Connect above to load the calendar events.</div></div>
+
+    <div class="sec-label"><span class="step-n">3</span> Extra events (not on the calendar)</div>
+    <p class="lead" style="font-size:0.94rem;margin:-4px 0 16px;">Optional. For a featured announcement that isn't a calendar event. Set “Hide after” and it comes down on its own.</p>
     <div id="editor"><div class="empty">Connect above to load your events.</div></div>
-    <button class="btn btn-ghost" id="add" style="margin-top:6px;" disabled>+ Add event</button>
+    <button class="btn btn-ghost" id="add" style="margin-top:6px;" disabled>+ Add extra event</button>
     <div class="log" id="log"></div>
   </div>
 
@@ -178,12 +198,15 @@
   var MAX_EDGE = 1600, JPG_Q = 0.82, WEBP_Q = 0.80;
   var LS_TOKEN = 'gs_photo_token', LS_REPO = 'gs_photo_repo';
   var MANIFEST = 'assets/events/events.json', DIR = 'assets/events/';
+  var CAL_JSON = 'assets/events/calendar.json', OVERRIDES = 'assets/events/calendar-overrides.json', WORKFLOW = 'sync-calendar.yml';
 
+  // calEvents: synced from Google Calendar (read-only here). ov: per-event extras keyed by event "key".
+  var calEvents = [], ov = {}, calLoaded = false;
   var items = [], removedPhotos = [], uid = 0, connected = false, publishing = false, dirty = false, loaded = false;
 
   var el = function (id) { return document.getElementById(id); };
   var E = {
-    editor: el('editor'), add: el('add'), token: el('token'), connect: el('connect'), forget: el('forget'),
+    editor: el('editor'), calEditor: el('cal-editor'), sync: el('sync'), syncNote: el('sync-note'), add: el('add'), token: el('token'), connect: el('connect'), forget: el('forget'),
     owner: el('owner'), repo: el('repo'), branch: el('branch'), adv: el('adv'), advToggle: el('adv-toggle'),
     conn: el('conn'), connText: el('conn-text'), publish: el('publish'), summary: el('summary'), log: el('log'), toast: el('toast')
   };
@@ -192,7 +215,8 @@
   function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
   function toast(msg) { E.toast.textContent = msg; E.toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { E.toast.classList.remove('show'); }, 2400); }
-  function allPhotoBases() { var m = {}; items.forEach(function (x) { if (x.photo) m[x.photo] = true; }); return m; }
+  function allPhotoBases() { var m = {}; items.concat(ovList()).forEach(function (x) { if (x.photo) m[x.photo] = true; }); return m; }
+  function ovList() { return Object.keys(ov).map(function (k) { return ov[k]; }); }
   function uniqueBase(slug) { var used = allPhotoBases(); if (!used[slug]) return slug; var i = 2, b; do { b = slug + '-' + i; i++; } while (used[b]); return b; }
 
   // ---- image optimize (mirrors photos.html) ----
@@ -213,7 +237,8 @@
   function toBlob(canvas, type, q) { return new Promise(function (res) { canvas.toBlob(function (b) { if (!b && type === 'image/webp') canvas.toBlob(function (b2) { res(b2); }, 'image/jpeg', q); else res(b); }, type, q); }); }
 
   // ---- model ----
-  function newItem() { return { id: ++uid, title: '', date: '', description: '', link: '', linkLabel: '', photo: '', fromRepo: false, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false }; }
+  function newOv(key, m) { m = m || {}; return { id: ++uid, key: key, hidden: !!m.hidden, link: m.link || '', linkLabel: m.linkLabel || '', description: m.description || '', photo: m.photo || '', fromRepo: !!m.photo, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false }; }
+  function newItem() { return { id: ++uid, title: '', date: '', expires: '', description: '', link: '', linkLabel: '', photo: '', fromRepo: false, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false }; }
   function addItem() { items.push(newItem()); dirty = true; render(); update(); }
   function removeItem(it) {
     if (it.fromRepo && it.photo && removedPhotos.indexOf(it.photo) === -1) removedPhotos.push(it.photo);
@@ -237,8 +262,57 @@
     }).catch(function () { it.busy = false; it.error = true; toast('Could not process that photo'); render(); });
   }
 
-  // ---- render ----
+  // ---- render: calendar events ----
+  function calGroups() {
+    // One card per calendar event; a repeating event shows once, with its next date.
+    var seen = {}, out = [];
+    calEvents.forEach(function (e) {
+      if (seen[e.key]) { seen[e.key].count++; return; }
+      seen[e.key] = { ev: e, count: 1 }; out.push(seen[e.key]);
+    });
+    return out;
+  }
+  function renderCal() {
+    if (!calLoaded) { E.calEditor.innerHTML = '<div class="empty">Connect above to load the calendar events.</div>'; return; }
+    var groups = calGroups();
+    if (!groups.length) { E.calEditor.innerHTML = '<div class="empty">No upcoming events on the calendar. Add one in Google Calendar, then hit “Sync now”.</div>'; return; }
+    E.calEditor.innerHTML = '';
+    groups.forEach(function (g) { E.calEditor.appendChild(calRow(g.ev, g.count)); });
+  }
+  function calRow(e, count) {
+    var o = ov[e.key] || (ov[e.key] = newOv(e.key));
+    var card = document.createElement('div'); card.className = 'card cal' + (o.hidden ? ' is-hidden' : '');
+    var inner = o.busy ? '…' : (o.thumbUrl ? '<img alt="" src="' + o.thumbUrl + '">' : (o.photo ? '<img alt="" src="../' + DIR + escapeAttr(o.photo) + '.jpg">' : 'Add photo<br>(optional)'));
+    var when = [e.date, e.location].filter(Boolean).join(' · ') + (count > 1 ? '  (repeats — ' + count + ' upcoming)' : '');
+    card.innerHTML =
+      '<div class="photo-slot">' +
+        '<label class="photo-box" title="Upload photo">' + inner + '<span class="cam">Photo</span><input type="file" accept="image/*"></label>' +
+        '<button class="photo-clear" type="button"' + (o.photo || o.thumbUrl ? '' : ' disabled') + '>Clear</button>' +
+      '</div>' +
+      '<div class="fields">' +
+        '<div class="when">' + escapeHtml(when) + '</div>' +
+        '<div class="f-title-ro">' + escapeHtml(e.title) + '</div>' +
+        (e.description ? '<div class="desc-ro">' + escapeHtml(e.description) + '</div>' : '') +
+        '<textarea class="f-desc" placeholder="Website description (optional — replaces the calendar description)">' + escapeHtml(o.description) + '</textarea>' +
+        '<div class="frow">' +
+          '<input class="f-link half" type="text" placeholder="' + escapeAttr(e.link ? 'Button link (from calendar: ' + e.link + ')' : 'Button link (optional, https://…)') + '" value="' + escapeAttr(o.link) + '">' +
+          '<input class="f-linklabel half" type="text" placeholder="Button label (default: Event details)" value="' + escapeAttr(o.linkLabel) + '">' +
+        '</div>' +
+        '<div class="hint">' + (o.busy ? 'optimizing photo…' : o.error ? 'photo failed' : o.photo ? DIR + escapeHtml(o.photo) + '.jpg' : 'no photo') + '</div>' +
+      '</div>' +
+      '<div class="actions"><label class="hide-tog"><input type="checkbox" class="f-hidden"' + (o.hidden ? ' checked' : '') + '> Hide on site</label></div>';
+    card.querySelector('.photo-box input').addEventListener('change', function (ev) { if (ev.target.files && ev.target.files[0]) { o.title = e.title; addPhoto(o, ev.target.files[0]); } ev.target.value = ''; });
+    card.querySelector('.photo-clear').addEventListener('click', function () { clearPhoto(o); });
+    card.querySelector('.f-desc').addEventListener('input', function (ev) { o.description = ev.target.value; dirty = true; update(); });
+    card.querySelector('.f-link').addEventListener('input', function (ev) { o.link = ev.target.value; dirty = true; update(); });
+    card.querySelector('.f-linklabel').addEventListener('input', function (ev) { o.linkLabel = ev.target.value; dirty = true; update(); });
+    card.querySelector('.f-hidden').addEventListener('change', function (ev) { o.hidden = ev.target.checked; card.classList.toggle('is-hidden', o.hidden); dirty = true; update(); });
+    return card;
+  }
+
+  // ---- render: extra events ----
   function render() {
+    renderCal();
     if (!connected && !loaded) { E.editor.innerHTML = '<div class="empty">Connect above to load your events.</div>'; return; }
     if (!items.length) { E.editor.innerHTML = '<div class="empty">No events yet — use “Add event”.</div>'; return; }
     E.editor.innerHTML = '';
@@ -256,6 +330,7 @@
         '<input class="f-title" type="text" placeholder="Event title" value="' + escapeAttr(it.title) + '">' +
         '<div class="frow">' +
           '<input class="f-date half" type="text" placeholder="Date (e.g. May 15–17, 2026)" value="' + escapeAttr(it.date) + '">' +
+          '<label class="dl">Hide after <input class="f-expires" type="date" value="' + escapeAttr(it.expires) + '"></label>' +
         '</div>' +
         '<textarea class="f-desc" placeholder="Description">' + escapeHtml(it.description) + '</textarea>' +
         '<div class="frow">' +
@@ -269,6 +344,7 @@
     card.querySelector('.photo-clear').addEventListener('click', function () { clearPhoto(it); });
     card.querySelector('.f-title').addEventListener('input', function (e) { it.title = e.target.value; dirty = true; update(); });
     card.querySelector('.f-date').addEventListener('input', function (e) { it.date = e.target.value; dirty = true; update(); });
+    card.querySelector('.f-expires').addEventListener('change', function (e) { it.expires = e.target.value; dirty = true; update(); });
     card.querySelector('.f-desc').addEventListener('input', function (e) { it.description = e.target.value; dirty = true; update(); });
     card.querySelector('.f-link').addEventListener('input', function (e) { it.link = e.target.value; dirty = true; update(); });
     card.querySelector('.f-linklabel').addEventListener('input', function (e) { it.linkLabel = e.target.value; dirty = true; update(); });
@@ -277,13 +353,14 @@
   }
 
   function update() {
-    var busy = items.some(function (x) { return x.busy; });
+    var busy = items.concat(ovList()).some(function (x) { return x.busy; });
     E.add.disabled = !connected;
+    E.sync.disabled = !connected;
     E.publish.disabled = !(connected && dirty && !busy && !publishing);
     if (!connected) E.summary.innerHTML = 'Connect a token to publish.';
     else if (!dirty) E.summary.innerHTML = 'Everything is up to date.';
     else if (busy) E.summary.innerHTML = 'Optimizing photos…';
-    else E.summary.innerHTML = '<b>' + items.length + '</b> event' + (items.length === 1 ? '' : 's') + ' — ready to publish.';
+    else E.summary.innerHTML = 'Changes ready to publish.';
   }
 
   // ---- GitHub API ----
@@ -311,19 +388,32 @@
         connected = true; setConn('ok', 'Connected'); E.forget.hidden = false;
         localStorage.setItem(LS_TOKEN, c.token);
         localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch }));
-        toast('Connected — loaded ' + items.length + ' event(s)'); render(); update();
+        toast('Connected — ' + calGroups().length + ' calendar event(s), ' + items.length + ' extra'); render(); update();
       })
       .catch(function (e) { connected = false; setConn('err', 'Failed'); toast(e.message || 'Connection failed'); })
       .then(function () { E.connect.disabled = false; });
   }
 
+  function parseJson(res, fallback) { if (!res || !res.content) return fallback; try { return JSON.parse(b64ToUtf8(res.content)) || fallback; } catch (e) { return fallback; } }
+  function loadCalendar() {
+    return ghGet(CAL_JSON).then(function (res) {
+      var now = Date.now();
+      calEvents = (parseJson(res, []) || []).filter(function (e) { var t = Date.parse(e.end); return !(t && t <= now); });
+      calLoaded = true;
+    });
+  }
   function load() {
-    return ghGet(MANIFEST).then(function (res) {
+    return Promise.all([loadCalendar(), ghGet(OVERRIDES)]).then(function (r) {
+      ov = {};
+      var m = parseJson(r[1], {});
+      Object.keys(m).forEach(function (k) { ov[k] = newOv(k, m[k]); });
+      return ghGet(MANIFEST);
+    }).then(function (res) {
       items = []; removedPhotos = []; dirty = false;
       var list = [];
       if (res && res.content) { try { list = JSON.parse(b64ToUtf8(res.content)) || []; } catch (e) { list = []; } }
       list.forEach(function (m) {
-        items.push({ id: ++uid, title: m.title || '', date: m.date || '', description: m.description || '', link: m.link || '', linkLabel: m.linkLabel || '', photo: m.photo || '', fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false });
+        items.push({ id: ++uid, title: m.title || '', date: m.date || '', expires: m.expires || '', description: m.description || '', link: m.link || '', linkLabel: m.linkLabel || '', photo: m.photo || '', fromRepo: true, blobJpg: null, blobWebp: null, thumbUrl: '', busy: false, error: false, photoChanged: false });
       });
       loaded = true; render();
     });
@@ -336,7 +426,12 @@
     publishing = true; update(); E.publish.disabled = true; E.log.innerHTML = ''; E.log.classList.add('show');
     log('Publishing events…', 'dim');
     var chain = Promise.resolve();
-    items.forEach(function (it) {
+    // Drop extras for events no longer on the calendar (they've passed or were deleted), photos included.
+    var liveKeys = {}; calEvents.forEach(function (e) { liveKeys[e.key] = true; });
+    Object.keys(ov).forEach(function (k) {
+      if (!liveKeys[k]) { var o = ov[k]; if (o.fromRepo && o.photo && removedPhotos.indexOf(o.photo) === -1) removedPhotos.push(o.photo); delete ov[k]; }
+    });
+    items.concat(ovList()).forEach(function (it) {
       if (it.photoChanged && it.blobJpg && it.photo) {
         chain = chain.then(function () {
           log('↑ ' + it.photo + '.jpg …');
@@ -350,7 +445,7 @@
     });
     removedPhotos.forEach(function (base) {
       chain = chain.then(function () {
-        if (items.some(function (x) { return x.photo === base; })) return;
+        if (items.concat(ovList()).some(function (x) { return x.photo === base; })) return;
         log('✕ removing ' + base + ' …');
         return Promise.all([
           ghGet(DIR + base + '.jpg').then(function (r) { return r ? ghDelete(DIR + base + '.jpg', 'events: remove photo ' + base + '.jpg', r.sha) : null; }),
@@ -360,25 +455,70 @@
     });
     chain = chain.then(function () {
       log('↻ updating events.json …');
-      var out = items.map(function (it) { return { title: it.title, date: it.date, description: it.description, link: it.link, linkLabel: it.linkLabel, photo: it.photo || '' }; });
+      var out = items.map(function (it) { var o = { title: it.title, date: it.date, description: it.description, link: it.link, linkLabel: it.linkLabel, photo: it.photo || '' }; if (it.expires) o.expires = it.expires; return o; });
       var json = JSON.stringify(out, null, 2) + '\n';
       return ghGet(MANIFEST).then(function (r) { return ghPut(MANIFEST, utf8ToB64(json), 'events: update events (' + out.length + ')', r ? r.sha : null); }).then(function () { log('  ✓ saved', 'ok'); });
     });
+    chain = chain.then(function () {
+      log('↻ updating calendar-overrides.json …');
+      var out = {};
+      Object.keys(ov).sort().forEach(function (k) {
+        var o = ov[k], m = {};
+        if (o.hidden) m.hidden = true;
+        if (o.photo) m.photo = o.photo;
+        if (o.description.trim()) m.description = o.description.trim();
+        if (o.link.trim()) m.link = o.link.trim();
+        if (o.linkLabel.trim()) m.linkLabel = o.linkLabel.trim();
+        if (Object.keys(m).length) out[k] = m;
+      });
+      var json = JSON.stringify(out, null, 2) + '\n';
+      return ghGet(OVERRIDES).then(function (r) {
+        if (r && r.content && b64ToUtf8(r.content) === json) { log('  · unchanged', 'dim'); return; }
+        return ghPut(OVERRIDES, utf8ToB64(json), 'events: update calendar event extras', r ? r.sha : null).then(function () { log('  ✓ saved', 'ok'); });
+      });
+    });
     chain.then(function () {
-      items.forEach(function (it) { it.fromRepo = true; it.photoChanged = false; });
+      items.concat(ovList()).forEach(function (it) { it.fromRepo = !!it.photo || it.fromRepo; it.photoChanged = false; });
       removedPhotos = []; dirty = false;
       log('✓ Done. Live on the site in ~1 minute (GitHub Pages redeploy).', 'ok');
       toast('Published! Live in ~1 min.'); publishing = false; render(); update();
     }).catch(function (e) { log('✗ ' + (e.message || 'publish failed'), 'err'); toast('Publish failed — see the log'); publishing = false; update(); });
   }
 
+  // ---- "Sync now": runs .github/workflows/sync-calendar.yml right away ----
+  function syncNow() {
+    var c = cfg();
+    E.sync.disabled = true; E.syncNote.textContent = 'Starting sync…';
+    fetch('https://api.github.com/repos/' + c.owner + '/' + c.repo + '/actions/workflows/' + WORKFLOW + '/dispatches', {
+      method: 'POST', headers: headers(), body: JSON.stringify({ ref: c.branch })
+    }).then(function (r) {
+      if (r.status === 204) return;
+      if (r.status === 403 || r.status === 404) throw new Error('Your token can\'t run the sync. Give it Actions: Read and write (see “How do I get a token?”), or just wait — it syncs every hour.');
+      return r.text().then(function (t) { throw new Error('GitHub error ' + r.status + ' ' + t); });
+    }).then(function () {
+      E.syncNote.textContent = 'Sync started — checking the calendar. This takes about a minute…';
+      var tries = 0;
+      (function poll() {
+        setTimeout(function () {
+          tries++;
+          loadCalendar().then(function () { renderCal(); }).catch(function () {});
+          if (tries < 4) poll();
+          else { E.syncNote.textContent = 'Synced. The live site updates about a minute after that.'; E.sync.disabled = !connected; }
+        }, 30000);
+      })();
+    }).catch(function (e) {
+      E.syncNote.textContent = e.message; E.sync.disabled = !connected; toast('Sync could not start');
+    });
+  }
+
   // ---- wiring ----
+  E.sync.addEventListener('click', syncNow);
   render(); update();
   E.advToggle.addEventListener('click', function () { E.adv.classList.toggle('show'); E.advToggle.textContent = (E.adv.classList.contains('show') ? '▾' : '▸') + ' Repository settings'; });
   E.connect.addEventListener('click', connect);
   E.publish.addEventListener('click', publish);
   E.add.addEventListener('click', addItem);
-  E.forget.addEventListener('click', function () { localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; loaded = false; items = []; removedPhotos = []; dirty = false; setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render(); update(); });
+  E.forget.addEventListener('click', function () { localStorage.removeItem(LS_TOKEN); E.token.value = ''; connected = false; loaded = false; calLoaded = false; calEvents = []; ov = {}; items = []; removedPhotos = []; dirty = false; setConn('', 'Not connected'); E.forget.hidden = true; toast('Token removed from this browser'); render(); update(); });
   E.token.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
   window.addEventListener('dragover', function (e) { e.preventDefault(); });
   window.addEventListener('drop', function (e) { e.preventDefault(); });
