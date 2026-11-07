@@ -196,6 +196,8 @@
     width: 220px; flex-shrink: 0; aspect-ratio: 4 / 3; object-fit: cover; display: block;
     border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.14);
   }
+  .events-block .ev-sub { position: relative; z-index: 2; margin-top: 38px; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .events-block .ev-sub a { color: var(--gold); }
   .event-row + .event-row { margin-top: 34px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,0.12); }
   @media (max-width: 760px) {
     .events-block { padding: 34px 26px; }
@@ -534,16 +536,9 @@
         <div class="sec-label">Events</div>
         <h2 class="sec-title">WHAT'S <span class="accent">HAPPENING</span></h2>
       </div>
-      <!-- Rendered from assets/events/events.json — manage at /admin/events.html -->
+      <!-- Rendered from the Google Calendar sync (assets/events/calendar.json) + events.json — manage at /admin/events.html -->
       <div class="events-block reveal" id="events-block">
-        <div class="sec-label">Featured</div>
-        <div class="event-row">
-          <div class="dot"></div>
-          <div>
-            <h3>2026 Northeast Hubs Retreat</h3>
-            <p>Pittsburgh is proud to host the 2026 Northeast Hubs retreat, May 15–17 — three days of connection across hubs, ideas, and differences.</p>
-          </div>
-        </div>
+        <div class="sec-label">Upcoming</div>
       </div>
     </div>
   </section>
@@ -869,10 +864,21 @@
     })();
 
     /* ---------- EVENTS ----------
-       Driven by assets/events/events.json (manage at /admin/events.html). */
+       Upcoming events come from the Global Shapers PGH Google Calendar, synced
+       hourly into assets/events/calendar.json (tools/sync-calendar.py).
+       Optional photos / buttons / hiding per event live in calendar-overrides.json,
+       and extra hand-made events in events.json — all managed at /admin/events.html.
+       Anything whose end time has passed is hidden right here, so events drop
+       off the site the moment they're over. */
     (function () {
       var block = document.getElementById('events-block');
       if (!block) return;
+      var CAL_URL = 'https://calendar.google.com/calendar/u/0?cid=czNpdXV2Yjd0NGpob2QzM250NzZibjlzcG9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ';
+      function getJson(url, fallback) {
+        return fetch(url, { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : fallback; })
+          .catch(function () { return fallback; });
+      }
       function eventRow(e) {
         var photo = e.photo
           ? '<picture><source type="image/webp" srcset="assets/events/' + esc(e.photo) + '.webp">' +
@@ -881,24 +887,48 @@
         var link = (e.link && e.linkLabel)
           ? '<a href="' + esc(e.link) + '" class="btn btn-gold"' + extAttrs(e.link) + '>' + esc(e.linkLabel) + '</a>'
           : '';
+        var when = [e.date, e.location].filter(Boolean).map(esc).join(' · ');
         return '<div class="event-row">' +
           '<div class="dot"></div>' +
           '<div>' +
-            (e.date ? '<div class="ev-date">' + esc(e.date) + '</div>' : '') +
+            (when ? '<div class="ev-date">' + when + '</div>' : '') +
             '<h3>' + esc(e.title || '') + '</h3>' +
-            (e.description ? '<p>' + esc(e.description) + '</p>' : '') +
+            (e.description ? '<p>' + esc(e.description).replace(/\n/g, '<br>') + '</p>' : '') +
             link +
           '</div>' +
           photo +
         '</div>';
       }
-      fetch('assets/events/events.json', { cache: 'no-store' })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (list) {
-          if (!Array.isArray(list) || !list.length) return; // keep static fallback
-          block.innerHTML = '<div class="sec-label">Featured</div>' + list.map(eventRow).join('');
-        })
-        .catch(function () {});
+      Promise.all([
+        getJson('assets/events/events.json', []),
+        getJson('assets/events/calendar.json', []),
+        getJson('assets/events/calendar-overrides.json', {})
+      ]).then(function (res) {
+        var now = Date.now();
+        var today = new Date(now - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        var featured = (Array.isArray(res[0]) ? res[0] : []).filter(function (e) {
+          return !e.expires || e.expires >= today;          // hand-made events: hide after their "expires" date
+        });
+        var ov = res[2] && typeof res[2] === 'object' ? res[2] : {};
+        var upcoming = (Array.isArray(res[1]) ? res[1] : []).filter(function (e) {
+          var end = Date.parse(e.end);
+          return !(end && end <= now) && !(ov[e.key] && ov[e.key].hidden);
+        }).map(function (e) {
+          var o = ov[e.key] || {}, out = {};
+          for (var k in e) out[k] = e[k];
+          out.photo = o.photo || '';
+          out.description = o.description || e.description;
+          out.link = o.link || e.link;
+          out.linkLabel = o.linkLabel || (out.link ? 'Event details' : '');
+          return out;
+        });
+        var html = '';
+        if (featured.length) html += '<div class="sec-label">Featured</div>' + featured.map(eventRow).join('');
+        if (upcoming.length) html += '<div class="sec-label"' + (featured.length ? ' style="margin-top:46px"' : '') + '>Upcoming</div>' + upcoming.map(eventRow).join('');
+        if (!html) html = '<div class="sec-label">Upcoming</div><div class="event-row"><div class="dot"></div><div><h3>More coming soon</h3><p>Nothing on the calendar right now — check back soon.</p></div></div>';
+        html += '<p class="ev-sub"><a href="' + CAL_URL + '" target="_blank" rel="noopener">+ Add our calendar to Google Calendar</a></p>';
+        block.innerHTML = html;
+      });
     })();
 
     /* ---------- PROJECTS ----------
