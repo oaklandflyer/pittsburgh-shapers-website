@@ -3,7 +3,7 @@
   "dateRange": "July 2026 – June 2027",
   "footerText": "RUNNING ALL YEAR ",
   "background": "bg.jpg",
-  "highlightMonth": "SEP",
+  "highlightMonth": "NOV",
   "months": [
     {
       "month": "JUL",
@@ -28,12 +28,12 @@
     {
       "month": "NOV",
       "title": "Impact Launch",
-      "description": "First CulturePGH dining event; year-end celebration."
+      "description": "Shapersgiving! Project planning continues!"
     },
     {
       "month": "DEC",
       "title": "Impact Launch · Cont.",
-      "description": "Weekly Bridging Borders sessions; holiday service."
+      "description": "Holiday Season!"
     },
     {
       "month": "JAN",
